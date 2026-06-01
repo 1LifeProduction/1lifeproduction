@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import projectsData from '~/data/projects.json'
-
 const clients = [
   { name: 'Formula 1', slug: 'f1'      },
   { name: 'Nike',      slug: 'nike'    },
@@ -8,13 +6,48 @@ const clients = [
   { name: 'Chanel',    slug: 'chanel'  },
 ]
 
-const members = [
-  { name: 'Lucas F.',   role: 'Réalisateur' },
-  { name: 'Chloé M.',   role: 'Cheffe op.' },
-  { name: 'Rémi D.',    role: 'Monteur' },
-  { name: 'Yasmine O.', role: 'Productrice' },
-  { name: 'Tom B.',     role: 'Motion design' },
+// Hexagon vertices clockwise from top, matching SVG coords (container 760×780)
+const HEX_W = 760, HEX_H = 780
+const VERTICES = [
+  { x: 380, y: 172 }, // 0 top
+  { x: 569, y: 281 }, // 1 upper-right
+  { x: 569, y: 499 }, // 2 lower-right
+  { x: 380, y: 608 }, // 3 bottom
+  { x: 191, y: 499 }, // 4 lower-left
+  { x: 191, y: 281 }, // 5 upper-left
 ]
+
+function hexPoint(p: number) {
+  const norm  = ((p % 1) + 1) % 1
+  const edgeF = norm * 6
+  const ei    = Math.floor(edgeF) % 6
+  const t     = edgeF - Math.floor(edgeF)
+  const v0    = VERTICES[ei]
+  const v1    = VERTICES[(ei + 1) % 6]
+  return { x: v0.x + t * (v1.x - v0.x), y: v0.y + t * (v1.y - v0.y) }
+}
+
+const teamRef  = ref<HTMLElement>()
+const progress = ref(0)
+
+const nodeStyles = computed(() =>
+  [0, 1/6, 2/6, 3/6, 4/6, 5/6].map(base => {
+    const { x, y } = hexPoint(base + progress.value)
+    return { left: `${(x / HEX_W) * 100}%`, top: `${(y / HEX_H) * 100}%` }
+  })
+)
+
+function onScroll() {
+  const el = teamRef.value
+  if (!el) return
+  const scrolled    = window.scrollY - el.offsetTop
+  if (scrolled < 0) return
+  const totalScroll = el.offsetHeight - window.innerHeight
+  progress.value    = Math.min(scrolled / totalScroll, 1)
+}
+
+onMounted(()   => window.addEventListener('scroll', onScroll, { passive: true }))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 useHead({ title: 'À propos — 1LIFE PRODUCTION' })
 </script>
@@ -22,9 +55,15 @@ useHead({ title: 'À propos — 1LIFE PRODUCTION' })
 <template>
   <div class="about-page grid-bg">
 
+    <!-- Blobs page entière -->
+    <div class="about-blob about-blob--1" aria-hidden="true"></div>
+    <div class="about-blob about-blob--2" aria-hidden="true"></div>
+    <div class="about-blob about-blob--3" aria-hidden="true"></div>
+    <div class="about-blob about-blob--4" aria-hidden="true"></div>
+
     <!-- Hero title -->
     <section class="about-hero">
-      <h1 class="about-hero__title">About</h1>
+      <h1 class="about-hero__title">À propos</h1>
     </section>
 
     <!-- Text card -->
@@ -60,40 +99,33 @@ useHead({ title: 'À propos — 1LIFE PRODUCTION' })
     </section>
 
     <!-- Team -->
-    <section class="about-team">
-      <div class="about-team__blob" aria-hidden="true"></div>
-      <h2 class="about-team__title">Notre équipe</h2>
+    <section ref="teamRef" class="about-team">
+      <div class="about-team__sticky">
 
-      <div class="about-team__constellation" aria-hidden="true">
-        <!--
-          6 nœuds — disposition losange vertical :
-               (c-top)
-          (ml)         (mr)
-          (ml2)        (mr2)
-               (c-bot)
-          + centre optionnel remplacé par ligne croisée
-        -->
-        <svg class="about-team__lines" viewBox="0 0 500 560" preserveAspectRatio="xMidYMid meet">
-          <!-- horizontales -->
-          <line x1="145" y1="190" x2="355" y2="190" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <line x1="145" y1="370" x2="355" y2="370" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <!-- verticales -->
-          <line x1="145" y1="190" x2="145" y2="370" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <line x1="355" y1="190" x2="355" y2="370" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <!-- top vers haut-centre -->
-          <line x1="145" y1="190" x2="250" y2="80"  stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <line x1="355" y1="190" x2="250" y2="80"  stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <!-- bottom vers bas-centre -->
-          <line x1="145" y1="370" x2="250" y2="480" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-          <line x1="355" y1="370" x2="250" y2="480" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+        <div class="about-team__constellation" aria-hidden="true">
+        <!-- SVG : viewBox = container exact, overflow:visible pour les lignes débordantes -->
+        <svg class="about-team__lines" viewBox="0 0 760 780" aria-hidden="true">
+          <!-- 6 côtés de l'hexagone, centre (380,390) R=218 -->
+          <line x1="380" y1="172" x2="569" y2="281" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="569" y1="281" x2="569" y2="499" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="569" y1="499" x2="380" y2="608" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="380" y1="608" x2="191" y2="499" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="191" y1="499" x2="191" y2="281" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="191" y1="281" x2="380" y2="172" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <!-- ligne verticale vers le haut depuis le sommet -->
+          <line x1="380" y1="172" x2="380" y2="-500" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <!-- lignes horizontales à l'équateur (y=390) -->
+          <line x1="-800" y1="390" x2="191" y2="390" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
+          <line x1="569"  y1="390" x2="1500" y2="390" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
         </svg>
 
-        <div class="about-team__node about-team__node--ct" ><div class="about-team__avatar"></div></div>
-        <div class="about-team__node about-team__node--ml" ><div class="about-team__avatar"></div></div>
-        <div class="about-team__node about-team__node--mr" ><div class="about-team__avatar"></div></div>
-        <div class="about-team__node about-team__node--ml2"><div class="about-team__avatar"></div></div>
-        <div class="about-team__node about-team__node--mr2"><div class="about-team__avatar"></div></div>
-        <div class="about-team__node about-team__node--cb" ><div class="about-team__avatar"></div></div>
+        <div
+          v-for="(style, i) in nodeStyles"
+          :key="i"
+          class="about-team__node"
+          :style="style"
+        ><div class="about-team__avatar"></div></div>
+        </div>
       </div>
     </section>
 

@@ -50,28 +50,5 @@ useHead({ title: 'Commercial — 1LIFE PRODUCTION' })
         </p>
       </div>
     </div>
-
-    <!-- Filter -->
-    <div class="section-page__filter-wrap">
-      <CategoryFilter
-        :categories="categories"
-        :model-value="activeCategory"
-        @update:model-value="setCategory"
-      />
-    </div>
-
-    <!-- Grid -->
-    <div v-if="filtered.length" class="projects-grid projects-grid--3col">
-      <ProjectCard
-        v-for="p in filtered"
-        :key="p.id"
-        :id="p.id"
-        :title="p.title"
-        :category="p.category"
-        :year="p.year"
-        :thumbnail="p.thumbnail"
-      />
-    </div>
-    <div v-else class="empty-state">Aucun projet dans cette catégorie.</div>
   </div>
 </template>
