@@ -1,0 +1,41 @@
+[
+  {
+    "id": "saphir-session-10",
+    "title": "SAPHIR SESSION #10 - AIR INTER LOWTSO",
+    "section": "evenementiel",
+    "category": "captations",
+    "year": 2026,
+    "client": "Saphir Session",
+    "vimeo_url": "https://vimeo.com/76979871",
+    "thumbnail": "/thumbnails/lowtso.png",
+    "description": "Captation de la session #10 de Saphir, tournée devant l'avion Air Inter avec l'artiste Lowtso.",
+    "tags": ["session", "live", "captation"],
+    "featured": true
+  },
+  {
+    "id": "impact-skone",
+    "title": "IMPACT — SKONE",
+    "section": "evenementiel",
+    "category": "afterfilms",
+    "year": 2024,
+    "client": "Impact",
+    "vimeo_url": "https://vimeo.com/76979871",
+    "thumbnail": "/thumbnails/skone.png",
+    "description": "Afterfilm de la soirée Impact avec Skone. Ambiance scène, foule et lumières rouges.",
+    "tags": ["afterfilm", "club", "event"],
+    "featured": true
+  },
+  {
+    "id": "linf-project",
+    "title": "L'INF",
+    "section": "commercial",
+    "category": "films",
+    "year": 2024,
+    "client": "L'INF",
+    "vimeo_url": "https://vimeo.com/76979871",
+    "thumbnail": "/thumbnails/linf.jpg",
+    "description": "Film cinématique tourné dans un parking urbain. Direction artistique sombre et épurée.",
+    "tags": ["film", "cinéma", "urban"],
+    "featured": true
+  }
+]

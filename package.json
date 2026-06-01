@@ -1,0 +1,14 @@
+{
+  "name": "1life-production",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "preview": "npx serve .output/public",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "^3.13.0"
+  }
+}
