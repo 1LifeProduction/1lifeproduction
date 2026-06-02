@@ -57,8 +57,33 @@ onUnmounted(() => {
 })
 
 useHead({
-  title: '1LIFE PRODUCTION — Collectif de vidéastes',
-  meta: [{ name: 'description', content: 'Collectif de vidéastes indépendants — événementiel & commercial, Paris.' }],
+  title: '1LIFE PRODUCTION',
+  meta: [
+    { name: 'description',        content: 'Collectif créatif parisien spécialisé dans la production audiovisuelle. Photographes, vidéastes, motion designers, dronistes FPV et experts VFX.' },
+    { property: 'og:description', content: 'Collectif créatif parisien spécialisé dans la production audiovisuelle. Photographes, vidéastes, motion designers, dronistes FPV et experts VFX.' },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: '1LIFE PRODUCTION',
+        url: 'https://1lifeproduction.com',
+        logo: 'https://1lifeproduction.com/favicon.png',
+        contactPoint: {
+          '@type': 'ContactPoint',
+          email: '1lifeprod@unlockcollectif.com',
+          contactType: 'customer service',
+          availableLanguage: 'French',
+        },
+        sameAs: [
+          'https://instagram.com/1lifeproduction',
+          'https://linkedin.com',
+        ],
+      }),
+    },
+  ],
 })
 </script>
 
@@ -98,10 +123,7 @@ useHead({
       <div class="projects-theater__stage">
 
         <!-- Bloc fixe : images stackées en crossfade -->
-        <NuxtLink
-          :to="`/projects/${featured[activeIndex].id}`"
-          class="project-card projects-theater__card"
-        >
+        <div class="project-card projects-theater__card">
           <img
             v-for="(p, i) in featured"
             :key="p.id"
@@ -117,7 +139,7 @@ useHead({
               </div>
             </Transition>
           </div>
-        </NuxtLink>
+        </div>
 
         <!-- Indicateur de progression -->
         <div class="projects-theater__dots" aria-hidden="true">

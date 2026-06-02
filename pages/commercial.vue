@@ -50,9 +50,11 @@ const filteredProjects = computed(() =>
 )
 
 useHead(computed(() => ({
-  title: activeCategory.value
-    ? `${activeCategory.value.label} — Commercial — 1LIFE PRODUCTION`
-    : 'Commercial — 1LIFE PRODUCTION',
+  title: '1LIFE PRODUCTION',
+  meta: [
+    { name: 'description',        content: 'Films de marque, publicités, podcasts vidéo, portraits et shooting produits. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
+    { property: 'og:description', content: 'Films de marque, publicités, podcasts vidéo, portraits et shooting produits. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
+  ],
 })))
 usePageTheme('light')
 </script>
@@ -80,14 +82,14 @@ usePageTheme('light')
 
     <!-- Vue sous-catégorie : liste de projets -->
     <div v-if="activeCategory" class="cat-list" data-nav-theme="light">
-      <NuxtLink
+      <div
         v-for="p in filteredProjects"
         :key="p.id"
-        :to="`/projects/${p.id}`"
         class="cat-list__item"
       >
         <div class="cat-list__thumb">
-          <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="cat-list__img" />
+          <VimeoEmbed v-if="p.vimeo_url" :url="p.vimeo_url" :title="p.title" />
+          <img v-else-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="cat-list__img" />
           <div v-else class="cat-list__placeholder" />
         </div>
         <div class="cat-list__info">
@@ -98,7 +100,7 @@ usePageTheme('light')
             <span>{{ p.client }}</span>
           </div>
         </div>
-      </NuxtLink>
+      </div>
       <div v-if="!filteredProjects.length" class="empty-state">Aucun projet dans cette catégorie</div>
     </div>
 

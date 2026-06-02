@@ -5,13 +5,20 @@ import logoBlackImg from '~/assets/images/logoBlack.png'
 const route = useRoute()
 
 /* ---- Nav theme : détecte la section sous le header au scroll ---- */
-const navTheme  = ref<'dark' | 'light'>('dark')
+const navTheme    = ref<'dark' | 'light'>('dark')
+const navHidden   = ref(false)
 const currentLogo = computed(() => navTheme.value === 'light' ? logoBlackImg : logoImg)
 
 function updateNavTheme() {
+  // Masque la navbar quand le footer occupe ≥ 90 % du viewport
+  const footer = document.querySelector<HTMLElement>('.footer')
+  if (footer) {
+    navHidden.value = footer.getBoundingClientRect().top <= window.innerHeight * 0.1
+  }
+
   const sections = document.querySelectorAll<HTMLElement>('[data-nav-theme]')
   if (!sections.length) { navTheme.value = 'dark'; return }
-  const checkY = window.scrollY + 65 // juste sous le header
+  const checkY = window.scrollY + 65
   let found: 'dark' | 'light' = 'dark'
   for (const s of sections) {
     if (checkY >= s.offsetTop && checkY < s.offsetTop + s.offsetHeight) {
@@ -117,7 +124,7 @@ watch(() => route.fullPath, () => {
 </script>
 
 <template>
-  <header class="header" :class="{ 'header--light': navTheme === 'light' }">
+  <header class="header" :class="{ 'header--light': navTheme === 'light', 'header--hidden': navHidden }">
     <div class="header__inner container">
 
       <NuxtLink to="/" class="header__logo">

@@ -50,9 +50,11 @@ const filteredProjects = computed(() =>
 )
 
 useHead(computed(() => ({
-  title: activeCategory.value
-    ? `${activeCategory.value.label} — Événementiel — 1LIFE PRODUCTION`
-    : 'Événementiel — 1LIFE PRODUCTION',
+  title: '1LIFE PRODUCTION',
+  meta: [
+    { name: 'description',        content: 'Captations, aftermovies, reportages, livestreams et interviews. 1LIFE PRODUCTION capture l\'énergie de vos événements avec un regard cinématographique.' },
+    { property: 'og:description', content: 'Captations, aftermovies, reportages, livestreams et interviews. 1LIFE PRODUCTION capture l\'énergie de vos événements avec un regard cinématographique.' },
+  ],
 })))
 </script>
 
@@ -79,14 +81,14 @@ useHead(computed(() => ({
 
     <!-- Vue sous-catégorie : liste de projets -->
     <div v-if="activeCategory" class="cat-list grid-bg" data-nav-theme="dark">
-      <NuxtLink
+      <div
         v-for="p in filteredProjects"
         :key="p.id"
-        :to="`/projects/${p.id}`"
         class="cat-list__item"
       >
         <div class="cat-list__thumb">
-          <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="cat-list__img" />
+          <VimeoEmbed v-if="p.vimeo_url" :url="p.vimeo_url" :title="p.title" />
+          <img v-else-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="cat-list__img" />
           <div v-else class="cat-list__placeholder" />
         </div>
         <div class="cat-list__info">
@@ -97,7 +99,7 @@ useHead(computed(() => ({
             <span>{{ p.client }}</span>
           </div>
         </div>
-      </NuxtLink>
+      </div>
       <div v-if="!filteredProjects.length" class="empty-state">Aucun projet dans cette catégorie</div>
     </div>
 

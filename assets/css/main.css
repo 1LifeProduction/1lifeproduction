@@ -103,7 +103,11 @@ h1, h2, h3, h4, h5, h6 {
   top: 0; left: 0; right: 0;
   z-index: 100;
   background: transparent;
-  transition: background 0.2s var(--ease);
+  transition: background 0.2s var(--ease), transform 0.45s var(--ease);
+}
+
+.header--hidden {
+  transform: translateY(-100%);
 }
 
 .header:hover { background: #000; }
@@ -665,7 +669,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .theater__img.is-active { opacity: 1; }
 
-.projects-theater__card:hover .theater__img.is-active { transform: scale(1.04); }
+.projects-theater__card { cursor: default; }
 
 /* Theater — fade texte */
 .theater-text-enter-active,
@@ -1483,7 +1487,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-muted);
+  color: #fff;
   transition: color var(--t);
   text-decoration: none;
 }
@@ -1531,7 +1535,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-muted);
+  color: #fff;
   width: 100%;
   transition: color var(--t), border-color var(--t);
 }
@@ -1540,7 +1544,7 @@ h1, h2, h3, h4, h5, h6 {
 .contact-form__textarea:focus { color: #fff; border-bottom-color: #fff; }
 
 .contact-form__input::placeholder,
-.contact-form__textarea::placeholder { color: var(--text-dim); }
+.contact-form__textarea::placeholder { color: rgba(255,255,255,0.35); }
 
 .contact-form__textarea {
   resize: none;
@@ -1939,7 +1943,7 @@ h1, h2, h3, h4, h5, h6 {
   .contact-form__label {
     font-size: 0.75rem;
     letter-spacing: 0.12em;
-    color: var(--text-dim);
+    color: #fff;
   }
 
   .contact-form__submit-row {

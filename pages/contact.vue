@@ -1,37 +1,44 @@
 <script setup lang="ts">
-useHead({ title: 'Contact — 1LIFE PRODUCTION' })
-
-const config = useRuntimeConfig()
+useHead({
+  title: '1LIFE PRODUCTION',
+  meta: [
+    { name: 'description',        content: 'Contactez 1LIFE PRODUCTION pour votre prochain projet audiovisuel. Échangeons sur vos besoins créatifs.' },
+    { property: 'og:description', content: 'Contactez 1LIFE PRODUCTION pour votre prochain projet audiovisuel. Échangeons sur vos besoins créatifs.' },
+  ],
+})
 
 const form = reactive({
-  name: '',
-  email: '',
+  name:    '',
+  email:   '',
   subject: '',
   message: '',
 })
 
-const status = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
+const status    = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
+const errorMsg  = ref('')
 
 async function submitForm() {
-  status.value = 'sending'
+  status.value   = 'sending'
+  errorMsg.value = ''
   try {
-    await $fetch('https://api.web3forms.com/submit', {
+    await $fetch('/api/contact', {
       method: 'POST',
       body: {
-        access_key: config.public.web3formsKey,
-        name: form.name,
-        email: form.email,
+        name:    form.name,
+        email:   form.email,
         subject: form.subject,
         message: form.message,
       },
     })
-    status.value = 'success'
-    form.name = ''
-    form.email = ''
+    status.value   = 'success'
+    form.name    = ''
+    form.email   = ''
     form.subject = ''
     form.message = ''
-  } catch {
-    status.value = 'error'
+  } catch (err: any) {
+    status.value   = 'error'
+    errorMsg.value = err?.data?.message || err?.data?.statusMessage || err?.message || 'Une erreur est survenue, réessayez.'
+    console.error('[contact form]', err)
   }
 }
 </script>
@@ -94,7 +101,7 @@ async function submitForm() {
             Message envoyé avec succès.
           </p>
           <p v-if="status === 'error'" class="contact-form__status contact-form__status--error">
-            Une erreur est survenue, réessayez.
+            {{ errorMsg || 'Une erreur est survenue, réessayez.' }}
           </p>
         </div>
       </form>

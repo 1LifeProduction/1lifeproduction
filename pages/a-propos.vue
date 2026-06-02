@@ -50,7 +50,13 @@ function onScroll() {
 onMounted(()   => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
-useHead({ title: 'À propos — 1LIFE PRODUCTION' })
+useHead({
+  title: '1LIFE PRODUCTION',
+  meta: [
+    { name: 'description',        content: 'Depuis plus de 10 ans, 1LIFE PRODUCTION réunit photographes, vidéastes, graphistes et experts VFX pour créer des visuels qui laissent une empreinte durable.' },
+    { property: 'og:description', content: 'Depuis plus de 10 ans, 1LIFE PRODUCTION réunit photographes, vidéastes, graphistes et experts VFX pour créer des visuels qui laissent une empreinte durable.' },
+  ],
+})
 </script>
 
 <template>

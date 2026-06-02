@@ -1,10 +1,3 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
-
-const projects: { id: string }[] = JSON.parse(
-  readFileSync(resolve('./data/projects.json'), 'utf-8')
-)
-
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
@@ -14,10 +7,23 @@ export default defineNuxtConfig({
     head: {
       title: '1LIFE PRODUCTION',
       meta: [
-        { name: 'description', content: 'Collectif de vidéastes indépendants — Événementiel & Commercial' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport',    content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
+        { name: 'robots',      content: 'index, follow' },
+        // Open Graph
+        { property: 'og:type',        content: 'website' },
+        { property: 'og:site_name',   content: '1LIFE PRODUCTION' },
+        { property: 'og:title',       content: '1LIFE PRODUCTION' },
+        { property: 'og:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
+        { property: 'og:image',       content: '/og-image.jpg' },
+        // Twitter Card
+        { name: 'twitter:card',        content: 'summary_large_image' },
+        { name: 'twitter:title',       content: '1LIFE PRODUCTION' },
+        { name: 'twitter:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
+        { name: 'twitter:image',       content: '/og-image.jpg' },
       ],
       link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
@@ -29,15 +35,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    public: {
-      web3formsKey: process.env.WEB3FORMS_ACCESS_KEY || '',
-    },
-  },
-
-  nitro: {
-    prerender: {
-      routes: projects.map(p => `/projects/${p.id}`),
-    },
+    resendApiKey: process.env.RESEND_API_KEY || '',
+    resendFrom:   process.env.RESEND_FROM   || 'onboarding@resend.dev',
+    resendTo:     process.env.RESEND_TO     || '',
   },
 
   compatibilityDate: '2024-11-01',
