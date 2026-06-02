@@ -1,23 +1,26 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const observer = new IntersectionObserver(
+  const io = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return
         entry.target.classList.add('is-visible')
-        observer.unobserve(entry.target)
+        io.unobserve(entry.target)
       })
     },
     { threshold: 0.12, rootMargin: '0px 0px -48px 0px' }
   )
 
-  const observeAll = () => {
-    nextTick(() => {
-      document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach(el => {
-        observer.observe(el)
-      })
+  const observeNew = () => {
+    document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach(el => {
+      io.observe(el)
     })
   }
 
-  nuxtApp.hook('page:finish', observeAll)
-  observeAll()
+  // Observe les éléments existants au chargement et après navigation de page entière
+  nuxtApp.hook('page:finish', () => nextTick(observeNew))
+  nextTick(observeNew)
+
+  // Observe les nouveaux éléments ajoutés dynamiquement (v-if, query params…)
+  const mo = new MutationObserver(observeNew)
+  mo.observe(document.body, { childList: true, subtree: true })
 })
