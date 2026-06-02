@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import logoBg  from '~/assets/images/logoBg.png'
-import logoImg from '~/assets/images/logo.png'
+import logoBg        from '~/assets/images/logoBg.png'
+import logoBgBlack   from '~/assets/images/logoFooterBlack.png'
+import logoImg       from '~/assets/images/logo.png'
+import logoBlackImg  from '~/assets/images/logoBlack.png'
+
+const pageTheme     = useState<'dark' | 'light'>('pageTheme', () => 'dark')
+const isLight       = computed(() => pageTheme.value === 'light')
+const currentLogoBg = computed(() => isLight.value ? logoBgBlack : logoBg)
+const currentLogo   = computed(() => isLight.value ? logoBlackImg : logoImg)
 
 const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
@@ -12,7 +19,7 @@ const socials = [
 </script>
 
 <template>
-  <footer class="footer" :style="{ backgroundImage: `url(${logoBg})` }">
+  <footer class="footer" :style="{ backgroundImage: `url(${currentLogoBg})` }">
 
     <!-- Nav 4 liens principaux -->
     <nav class="footer__nav" aria-label="Navigation footer">
@@ -25,7 +32,7 @@ const socials = [
     <!-- GET IN TOUCH avec O remplacé par le logo -->
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
-        <span>GET IN T</span><img :src="logoImg" alt="" class="footer__cta-logo" aria-hidden="true" /><span>UCH</span>
+        <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" /><span>UCH</span>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->

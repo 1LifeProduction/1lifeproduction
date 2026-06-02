@@ -2,6 +2,8 @@
 import projectsData from '~/data/projects.json'
 import heroImg from '~/assets/images/imgHeader.png'
 
+const route = useRoute()
+
 const categories = [
   {
     value: 'captations',
@@ -36,19 +38,38 @@ function getCategoryThumb(cat: string) {
   return allProjects.find(p => p.category === cat)?.thumbnail ?? null
 }
 
-useHead({ title: 'Événementiel — 1LIFE PRODUCTION' })
+const activeCategory = computed(() => {
+  const val = route.query.category as string
+  return val ? (categories.find(c => c.value === val) ?? null) : null
+})
+
+const filteredProjects = computed(() =>
+  activeCategory.value
+    ? allProjects.filter(p => p.category === activeCategory.value!.value)
+    : []
+)
+
+useHead(computed(() => ({
+  title: activeCategory.value
+    ? `${activeCategory.value.label} — Événementiel — 1LIFE PRODUCTION`
+    : 'Événementiel — 1LIFE PRODUCTION',
+})))
 </script>
 
 <template>
   <div class="evnt-page">
 
     <!-- Hero -->
-    <section class="evnt-hero">
+    <section class="evnt-hero" data-nav-theme="dark">
       <img :src="heroImg" alt="" class="evnt-hero__img" aria-hidden="true" fetchpriority="high" />
       <div class="evnt-hero__overlay" aria-hidden="true"></div>
       <div class="evnt-hero__bottom">
-        <h1 class="evnt-hero__title">Événementiel</h1>
-        <p class="evnt-hero__desc">
+        <div>
+          <NuxtLink v-if="activeCategory" to="/evenementiel" class="evnt-hero__title">Événementiel</NuxtLink>
+          <h1 v-else class="evnt-hero__title">Événementiel</h1>
+          <p v-if="activeCategory" class="evnt-hero__subtitle">{{ activeCategory.label }}</p>
+        </div>
+        <p v-if="!activeCategory" class="evnt-hero__desc">
           Nous produisons des contenus live qui capturent l'essence de vos événements.
           De la mise en place à la diffusion, chaque projet est géré avec précision
           pour délivrer l'instant avec justesse et créer une expérience mémorable à travers l'image.
@@ -56,8 +77,32 @@ useHead({ title: 'Événementiel — 1LIFE PRODUCTION' })
       </div>
     </section>
 
-    <!-- Sections catégories alternées -->
-    <div class="evnt-cats grid-bg">
+    <!-- Vue sous-catégorie : liste de projets -->
+    <div v-if="activeCategory" class="cat-list grid-bg" data-nav-theme="dark">
+      <NuxtLink
+        v-for="p in filteredProjects"
+        :key="p.id"
+        :to="`/projects/${p.id}`"
+        class="cat-list__item"
+      >
+        <div class="cat-list__thumb">
+          <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="cat-list__img" />
+          <div v-else class="cat-list__placeholder" />
+        </div>
+        <div class="cat-list__info">
+          <h2 class="cat-list__title">{{ p.title }}</h2>
+          <p class="cat-list__desc">{{ p.description }}</p>
+          <div class="cat-list__meta">
+            <span>{{ p.year }}</span>
+            <span>{{ p.client }}</span>
+          </div>
+        </div>
+      </NuxtLink>
+      <div v-if="!filteredProjects.length" class="empty-state">Aucun projet dans cette catégorie</div>
+    </div>
+
+    <!-- Vue overview : sections éditoriales -->
+    <div v-else class="evnt-cats grid-bg" data-nav-theme="dark">
       <section
         v-for="(cat, i) in categories"
         :key="cat.value"
@@ -67,7 +112,6 @@ useHead({ title: 'Événementiel — 1LIFE PRODUCTION' })
           <h2 class="evnt-cat__title">{{ cat.label }}</h2>
           <p class="evnt-cat__desc">{{ cat.desc }}</p>
         </div>
-
         <NuxtLink :to="`/evenementiel?category=${cat.value}`" class="evnt-cat__media">
           <img
             v-if="getCategoryThumb(cat.value)"

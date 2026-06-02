@@ -11,14 +11,9 @@ const clients = [
   { name: 'Chanel',    slug: 'chanel'  },
 ]
 
-const titleRef   = ref<HTMLElement>()
-const theaterRef = ref<HTMLElement>()
+const titleRef    = ref<HTMLElement>()
+const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
-const prevIndex   = ref(0)
-
-const transitionName = computed(() =>
-  activeIndex.value >= prevIndex.value ? 'slide-up' : 'slide-down'
-)
 
 function fitTitle() {
   const el = titleRef.value
@@ -43,7 +38,6 @@ function onScroll() {
     featured.length - 1
   )
   if (newIndex !== activeIndex.value) {
-    prevIndex.value = activeIndex.value
     activeIndex.value = newIndex
   }
 }
@@ -103,18 +97,27 @@ useHead({
 
       <div class="projects-theater__stage">
 
-        <!-- Card active avec transition -->
-        <Transition :name="transitionName" mode="out-in">
-          <ProjectCard
-            :key="featured[activeIndex].id"
-            :id="featured[activeIndex].id"
-            :title="featured[activeIndex].title"
-            :category="featured[activeIndex].category"
-            :year="featured[activeIndex].year"
-            :thumbnail="featured[activeIndex].thumbnail"
-            class="projects-theater__card"
+        <!-- Bloc fixe : images stackées en crossfade -->
+        <NuxtLink
+          :to="`/projects/${featured[activeIndex].id}`"
+          class="project-card projects-theater__card"
+        >
+          <img
+            v-for="(p, i) in featured"
+            :key="p.id"
+            :src="p.thumbnail"
+            :alt="p.title"
+            :class="['theater__img', { 'is-active': i === activeIndex }]"
           />
-        </Transition>
+          <div class="project-card__overlay">
+            <Transition name="theater-text" mode="out-in">
+              <div :key="activeIndex" class="theater__text">
+                <span class="project-card__cat">{{ featured[activeIndex].category }}</span>
+                <h3 class="project-card__title">{{ featured[activeIndex].title }}</h3>
+              </div>
+            </Transition>
+          </div>
+        </NuxtLink>
 
         <!-- Indicateur de progression -->
         <div class="projects-theater__dots" aria-hidden="true">

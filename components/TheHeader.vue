@@ -1,7 +1,27 @@
 <script setup lang="ts">
-import logoImg from '~/assets/images/logo.png'
+import logoImg      from '~/assets/images/logo.png'
+import logoBlackImg from '~/assets/images/logoBlack.png'
 
 const route = useRoute()
+
+/* ---- Nav theme : détecte la section sous le header au scroll ---- */
+const navTheme  = ref<'dark' | 'light'>('dark')
+const currentLogo = computed(() => navTheme.value === 'light' ? logoBlackImg : logoImg)
+
+function updateNavTheme() {
+  const sections = document.querySelectorAll<HTMLElement>('[data-nav-theme]')
+  if (!sections.length) { navTheme.value = 'dark'; return }
+  const checkY = window.scrollY + 65 // juste sous le header
+  let found: 'dark' | 'light' = 'dark'
+  for (const s of sections) {
+    if (checkY >= s.offsetTop && checkY < s.offsetTop + s.offsetHeight) {
+      found = (s.dataset.navTheme as 'dark' | 'light') || 'dark'
+      break
+    }
+  }
+  navTheme.value = found
+}
+
 const menuOpen     = ref(false)
 const openDropdown = ref<string | null>(null)
 
@@ -53,10 +73,18 @@ function alignCols() {
 onMounted(() => {
   nextTick(alignCols)
   window.addEventListener('resize', alignCols)
+
+  nextTick(updateNavTheme)
+  window.addEventListener('scroll', updateNavTheme, { passive: true })
+  window.addEventListener('resize', updateNavTheme, { passive: true })
 })
 onUnmounted(() => {
   window.removeEventListener('resize', alignCols)
+  window.removeEventListener('scroll', updateNavTheme)
+  window.removeEventListener('resize', updateNavTheme)
 })
+
+watch(() => route.path, () => nextTick(updateNavTheme))
 
 /* ---- Mobile ---- */
 function toggleMenu() {
@@ -86,11 +114,11 @@ watch(() => route.fullPath, () => {
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--light': navTheme === 'light' }">
     <div class="header__inner container">
 
       <NuxtLink to="/" class="header__logo">
-        <img :src="logoImg" alt="" class="header__logo-img" aria-hidden="true" />
+        <img :src="currentLogo" alt="" class="header__logo-img" aria-hidden="true" />
         1LIFE PRODUCTION
       </NuxtLink>
 
