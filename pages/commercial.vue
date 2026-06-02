@@ -67,12 +67,12 @@ usePageTheme('light')
       <img :src="heroImg" alt="" class="evnt-hero__img" aria-hidden="true" fetchpriority="high" />
       <div class="evnt-hero__overlay" aria-hidden="true"></div>
       <div class="evnt-hero__bottom">
-        <div>
+        <div data-reveal style="--reveal-delay:100ms">
           <NuxtLink v-if="activeCategory" to="/commercial" class="evnt-hero__title">Commercial</NuxtLink>
           <h1 v-else class="evnt-hero__title">Commercial</h1>
           <p v-if="activeCategory" class="evnt-hero__subtitle">{{ activeCategory.label }}</p>
         </div>
-        <p v-if="!activeCategory" class="evnt-hero__desc">
+        <p v-if="!activeCategory" class="evnt-hero__desc" data-reveal style="--reveal-delay:250ms">
           Nous concevons des contenus sur-mesure pour donner à votre marque une présence
           visuelle forte et cohérente. Du produit au portrait, chaque projet est pensé
           pour engager, convaincre et durer.
@@ -83,9 +83,11 @@ usePageTheme('light')
     <!-- Vue sous-catégorie : liste de projets -->
     <div v-if="activeCategory" class="cat-list" data-nav-theme="light">
       <div
-        v-for="p in filteredProjects"
+        v-for="(p, i) in filteredProjects"
         :key="p.id"
         class="cat-list__item"
+        data-reveal
+        :style="`--reveal-delay:${i * 80}ms`"
       >
         <div class="cat-list__thumb">
           <VimeoEmbed v-if="p.vimeo_url" :url="p.vimeo_url" :title="p.title" />
@@ -111,11 +113,11 @@ usePageTheme('light')
         :key="cat.value"
         :class="['evnt-cat', i % 2 !== 0 && 'evnt-cat--reversed']"
       >
-        <div class="evnt-cat__text">
+        <div class="evnt-cat__text" :data-reveal="i % 2 !== 0 ? 'right' : 'left'">
           <h2 class="evnt-cat__title">{{ cat.label }}</h2>
           <p class="evnt-cat__desc">{{ cat.desc }}</p>
         </div>
-        <NuxtLink :to="`/commercial?category=${cat.value}`" class="evnt-cat__media">
+        <NuxtLink :to="`/commercial?category=${cat.value}`" class="evnt-cat__media" :data-reveal="i % 2 !== 0 ? 'left' : 'right'" style="--reveal-delay:120ms">
           <img
             v-if="getCategoryThumb(cat.value)"
             :src="getCategoryThumb(cat.value)!"

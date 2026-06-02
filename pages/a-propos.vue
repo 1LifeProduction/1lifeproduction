@@ -70,12 +70,12 @@ useHead({
 
     <!-- Hero title -->
     <section class="about-hero">
-      <h1 class="about-hero__title">À propos</h1>
+      <h1 class="about-hero__title" data-reveal>À propos</h1>
     </section>
 
     <!-- Text card -->
     <section class="about-intro">
-      <div class="about-intro__card">
+      <div class="about-intro__card" data-reveal style="--reveal-delay:100ms">
         <p>
           <strong>1Lifeproduction</strong> est un collectif créatif spécialisé dans la
           production audiovisuelle et la création visuelle. Fondé par des amis passionnés
@@ -134,14 +134,16 @@ useHead({
     <!-- Clients -->
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label">ILS NOUS FONT<br>CONFIANCE</h2>
+        <h2 class="clients-section__label" data-reveal>ILS NOUS FONT<br>CONFIANCE</h2>
         <div class="clients-section__logos">
           <img
-            v-for="c in clients"
+            v-for="(c, i) in clients"
             :key="c.slug"
             :src="`/clients/${c.slug}.png`"
             :alt="c.name"
             class="clients-section__logo"
+            data-reveal
+            :style="`--reveal-delay:${i * 80}ms`"
           />
         </div>
       </div>

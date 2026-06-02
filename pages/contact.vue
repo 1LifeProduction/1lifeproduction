@@ -48,13 +48,13 @@ async function submitForm() {
 
     <!-- Titre -->
     <section class="contact-hero">
-      <h1 class="contact-hero__title">GET<br>IN TOUCH</h1>
+      <h1 class="contact-hero__title" data-reveal>GET<br>IN TOUCH</h1>
     </section>
 
     <!-- Carte contact + formulaire -->
     <section class="contact-info">
 
-      <div class="contact-info__card">
+      <div class="contact-info__card" data-reveal="left">
         <div class="contact-info__row">
           <span class="contact-info__label">Instagram</span>
           <a href="https://instagram.com/1lifeproduction" target="_blank" rel="noopener"
@@ -72,7 +72,7 @@ async function submitForm() {
         </div>
       </div>
 
-      <form class="contact-form" @submit.prevent="submitForm">
+      <form class="contact-form" data-reveal="right" style="--reveal-delay:120ms" @submit.prevent="submitForm">
         <div class="contact-form__row">
           <label class="contact-form__label" for="cf-name">Nom</label>
           <input id="cf-name" v-model="form.name" class="contact-form__input"

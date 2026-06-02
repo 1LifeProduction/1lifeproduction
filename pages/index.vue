@@ -100,10 +100,10 @@ useHead({
       />
       <div class="home-hero__overlay" aria-hidden="true"></div>
       <div class="home-hero__content">
-        <div class="home-hero__sub">
+        <div class="home-hero__sub" data-reveal="fade" style="--reveal-delay:100ms">
           <p class="home-hero__baseline">PRODUCTION AGENCY</p>
         </div>
-        <h1 ref="titleRef" class="home-hero__title">1LIFE PRODUCTION</h1>
+        <h1 ref="titleRef" class="home-hero__title" data-reveal style="--reveal-delay:250ms">1LIFE PRODUCTION</h1>
       </div>
     </section>
 
@@ -155,16 +155,18 @@ useHead({
 
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label">
+        <h2 class="clients-section__label" data-reveal>
           ILS NOUS FONT<br>CONFIANCE
         </h2>
         <div class="clients-section__logos">
           <img
-            v-for="c in clients"
+            v-for="(c, i) in clients"
             :key="c.slug"
             :src="`/clients/${c.slug}.png`"
             :alt="c.name"
             class="clients-section__logo"
+            data-reveal
+            :style="`--reveal-delay:${i * 80}ms`"
           />
         </div>
       </div>
