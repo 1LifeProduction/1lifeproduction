@@ -24,6 +24,7 @@ const embedUrl = computed(() =>
       :title="title ?? 'Vidéo Vimeo'"
       allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
       referrerpolicy="strict-origin-when-cross-origin"
+      loading="lazy"
     ></iframe>
     <div v-else class="vimeo-embed__error">
       URL Vimeo invalide

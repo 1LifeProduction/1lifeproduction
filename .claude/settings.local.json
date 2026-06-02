@@ -7,7 +7,14 @@
       "mcp__claude_ai_Figma__get_metadata",
       "Bash(grep -v \"^$\")",
       "mcp__claude_ai_Figma__get_screenshot",
-      "mcp__claude_ai_Figma__get_design_context"
+      "mcp__claude_ai_Figma__get_design_context",
+      "Bash(xargs grep *)",
+      "Bash(xargs cat *)",
+      "Bash(sort -t: -k2 -n)",
+      "Bash(grep -o \"\\\\\\\\.[a-z-]*\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/assets/css/main.css\")",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(grep -o \"\\\\\\\\.[-a-z0-9_]*\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/assets/css/main.css\")",
+      "Bash(grep -rho \"\\\\\\\\bclass=['\\\\\"][-a-z0-9_ :\\(\\){}\\\\\\\\[\\\\\\\\]]*['\\\\\"]\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/pages\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/components\")"
     ]
   }
 }

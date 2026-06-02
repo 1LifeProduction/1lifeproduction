@@ -5,8 +5,7 @@
    =================================================== */
 @font-face {
   font-family: 'Coolvetica';
-  src: url('/fonts/coolvetica.woff2') format('woff2'),
-       url('/fonts/coolvetica.otf')   format('opentype');
+  src: url('/fonts/coolvetica.otf') format('opentype');
   font-weight: 400;
   font-style:  normal;
   font-display: swap;
@@ -22,8 +21,8 @@
   --border:       #1c1c1c;
   --border-light: #2a2a2a;
   --text:         #ffffff;
-  --text-muted:   #888888;
-  --text-dim:     #444444;
+  --text-muted:   #bbbbbb;
+  --text-dim:     #777777;
   --accent:       #ffffff;
 
   --header-h: 64px;
@@ -99,6 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] { transition: none; opacity: 1; transform: none; }
+  .blob, .about-blob { animation: none; }
 }
 
 /* ===================================================
@@ -568,19 +568,6 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: repeat(3, 1fr);
 }
 
-/* ---- Home grid ----
-   Référence Figma : card 1208×763 sur frame 1440px → marges 116px
-   116 / 1440 ≈ 8.06vw de padding horizontal
-   aspect-ratio : 1208 / 763
-   Layout : colonne unique, cards empilées
-   ------------------------------------ */
-.projects-grid--home {
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  padding: 2rem clamp(1rem, 8.06vw, 116px);
-  background: transparent;
-  position: relative;
-}
 
 /* Blobs flottants derrière les cards */
 .projects-grid__blobs {
@@ -727,20 +714,13 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.4);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
   .projects-grid--3col { grid-template-columns: repeat(2, 1fr); }
-  .projects-grid--home {
-    padding: 2rem clamp(1rem, 5vw, 4rem);
-  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 479px) {
   .projects-grid { grid-template-columns: 1fr; }
   .projects-grid--3col { grid-template-columns: 1fr; }
-  .projects-grid--home {
-    padding: 1.25rem 1rem;
-    gap: 1rem;
-  }
   .project-card { border-radius: 24px; }
 }
 
@@ -850,8 +830,8 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
 }
 
-@media (max-width: 600px) {
-  .home-hero__title { font-size: 13.5vw; } /* plus grand sur mobile car l'écran est plus étroit */
+@media (max-width: 767px) {
+  .home-hero__title { font-size: 13.5vw; }
 }
 
 .home-section {
@@ -1394,17 +1374,6 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 1px solid var(--border);
 }
 
-.about-intro__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
-
-@media (max-width: 768px) {
-  .about-intro__grid { grid-template-columns: 1fr; gap: 2rem; }
-}
-
 .about-intro__title {
   font-size: clamp(3rem, 7vw, 6rem);
 }
@@ -1419,32 +1388,6 @@ h1, h2, h3, h4, h5, h6 {
 .about-intro__body strong { color: var(--text); font-weight: 700; }
 
 
-.team-member { text-align: center; }
-
-.team-member__avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto 1rem;
-  border: 1px solid var(--border);
-}
-
-.team-member__name {
-  font-size: 0.9rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  margin-bottom: 0.25rem;
-}
-
-.team-member__role {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-}
 
 /* ===================================================
    CONTACT PAGE
@@ -1818,7 +1761,33 @@ h1, h2, h3, h4, h5, h6 {
 .theme-light .footer__location { color: #000; }
 
 /* ===================================================
-   RESPONSIVE — mobile 375px / tablet 768px
+   FOCUS — accessibilité clavier
+   =================================================== */
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.header__nav-link:focus-visible,
+.header__logo:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.contact-form__input:focus-visible,
+.contact-form__textarea:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 0;
+}
+
+.contact-form__submit:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 4px;
+}
+
+/* ===================================================
+   RESPONSIVE — mobile 375px / desktop 1280px
    =================================================== */
 
 /* ---- Tablet ---- */
@@ -2026,6 +1995,7 @@ h1, h2, h3, h4, h5, h6 {
   /* --- Événementiel / Commercial hero --- */
   .evnt-hero__bottom {
     flex-direction: column;
+    align-items: flex-start;
     gap: 1rem;
     padding: 0 var(--gutter) 2rem;
   }

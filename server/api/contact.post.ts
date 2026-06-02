@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { rateLimit } from '../utils/rateLimit'
 
 interface ContactBody {
   name:    string
@@ -7,34 +8,50 @@ interface ContactBody {
   message: string
 }
 
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
+const EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/
 
+export default defineEventHandler(async (event) => {
+  // CSRF: reject requests from foreign origins
+  const origin = getHeader(event, 'origin') ?? ''
+  const allowed = ['https://1lifeproduction.com', 'http://localhost:3000', 'http://localhost:3001']
+  if (origin && !allowed.some(o => origin.startsWith(o))) {
+    throw createError({ statusCode: 403, message: 'Forbidden' })
+  }
+
+  // Rate-limit: 3 requests / 60 s per IP
+  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
+  const { allowed: ok, retryAfter } = rateLimit(ip, 3, 60_000)
+  if (!ok) {
+    setHeader(event, 'Retry-After', String(retryAfter))
+    throw createError({ statusCode: 429, message: 'Trop de requêtes, réessayez dans une minute.' })
+  }
+
+  const config = useRuntimeConfig()
   if (!config.resendApiKey) {
-    console.error('[contact] RESEND_API_KEY manquante dans .env')
-    throw createError({ statusCode: 500, statusMessage: 'RESEND_API_KEY non configurée', message: 'RESEND_API_KEY non configurée' })
+    throw createError({ statusCode: 500, message: 'Erreur serveur, réessayez plus tard.' })
   }
 
   const body = await readBody<ContactBody>(event)
-
-  // Validation
   const { name, email, subject, message } = body ?? {}
+
   if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
-    throw createError({ statusCode: 400, message: 'Tous les champs sont requis' })
+    throw createError({ statusCode: 400, message: 'Tous les champs sont requis.' })
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    throw createError({ statusCode: 400, message: 'Adresse email invalide' })
+  if (!EMAIL_RE.test(email)) {
+    throw createError({ statusCode: 400, message: 'Adresse email invalide.' })
+  }
+  if (name.length > 120 || subject.length > 200 || message.length > 5000) {
+    throw createError({ statusCode: 400, message: 'Un champ dépasse la taille maximale autorisée.' })
   }
 
   const resend = new Resend(config.resendApiKey)
-
   const to = config.resendTo || email
 
   const { error } = await resend.emails.send({
-    from:     config.resendFrom,
-    to:       [to],
-    replyTo:  email,
-    subject:  `[1LIFE] ${subject}`,
+    from:    config.resendFrom,
+    to:      [to],
+    replyTo: email,
+    subject: `[1LIFE] ${subject}`,
     html: `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#111">
         <h2 style="margin-bottom:1.5rem">Nouveau message via le site</h2>
@@ -63,8 +80,7 @@ export default defineEventHandler(async (event) => {
   })
 
   if (error) {
-    console.error('[contact] Resend error:', error)
-    throw createError({ statusCode: 502, statusMessage: error.message, message: error.message })
+    throw createError({ statusCode: 502, message: 'Erreur lors de l\'envoi, réessayez plus tard.' })
   }
 
   return { success: true }

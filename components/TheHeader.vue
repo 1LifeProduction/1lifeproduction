@@ -147,6 +147,7 @@ watch(() => route.fullPath, () => {
               :to="item.href"
               class="header__nav-link"
               :class="{ 'is-active': isActive(item.href) }"
+              :aria-current="isActive(item.href) ? 'page' : undefined"
               @click="item.children ? handleNavClick($event, item) : undefined"
             >
               {{ item.label }}
