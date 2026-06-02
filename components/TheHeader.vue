@@ -84,7 +84,10 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateNavTheme)
 })
 
-watch(() => route.path, () => nextTick(updateNavTheme))
+watch(() => route.path, () => {
+  navTheme.value = 'dark'
+  nextTick(updateNavTheme)
+})
 
 /* ---- Mobile ---- */
 function toggleMenu() {

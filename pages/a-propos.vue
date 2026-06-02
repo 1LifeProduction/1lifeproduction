@@ -43,6 +43,7 @@ function onScroll() {
   const scrolled    = window.scrollY - el.offsetTop
   if (scrolled < 0) return
   const totalScroll = el.offsetHeight - window.innerHeight
+  if (totalScroll <= 0) return
   progress.value    = Math.min(scrolled / totalScroll, 1)
 }
 
@@ -53,7 +54,7 @@ useHead({ title: 'À propos — 1LIFE PRODUCTION' })
 </script>
 
 <template>
-  <div class="about-page grid-bg">
+  <div class="about-page grid-bg" data-nav-theme="dark">
 
     <!-- Blobs page entière -->
     <div class="about-blob about-blob--1" aria-hidden="true"></div>
@@ -112,11 +113,6 @@ useHead({ title: 'À propos — 1LIFE PRODUCTION' })
           <line x1="380" y1="608" x2="191" y2="499" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
           <line x1="191" y1="499" x2="191" y2="281" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
           <line x1="191" y1="281" x2="380" y2="172" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
-          <!-- ligne verticale vers le haut depuis le sommet -->
-          <line x1="380" y1="172" x2="380" y2="-500" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
-          <!-- lignes horizontales à l'équateur (y=390) -->
-          <line x1="-800" y1="390" x2="191" y2="390" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
-          <line x1="569"  y1="390" x2="1500" y2="390" stroke="rgba(255,255,255,0.45)" stroke-width="1"/>
         </svg>
 
         <div
