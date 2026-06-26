@@ -54,22 +54,23 @@ async function submitForm() {
     <!-- Carte contact + formulaire -->
     <section class="contact-info">
 
+      <!-- Bandeau 3 liens : une ligne en desktop, empilé en mobile -->
       <div class="contact-info__card" data-reveal="left">
-        <div class="contact-info__row">
+        <a href="https://instagram.com/1lifeproduction" target="_blank" rel="noopener"
+           class="contact-info__row">
           <span class="contact-info__label">Instagram</span>
-          <a href="https://instagram.com/1lifeproduction" target="_blank" rel="noopener"
-             class="contact-info__value">@1lifeproduction</a>
-        </div>
-        <div class="contact-info__row">
+          <span class="contact-info__value">@1lifeproduction</span>
+        </a>
+        <a href="https://www.linkedin.com/company/1life-production/" target="_blank" rel="noopener"
+           class="contact-info__row">
           <span class="contact-info__label">LinkedIn</span>
-          <a href="https://linkedin.com" target="_blank" rel="noopener"
-             class="contact-info__value">@1Life Production</a>
-        </div>
-        <div class="contact-info__row">
+          <span class="contact-info__value">1Life Production</span>
+        </a>
+        <a href="mailto:1lifeprod@unlockcollectif.com"
+           class="contact-info__row">
           <span class="contact-info__label">Mail</span>
-          <a href="mailto:1lifeprod@unlockcollectif.com"
-             class="contact-info__value">1lifeprod@unlockcollectif.com</a>
-        </div>
+          <span class="contact-info__value">1lifeprod@unlockcollectif.com</span>
+        </a>
       </div>
 
       <form class="contact-form" data-reveal="right" style="--reveal-delay:120ms" @submit.prevent="submitForm">

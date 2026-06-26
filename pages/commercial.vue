@@ -1,59 +1,42 @@
 <script setup lang="ts">
 import projectsData from '~/data/projects.json'
 import heroImg from '~/assets/images/imgHeader.png'
+import { getGroup, getSubCategory, nextSubCategory, categoryHref } from '~/data/categories'
 
-const categories = [
-  {
-    value: 'produits',
-    label: 'Produits',
-    desc: 'Nous mettons en valeur vos produits à travers une direction artistique soignée. Chaque détail est pensé pour sublimer la matière, la forme et l\'identité de marque avec une image nette et impactante.',
-  },
-  {
-    value: 'films',
-    label: 'Films',
-    desc: 'Des films de marque à la narration cinématographique, conçus pour ancrer votre identité dans l\'imaginaire de votre audience. Nous construisons des récits visuels qui donnent du sens à votre univers.',
-  },
-  {
-    value: 'publicites',
-    label: 'Publicités',
-    desc: 'Des spots publicitaires percutants pour diffuser votre message sur tous les écrans. Concept, tournage, montage : nous prenons en charge chaque étape pour livrer une publicité mémorable et efficace.',
-  },
-  {
-    value: 'podcasts',
-    label: 'Podcasts',
-    desc: 'Captation vidéo de vos podcasts et émissions avec une mise en image professionnelle. Son soigné, cadrage dynamique et post-production adaptée pour valoriser vos contenus sur toutes les plateformes.',
-  },
-  {
-    value: 'portraits',
-    label: 'Portraits',
-    desc: 'Portraits de dirigeants, créateurs ou talents à mettre en lumière. Nous créons des formats courts et forts qui humanisent votre marque et donnent la parole à ceux qui la font vivre.',
-  },
-]
+const SECTION = 'commercial' as const
+const route   = useRoute()
+const group   = getGroup(SECTION)!
 
-const route = useRoute()
+const allProjects = projectsData.filter(p => p.section === SECTION)
 
-const allProjects = projectsData.filter(p => p.section === 'commercial')
-
-function getCategoryThumb(cat: string) {
-  return allProjects.find(p => p.category === cat)?.thumbnail ?? null
+function getCategoryThumb(slug: string) {
+  return allProjects.find(p => p.category === slug)?.thumbnail ?? null
 }
 
-const activeCategory = computed(() => {
+function copyOf(sub: { desc?: string; copyKey: string }) {
+  return sub.desc ?? `{{${sub.copyKey}}}`
+}
+
+const sectionCopy = `{{${group.copyKey}}}`
+
+const activeSub = computed(() => {
   const val = route.query.category as string
-  return val ? (categories.find(c => c.value === val) ?? null) : null
+  return val ? (getSubCategory(val) ?? null) : null
 })
 
+const nextSub = computed(() => activeSub.value ? nextSubCategory(activeSub.value.slug) : null)
+
 const filteredProjects = computed(() =>
-  activeCategory.value
-    ? allProjects.filter(p => p.category === activeCategory.value!.value)
+  activeSub.value
+    ? allProjects.filter(p => p.category === activeSub.value!.slug)
     : []
 )
 
 useHead(computed(() => ({
   title: '1LIFE PRODUCTION',
   meta: [
-    { name: 'description',        content: 'Films de marque, publicités, podcasts vidéo, portraits et shooting produits. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
-    { property: 'og:description', content: 'Films de marque, publicités, podcasts vidéo, portraits et shooting produits. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
+    { name: 'description',        content: 'Podcasts & émissions, produits, publicités & VFX, clips, films, scénographie & 3D. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
+    { property: 'og:description', content: 'Podcasts & émissions, produits, publicités & VFX, clips, films, scénographie & 3D. Des contenus visuels sur-mesure pour sublimer votre identité de marque.' },
   ],
 })))
 usePageTheme('light')
@@ -68,20 +51,23 @@ usePageTheme('light')
       <div class="evnt-hero__overlay" aria-hidden="true"></div>
       <div class="evnt-hero__bottom">
         <div data-reveal style="--reveal-delay:100ms">
-          <NuxtLink v-if="activeCategory" to="/commercial" class="evnt-hero__title">Commercial</NuxtLink>
-          <h1 v-else class="evnt-hero__title">Commercial</h1>
-          <p v-if="activeCategory" class="evnt-hero__subtitle">{{ activeCategory.label }}</p>
+          <template v-if="activeSub">
+            <NuxtLink to="/commercial" class="evnt-hero__back">← {{ group.label }}</NuxtLink>
+            <h1 class="evnt-hero__title">{{ activeSub.label }}</h1>
+          </template>
+          <h1 v-else class="evnt-hero__title">{{ group.label }}</h1>
         </div>
-        <p v-if="!activeCategory" class="evnt-hero__desc" data-reveal style="--reveal-delay:250ms">
-          Nous concevons des contenus sur-mesure pour donner à votre marque une présence
-          visuelle forte et cohérente. Du produit au portrait, chaque projet est pensé
-          pour engager, convaincre et durer.
+        <p v-if="activeSub" class="evnt-hero__desc" data-reveal style="--reveal-delay:250ms">
+          {{ copyOf(activeSub) }}
+        </p>
+        <p v-else class="evnt-hero__desc" data-reveal style="--reveal-delay:250ms">
+          {{ sectionCopy }}
         </p>
       </div>
     </section>
 
     <!-- Vue sous-catégorie : liste de projets -->
-    <div v-if="activeCategory" class="cat-list" data-nav-theme="light">
+    <div v-if="activeSub" class="cat-list" data-nav-theme="light">
       <div
         v-for="(p, i) in filteredProjects"
         :key="p.id"
@@ -104,23 +90,33 @@ usePageTheme('light')
         </div>
       </div>
       <div v-if="!filteredProjects.length" class="empty-state">Aucun projet dans cette catégorie</div>
+
+      <!-- Navigation vers la sous-catégorie suivante -->
+      <nav v-if="nextSub" class="subcat-nav" aria-label="Sous-catégorie suivante">
+        <NuxtLink :to="categoryHref(SECTION, nextSub.slug)" class="subcat-nav__next">
+          <span class="subcat-nav__label">{{ nextSub.label }}</span>
+          <svg class="subcat-nav__arrow" viewBox="0 0 40 16" aria-hidden="true">
+            <path d="M0 8h38M32 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </NuxtLink>
+      </nav>
     </div>
 
     <!-- Vue overview : sections éditoriales -->
     <div v-else class="evnt-cats grid-bg" data-nav-theme="light">
       <section
-        v-for="(cat, i) in categories"
-        :key="cat.value"
+        v-for="(cat, i) in group.children"
+        :key="cat.slug"
         :class="['evnt-cat', i % 2 !== 0 && 'evnt-cat--reversed']"
       >
         <div class="evnt-cat__text" :data-reveal="i % 2 !== 0 ? 'right' : 'left'">
           <h2 class="evnt-cat__title">{{ cat.label }}</h2>
-          <p class="evnt-cat__desc">{{ cat.desc }}</p>
+          <p class="evnt-cat__desc">{{ copyOf(cat) }}</p>
         </div>
-        <NuxtLink :to="`/commercial?category=${cat.value}`" class="evnt-cat__media" :data-reveal="i % 2 !== 0 ? 'left' : 'right'" style="--reveal-delay:120ms">
+        <NuxtLink :to="categoryHref(SECTION, cat.slug)" class="evnt-cat__media" :data-reveal="i % 2 !== 0 ? 'left' : 'right'" style="--reveal-delay:120ms">
           <img
-            v-if="getCategoryThumb(cat.value)"
-            :src="getCategoryThumb(cat.value)!"
+            v-if="getCategoryThumb(cat.slug)"
+            :src="getCategoryThumb(cat.slug)!"
             :alt="cat.label"
             class="evnt-cat__img"
           />

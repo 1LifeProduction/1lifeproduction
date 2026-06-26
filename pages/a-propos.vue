@@ -30,6 +30,17 @@ function hexPoint(p: number) {
 const teamRef  = ref<HTMLElement>()
 const progress = ref(0)
 
+/* Profils de l'équipe — 6 bulles (placeholders à fournir).
+   photo : déposer dans public/team/ ; vide = bulle sans photo. */
+const team = [
+  { photo: '', name: '{{TEAM_1_NOM}}', role: '{{TEAM_1_ROLE}}' },
+  { photo: '', name: '{{TEAM_2_NOM}}', role: '{{TEAM_2_ROLE}}' },
+  { photo: '', name: '{{TEAM_3_NOM}}', role: '{{TEAM_3_ROLE}}' },
+  { photo: '', name: '{{TEAM_4_NOM}}', role: '{{TEAM_4_ROLE}}' },
+  { photo: '', name: '{{TEAM_5_NOM}}', role: '{{TEAM_5_ROLE}}' },
+  { photo: '', name: '{{TEAM_6_NOM}}', role: '{{TEAM_6_ROLE}}' },
+]
+
 const nodeStyles = computed(() =>
   [0, 1/6, 2/6, 3/6, 4/6, 5/6].map(base => {
     const { x, y } = hexPoint(base + progress.value)
@@ -109,7 +120,12 @@ useHead({
     <section ref="teamRef" class="about-team">
       <div class="about-team__sticky">
 
-        <div class="about-team__constellation" aria-hidden="true">
+        <!-- Gradient / glow en fond (conforme maquette) -->
+        <div class="about-team__glow" aria-hidden="true"></div>
+
+        <p class="about-team__heading" data-reveal>Notre équipe</p>
+
+        <div class="about-team__constellation">
         <!-- SVG : viewBox = container exact, overflow:visible pour les lignes débordantes -->
         <svg class="about-team__lines" viewBox="0 0 760 780" aria-hidden="true">
           <!-- 6 côtés de l'hexagone, centre (380,390) R=218 -->
@@ -126,7 +142,15 @@ useHead({
           :key="i"
           class="about-team__node"
           :style="style"
-        ><div class="about-team__avatar"></div></div>
+        >
+          <div class="about-team__avatar">
+            <img v-if="team[i].photo" :src="team[i].photo" :alt="team[i].name" class="about-team__photo" />
+          </div>
+          <div class="about-team__profile">
+            <span class="about-team__name">{{ team[i].name }}</span>
+            <span class="about-team__role">{{ team[i].role }}</span>
+          </div>
+        </div>
         </div>
       </div>
     </section>

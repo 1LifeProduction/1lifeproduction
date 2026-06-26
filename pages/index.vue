@@ -11,9 +11,24 @@ const clients = [
   { name: 'Chanel',    slug: 'chanel'  },
 ]
 
+/* Marquee : densifié puis dupliqué en deux moitiés identiques
+   pour une boucle continue sans couture (animation -> -50%). */
+const marqueeBase  = [...clients, ...clients, ...clients]
+const marqueeLogos = [...marqueeBase, ...marqueeBase]
+
 const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
+
+/* Sensibilité du carrousel : fraction de viewport à scroller pour
+   passer au projet suivant. Plus petit = plus sensible (moins de scroll).
+   Doit rester synchro avec --step-vh ci-dessous (STEP_VH = STEP * 100). */
+const STEP    = 0.5
+const STEP_VH = STEP * 100
+
+/* Chemin du showreel (binding dynamique pour ne pas être résolu au build :
+   le fichier public/showreel.mp4 peut être absent, le poster prend le relais). */
+const showreelSrc = '/showreel.mp4'
 
 function fitTitle() {
   const el = titleRef.value
@@ -34,7 +49,7 @@ function onScroll() {
   const scrolled = window.scrollY - el.offsetTop
   if (scrolled < 0) return
   const newIndex = Math.min(
-    Math.floor(scrolled / window.innerHeight),
+    Math.floor(scrolled / (window.innerHeight * STEP)),
     featured.length - 1
   )
   if (newIndex !== activeIndex.value) {
@@ -79,7 +94,7 @@ useHead({
         },
         sameAs: [
           'https://instagram.com/1lifeproduction',
-          'https://linkedin.com',
+          'https://www.linkedin.com/company/1life-production/',
         ],
       }),
     },
@@ -91,13 +106,25 @@ useHead({
   <div class="home grid-bg">
 
     <section class="home-hero" aria-label="Accueil">
-      <img
-        :src="heroImg"
-        alt=""
-        class="home-hero__img"
+      <!--
+        SHOWREEL — boucle vidéo d'habillage.
+        Déposer le fichier dans public/showreel.mp4 (option par défaut).
+        Tant que le fichier est absent, le poster (image hero) s'affiche.
+        Pour changer le contenu : remplacer public/showreel.mp4
+        (ou modifier le chemin du <source> ci-dessous).
+      -->
+      <video
+        class="home-hero__img home-hero__video"
+        :poster="heroImg"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
         aria-hidden="true"
-        fetchpriority="high"
-      />
+      >
+        <source :src="showreelSrc" type="video/mp4" />
+      </video>
       <div class="home-hero__overlay" aria-hidden="true"></div>
       <div class="home-hero__content">
         <div class="home-hero__sub" data-reveal="fade" style="--reveal-delay:100ms">
@@ -111,7 +138,7 @@ useHead({
     <section
       ref="theaterRef"
       class="projects-theater"
-      :style="{ '--project-count': featured.length }"
+      :style="{ '--project-count': featured.length, '--step-vh': `${STEP_VH}vh` }"
       aria-label="Projets mis en avant"
     >
       <!-- Blobs flottants — hors du stage pour déborder sur la section suivante -->
@@ -155,9 +182,7 @@ useHead({
 
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label" data-reveal>
-          ILS NOUS FONT<br>CONFIANCE
-        </h2>
+        <h2 class="clients-section__label" data-reveal>ILS NOUS FONT CONFIANCE</h2>
         <div class="clients-section__logos">
           <img
             v-for="(c, i) in clients"
@@ -169,6 +194,24 @@ useHead({
             :style="`--reveal-delay:${i * 80}ms`"
           />
         </div>
+      </div>
+    </section>
+
+    <!--
+      BANDEAU MARQUES — marquee en défilement continu.
+      TODO data : alimenté ici par les 4 logos clients existants (placeholder).
+      Pour brancher sur les marques des réalisations, voir liste finale.
+    -->
+    <section class="brand-marquee" aria-label="Marques" data-nav-theme="dark">
+      <div class="brand-marquee__track">
+        <img
+          v-for="(c, i) in marqueeLogos"
+          :key="`mq-${i}`"
+          :src="`/clients/${c.slug}.png`"
+          :alt="c.name"
+          class="brand-marquee__logo"
+          aria-hidden="true"
+        />
       </div>
     </section>
 

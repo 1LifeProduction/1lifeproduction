@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import logoImg      from '~/assets/images/logo.png'
 import logoBlackImg from '~/assets/images/logoBlack.png'
+import { CATEGORIES, categoryHref } from '~/data/categories'
 
 const route = useRoute()
 
@@ -32,61 +33,27 @@ function updateNavTheme() {
 const menuOpen     = ref(false)
 const openDropdown = ref<string | null>(null)
 
+/* Nav construite depuis la source de vérité (data/categories.ts) */
 const nav = [
-  {
-    label: 'Événementiel',
-    href:  '/evenementiel',
-    key:   'evenementiel',
-    children: [
-      { label: 'Captations',  href: '/evenementiel?category=captations' },
-      { label: 'Afterfilms',  href: '/evenementiel?category=afterfilms' },
-      { label: 'Reportages',  href: '/evenementiel?category=reportages' },
-      { label: 'Livestreams', href: '/evenementiel?category=livestreams' },
-      { label: 'Interviews',  href: '/evenementiel?category=interviews' },
-    ],
-  },
-  {
-    label: 'Commercial',
-    href:  '/commercial',
-    key:   'commercial',
-    children: [
-      { label: 'Produits',   href: '/commercial?category=produits' },
-      { label: 'Films',      href: '/commercial?category=films' },
-      { label: 'Publicités', href: '/commercial?category=publicites' },
-      { label: 'Podcasts',   href: '/commercial?category=podcasts' },
-      { label: 'Portraits',  href: '/commercial?category=portraits' },
-    ],
-  },
-  { label: 'À propos', href: '/a-propos', key: 'a-propos' },
-  { label: 'Contact',  href: '/contact',  key: 'contact' },
+  ...CATEGORIES.map(g => ({
+    label:    g.label,
+    href:     `/${g.section}`,
+    key:      g.section,
+    children: g.children.map(c => ({
+      label: c.label,
+      href:  categoryHref(g.section, c.slug),
+    })),
+  })),
+  { label: 'À propos', href: '/a-propos', key: 'a-propos', children: undefined as undefined | { label: string; href: string }[] },
+  { label: 'Contact',  href: '/contact',  key: 'contact',  children: undefined },
 ]
 
-/* ---- Panel column alignment ---- */
-const navListRef = ref<HTMLElement>()
-const colStyles  = ref(nav.map(() => ({ left: '0px' })))
-
-function alignCols() {
-  const list = navListRef.value
-  if (!list) return
-  const items = list.querySelectorAll<HTMLElement>(':scope > li > a')
-  items.forEach((el, i) => {
-    const rect    = el.getBoundingClientRect()
-    const padding = parseFloat(getComputedStyle(el).paddingLeft)
-    // align with the text inside the link, not the box edge
-    colStyles.value[i] = { left: `${rect.left + padding}px` }
-  })
-}
-
 onMounted(() => {
-  nextTick(alignCols)
-  window.addEventListener('resize', alignCols)
-
   nextTick(updateNavTheme)
   window.addEventListener('scroll', updateNavTheme, { passive: true })
   window.addEventListener('resize', updateNavTheme, { passive: true })
 })
 onUnmounted(() => {
-  window.removeEventListener('resize', alignCols)
   window.removeEventListener('scroll', updateNavTheme)
   window.removeEventListener('resize', updateNavTheme)
 })
@@ -121,6 +88,9 @@ watch(() => route.fullPath, () => {
   menuOpen.value     = false
   openDropdown.value = null
 })
+
+/* Groupes avec sous-catégories, pour le mega-panel desktop */
+const dropdownGroups = nav.filter(item => item.children && item.children.length)
 </script>
 
 <template>
@@ -137,7 +107,7 @@ watch(() => route.fullPath, () => {
         :class="{ 'is-open': menuOpen }"
         aria-label="Navigation principale"
       >
-        <ul ref="navListRef" class="header__nav-list">
+        <ul class="header__nav-list">
           <li
             v-for="item in nav"
             :key="item.key"
@@ -146,14 +116,22 @@ watch(() => route.fullPath, () => {
             <NuxtLink
               :to="item.href"
               class="header__nav-link"
-              :class="{ 'is-active': isActive(item.href) }"
+              :class="{ 'is-active': isActive(item.href), 'has-children': !!item.children }"
               :aria-current="isActive(item.href) ? 'page' : undefined"
               @click="item.children ? handleNavClick($event, item) : undefined"
             >
               {{ item.label }}
+              <svg
+                v-if="item.children"
+                class="header__chevron"
+                :class="{ 'is-open': openDropdown === item.key }"
+                viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"
+              >
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </NuxtLink>
 
-            <!-- Mobile accordion -->
+            <!-- Accordéon mobile -->
             <ul
               v-if="item.children"
               class="header__dropdown"
@@ -180,22 +158,23 @@ watch(() => route.fullPath, () => {
       </button>
     </div>
 
-    <!-- Mega panel: columns absolutely positioned under their nav link -->
+    <!-- Mega panel desktop : deux blocs distincts (Événementiel / Commercial) -->
     <div class="header__panel" aria-hidden="true">
-      <div
-        v-for="(item, i) in nav"
-        :key="`panel-${item.key}`"
-        v-show="item.children"
-        class="header__panel__col"
-        :style="colStyles[i]"
-      >
-        <ul class="header__panel__links">
-          <li v-for="child in item.children" :key="child.href">
-            <NuxtLink :to="child.href" class="header__panel__link">
-              {{ child.label }}
-            </NuxtLink>
-          </li>
-        </ul>
+      <div class="header__panel__inner container">
+        <div
+          v-for="group in dropdownGroups"
+          :key="`panel-${group.key}`"
+          class="header__panel__block"
+        >
+          <NuxtLink :to="group.href" class="header__panel__heading">{{ group.label }}</NuxtLink>
+          <ul class="header__panel__links">
+            <li v-for="child in group.children" :key="child.href">
+              <NuxtLink :to="child.href" class="header__panel__link">
+                {{ child.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 

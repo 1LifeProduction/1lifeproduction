@@ -13,7 +13,7 @@ const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
   { name: 'YouTube',   file: 'youtube.png',    href: 'https://youtube.com' },
   { name: 'TikTok',    file: 'tiktok.png',     href: 'https://tiktok.com' },
-  { name: 'LinkedIn',  file: 'linkedin.webp',  href: 'https://linkedin.com' },
+  { name: 'LinkedIn',  file: 'linkedin.webp',  href: 'https://www.linkedin.com/company/1life-production/' },
   { name: 'Facebook',  file: 'facebook.png',   href: 'https://facebook.com' },
 ]
 </script>
@@ -33,6 +33,9 @@ const socials = [
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
         <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" /><span>UCH</span>
+        <svg class="footer__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 17L17 7M17 7H9M17 7v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->
@@ -56,7 +59,7 @@ const socials = [
       </div>
 
       <!-- Localisation -->
-      <p class="footer__location">France,<br>Paris</p>
+      <p class="footer__location">Rue La Fayette,<br>75010 Paris</p>
     </div>
 
   </footer>

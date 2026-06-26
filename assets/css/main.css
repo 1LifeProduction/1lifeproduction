@@ -197,39 +197,76 @@ h1, h2, h3, h4, h5, h6 {
 
 /* -------------------------------------------------------
    MEGA PANEL desktop
-   Colonnes positionnées en absolu, alignées via JS sur les
-   left des nav-links correspondants
+   Deux blocs distincts (Événementiel / Commercial),
+   visuellement séparés.
    ------------------------------------------------------- */
 .header__panel {
   position: relative;
-  height: 0;
+  max-height: 0;
   overflow: hidden;
-  transition: height 0.35s var(--ease);
+  transition: max-height 0.35s var(--ease);
 }
 
-.header:hover .header__panel { height: 220px; }
+.header:hover .header__panel { max-height: 360px; }
 
-/* Colonne absolue — left calculé par JS en px viewport */
-.header__panel__col {
-  position: absolute;
-  top: 1.5rem;
+.header__panel__inner {
+  display: flex;
+  gap: 4rem;
+  padding: 1.5rem 0 2rem;
+}
+
+/* Un bloc = une grande catégorie + ses sous-catégories */
+.header__panel__block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding-right: 4rem;
+  min-width: 12rem;
+}
+.header__panel__block + .header__panel__block {
+  border-left: 1px solid var(--border-light);
+  padding-left: 4rem;
+}
+
+.header__panel__heading {
+  font-family: 'Coolvetica', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  transition: color var(--t);
+}
+.header__panel__heading:hover { color: var(--text); }
+
+.header__panel__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
 /* Liens sous-catégories */
 .header__panel__link {
   display: block;
   font-family: 'Coolvetica', sans-serif;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0;
   text-transform: uppercase;
   color: #ffffff;
-  padding: 0.3rem 0;
   white-space: nowrap;
-  transition: color var(--t);
+  transition: color var(--t), transform var(--t);
 }
-.header__panel__link:hover { color: var(--text-muted); }
+.header__panel__link:hover { color: var(--text-muted); transform: translateX(3px); }
+
+/* Chevron sur les entrées déroulantes */
+.header__chevron {
+  margin-left: 0.4rem;
+  transition: transform var(--t);
+  flex-shrink: 0;
+}
+.header__chevron.is-open { transform: rotate(180deg); }
 
 /* Accordéon mobile — masqué sur desktop */
 .header__dropdown { display: none; }
@@ -378,6 +415,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer__cta:hover { opacity: 0.75; }
+
+.footer__cta-arrow {
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 0.15em;
+  align-self: flex-start;
+  margin-top: 0.12em;
+  flex-shrink: 0;
+  transition: transform var(--t);
+}
+.footer__cta:hover .footer__cta-arrow { transform: translate(0.08em, -0.08em); }
 
 .footer__cta-logo {
   height: 0.7em;
@@ -645,7 +693,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---- Projects Theater ---- */
 .projects-theater {
-  height: calc(var(--project-count, 3) * 100vh + 80vh);
+  /* --step-vh : distance de scroll par projet (sensibilité). Injecté par index.vue. */
+  height: calc(var(--project-count, 3) * var(--step-vh, 100vh) + 60vh);
   position: relative;
   overflow: visible;
 }
@@ -663,8 +712,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .projects-theater__card {
   position: absolute;
-  height: 90vh;
+  /* Format 16:9 conforme Figma */
   width: min(calc(100% - 2 * clamp(1rem, 8.06vw, 116px)), 1208px);
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 86vh;
   z-index: 1;
 }
 
@@ -886,7 +938,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .clients-section__label {
   font-family: 'Coolvetica', sans-serif;
-  font-size: clamp(3.5rem, 9vw, 10rem);
+  /* Tient sur une seule ligne */
+  white-space: nowrap;
+  font-size: clamp(1.4rem, 6.5vw, 7rem);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -915,6 +969,46 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .clients-section__logo:hover { opacity: 1; }
+
+/* ===================================================
+   BANDEAU MARQUES — marquee défilement continu
+   =================================================== */
+.brand-marquee {
+  overflow: hidden;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.brand-marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: brand-marquee-scroll 40s linear infinite;
+}
+
+.brand-marquee:hover .brand-marquee__track { animation-play-state: paused; }
+
+.brand-marquee__logo {
+  height: 40px;
+  width: auto;
+  max-width: 150px;
+  margin-right: 5rem; /* marge uniforme = boucle -50% sans couture */
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+  opacity: 0.55;
+}
+
+@keyframes brand-marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee__track { animation: none; }
+}
 
 /* ===================================================
    ÉVÉNEMENTIEL / COMMERCIAL — page éditoriale
@@ -979,7 +1073,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Category sections */
 .evnt-cats {
-  border-top: 1px solid var(--border);
   padding: 0 clamp(1rem, 8.06vw, 116px);
 }
 
@@ -987,7 +1080,6 @@ h1, h2, h3, h4, h5, h6 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 340px;
-  border-bottom: 1px solid var(--border);
 }
 
 .evnt-cat--reversed {
@@ -1003,12 +1095,9 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: center;
   gap: 1.25rem;
-  border-right: 1px solid var(--border);
 }
 
 .evnt-cat--reversed .evnt-cat__text {
-  border-right: none;
-  border-left: 1px solid var(--border);
   padding-right: clamp(2rem, 5vw, 4rem);
 }
 
@@ -1064,9 +1153,9 @@ h1, h2, h3, h4, h5, h6 {
   .evnt-cat--reversed {
     grid-template-columns: 1fr;
   }
-  .evnt-cat--reversed .evnt-cat__text { order: 1; border-left: none; }
+  .evnt-cat--reversed .evnt-cat__text { order: 1; }
   .evnt-cat--reversed .evnt-cat__media { order: 2; }
-  .evnt-cat__text { border-right: none; border-bottom: 1px solid var(--border); }
+  .evnt-cat__text { }
   .evnt-hero__desc { display: none; }
 }
 
@@ -1127,7 +1216,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 1rem;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
-  font-size: 0.8rem;
+  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
   line-height: 1.8;
   color: var(--text-muted);
 }
@@ -1264,10 +1353,73 @@ h1, h2, h3, h4, h5, h6 {
 /* node positions are computed dynamically via inline styles */
 
 .about-team__avatar {
-  width: 140px;
-  height: 140px;
+  width: clamp(88px, 11vw, 140px);
+  height: clamp(88px, 11vw, 140px);
   border-radius: 50%;
-  background: #000;
+  background: #0a0a0a;
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.about-team__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-team__profile {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.about-team__name {
+  font-family: 'Coolvetica', sans-serif;
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.about-team__role {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.15rem;
+}
+
+/* Glow / gradient en fond de la section équipe (conforme maquette) */
+.about-team__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 50% 42%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 40%, transparent 70%);
+}
+
+/* Label "Notre équipe" */
+.about-team__heading {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Coolvetica', sans-serif;
+  font-size: clamp(2rem, 6vw, 6rem);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.28);
+  white-space: nowrap;
+  z-index: 1;
 }
 
 /* ===================================================
@@ -1415,32 +1567,33 @@ h1, h2, h3, h4, h5, h6 {
 .contact-info {
   padding: 4rem clamp(1rem, 8.06vw, 116px);
   display: flex;
-  align-items: flex-start;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3rem;
 }
 
-.contact-info .contact-form {
-  margin-left: auto;
-}
+.contact-info .contact-form { margin: 0 auto; }
 
+/* Bandeau de liens : une seule ligne (3 colonnes) en desktop */
 .contact-info__card {
   border: 2px solid rgba(255,255,255,0.8);
-  max-width: 520px;
   width: 100%;
   padding: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background: #000;
 }
 
 .contact-info__row {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.75rem 2rem;
+  transition: background var(--t);
 }
+.contact-info__row + .contact-info__row { border-left: 1px solid rgba(255,255,255,0.2); }
+.contact-info__row:hover { background: rgba(255,255,255,0.04); }
 
 .contact-info__label {
   font-family: 'Coolvetica', sans-serif;
@@ -1453,14 +1606,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .contact-info__value {
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1vw, 1rem);
   font-weight: 400;
   color: #fff;
   transition: color var(--t);
   text-decoration: none;
+  word-break: break-word;
 }
 
-.contact-info__value:hover { color: #fff; }
+.contact-info__row:hover .contact-info__value { color: var(--text-muted); }
 
 /* Contact form */
 .contact-form {
@@ -1572,6 +1726,68 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.6rem;
 }
 
+/* Lien retour vers la grande catégorie (au-dessus du titre sous-catégorie) */
+.evnt-hero__back {
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.9rem;
+  transition: color var(--t);
+}
+.evnt-hero__back:hover { color: #fff; }
+
+/* Navigation sous-catégorie suivante (bas de liste) */
+.subcat-nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 3rem clamp(1rem, 8.06vw, 116px) 5rem;
+}
+
+.subcat-nav__next {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-family: 'Coolvetica', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  text-transform: uppercase;
+  color: #fff;
+  transition: gap var(--t), opacity var(--t);
+}
+.subcat-nav__next:hover { gap: 1.75rem; opacity: 0.8; }
+
+.subcat-nav__label { white-space: nowrap; }
+
+.subcat-nav__arrow {
+  width: clamp(40px, 5vw, 64px);
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* Thème clair (page commercial) */
+.theme-light .subcat-nav__next { color: #000; }
+
+/* Mobile : petit bouton compact */
+@media (max-width: 767px) {
+  .subcat-nav {
+    justify-content: center;
+    padding: 2rem var(--gutter) 3rem;
+  }
+  .subcat-nav__next {
+    gap: 0.6rem;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 999px;
+  }
+  .subcat-nav__arrow { width: 28px; }
+  .theme-light .subcat-nav__next { border-color: rgba(0,0,0,0.2); }
+}
+
 .cat-list {
   border-top: 1px solid var(--border);
   padding: 0 clamp(1rem, 8.06vw, 116px);
@@ -1676,7 +1892,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .theme-light .evnt-cat__text {
-  background: #FFFBF5;
   border-right-color: rgba(0,0,0,0.12);
 }
 
@@ -1705,6 +1920,9 @@ h1, h2, h3, h4, h5, h6 {
 .header--light .header__nav-link.is-active { color: rgba(0,0,0,0.45); }
 .header--light .header__panel__link { color: #000; }
 .header--light .header__panel__link:hover { color: rgba(0,0,0,0.45); }
+.header--light .header__panel__heading { color: rgba(0,0,0,0.45); }
+.header--light .header__panel__heading:hover { color: #000; }
+.header--light .header__panel__block + .header__panel__block { border-left-color: rgba(0,0,0,0.12); }
 .header--light .header__burger span { background: #000; }
 
 @media (max-width: 767px) {
@@ -1916,8 +2134,14 @@ h1, h2, h3, h4, h5, h6 {
     gap: 1.5rem;
   }
 
+  /* Bandeau de liens → empilé en mobile */
+  .contact-info__card { flex-direction: column; }
+  .contact-info__row + .contact-info__row {
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+
   .contact-info__row {
-    grid-template-columns: 1fr;
     gap: 0.2rem;
     padding: 1.1rem 1.5rem;
   }
@@ -1991,6 +2215,14 @@ h1, h2, h3, h4, h5, h6 {
     width: 58px;
     height: 58px;
   }
+
+  .about-team__constellation { overflow: visible; }
+
+  .about-team__profile { top: calc(100% + 0.3rem); }
+  .about-team__name { font-size: 0.7rem; }
+  .about-team__role { font-size: 0.58rem; }
+
+  .about-team__heading { top: 2%; font-size: clamp(1.5rem, 8vw, 3rem); }
 
   /* --- Événementiel / Commercial hero --- */
   .evnt-hero__bottom {
