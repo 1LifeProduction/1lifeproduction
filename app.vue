@@ -9,6 +9,8 @@ useHead({
 
 <template>
   <div class="app">
+    <!-- Grille de fond unique pour tout le site (uniforme, fixe) -->
+    <div class="site-grid" aria-hidden="true"></div>
     <TheHeader />
     <main>
       <NuxtPage />

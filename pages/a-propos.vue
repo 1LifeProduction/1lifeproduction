@@ -1,10 +1,13 @@
 <script setup lang="ts">
+/* Marques pour le bandeau défilant (identique à la home) */
 const clients = [
   { name: 'Formula 1', slug: 'f1'      },
   { name: 'Nike',      slug: 'nike'    },
   { name: 'Spotify',   slug: 'spotify' },
   { name: 'Chanel',    slug: 'chanel'  },
 ]
+const marqueeBase  = [...clients, ...clients, ...clients]
+const marqueeLogos = [...marqueeBase, ...marqueeBase]
 
 // Hexagon vertices clockwise from top, matching SVG coords (container 760×780)
 const HEX_W = 760, HEX_H = 780
@@ -30,15 +33,16 @@ function hexPoint(p: number) {
 const teamRef  = ref<HTMLElement>()
 const progress = ref(0)
 
-/* Profils de l'équipe — 6 bulles (placeholders à fournir).
-   photo : déposer dans public/team/ ; vide = bulle sans photo. */
+/* Profils de l'équipe — 6 bulles.
+   photo : fichier dans public/team/ référencé par son chemin /team/…
+   name / role : nom et rôle affichés sous chaque bulle. */
 const team = [
-  { photo: '', name: '{{TEAM_1_NOM}}', role: '{{TEAM_1_ROLE}}' },
-  { photo: '', name: '{{TEAM_2_NOM}}', role: '{{TEAM_2_ROLE}}' },
-  { photo: '', name: '{{TEAM_3_NOM}}', role: '{{TEAM_3_ROLE}}' },
-  { photo: '', name: '{{TEAM_4_NOM}}', role: '{{TEAM_4_ROLE}}' },
-  { photo: '', name: '{{TEAM_5_NOM}}', role: '{{TEAM_5_ROLE}}' },
-  { photo: '', name: '{{TEAM_6_NOM}}', role: '{{TEAM_6_ROLE}}' },
+  { photo: '/team/1.png', name: '{{TEAM_1_NOM}}', role: '{{TEAM_1_ROLE}}' },
+  { photo: '/team/2.png', name: '{{TEAM_2_NOM}}', role: '{{TEAM_2_ROLE}}' },
+  { photo: '/team/3.png', name: '{{TEAM_3_NOM}}', role: '{{TEAM_3_ROLE}}' },
+  { photo: '/team/4.png', name: '{{TEAM_4_NOM}}', role: '{{TEAM_4_ROLE}}' },
+  { photo: '/team/5.png', name: '{{TEAM_5_NOM}}', role: '{{TEAM_5_ROLE}}' },
+  { photo: '/team/6.png', name: '{{TEAM_6_NOM}}', role: '{{TEAM_6_ROLE}}' },
 ]
 
 const nodeStyles = computed(() =>
@@ -47,6 +51,38 @@ const nodeStyles = computed(() =>
     return { left: `${(x / HEX_W) * 100}%`, top: `${(y / HEX_H) * 100}%` }
   })
 )
+
+/* Au scroll dans la section (desktop, sticky actif) : le titre + le dégradé
+   remontent et disparaissent pour ne laisser place qu'à la constellation,
+   qui se rapproche du centre et grossit légèrement. */
+const isDesktop = ref(true)
+
+/* Dôme + titre : remontent ET s'effacent. */
+const ambianceStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  const p = progress.value
+  return {
+    transform: `translateY(${(-p * 60).toFixed(2)}vh)`,
+    opacity: String(Math.max(0, 1 - p * 2.8).toFixed(3)),
+  }
+})
+
+/* Faisceau lumineux : reste ancré en bas (pas de translation, sinon il se
+   ferait couper par un bord net) — il s'efface seulement en opacité. */
+const glowStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  return { opacity: String(Math.max(0, 1 - progress.value * 2.8).toFixed(3)) }
+})
+
+const constellationStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  // Sur la première moitié du scroll : la constellation remonte au centre
+  // et grossit pendant que l'ambiance s'efface.
+  const k = Math.min(progress.value / 0.5, 1)
+  const scale = (0.92 + k * 0.23).toFixed(3) // 0.92 → 1.15
+  const ty = (22 - k * 22).toFixed(2)        // +22vh → 0 (centré)
+  return { transform: `translateY(${ty}vh) scale(${scale})` }
+})
 
 function onScroll() {
   const el = teamRef.value
@@ -58,8 +94,20 @@ function onScroll() {
   progress.value    = Math.min(scrolled / totalScroll, 1)
 }
 
-onMounted(()   => window.addEventListener('scroll', onScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+let mq: MediaQueryList | undefined
+function updateMq(e: MediaQueryListEvent | MediaQueryList) { isDesktop.value = e.matches }
+
+onMounted(() => {
+  mq = window.matchMedia('(min-width: 768px)')
+  updateMq(mq)
+  mq.addEventListener('change', updateMq)
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  mq?.removeEventListener('change', updateMq)
+})
 
 useHead({
   title: '1LIFE PRODUCTION',
@@ -72,12 +120,6 @@ useHead({
 
 <template>
   <div class="about-page grid-bg" data-nav-theme="dark">
-
-    <!-- Blobs page entière -->
-    <div class="about-blob about-blob--1" aria-hidden="true"></div>
-    <div class="about-blob about-blob--2" aria-hidden="true"></div>
-    <div class="about-blob about-blob--3" aria-hidden="true"></div>
-    <div class="about-blob about-blob--4" aria-hidden="true"></div>
 
     <!-- Hero title -->
     <section class="about-hero">
@@ -120,12 +162,16 @@ useHead({
     <section ref="teamRef" class="about-team">
       <div class="about-team__sticky">
 
-        <!-- Gradient / glow en fond (conforme maquette) -->
-        <div class="about-team__glow" aria-hidden="true"></div>
+        <!-- Faisceau lumineux : ancré en bas, s'efface seulement (pas de translation) -->
+        <div class="about-team__glow" :style="glowStyle" aria-hidden="true"></div>
 
-        <p class="about-team__heading" data-reveal>Notre équipe</p>
+        <!-- Ambiance (dôme + titre) : remonte et s'efface au scroll -->
+        <div class="about-team__ambiance" :style="ambianceStyle">
+          <div class="about-team__sphere" aria-hidden="true"></div>
+          <p class="about-team__heading">Notre équipe</p>
+        </div>
 
-        <div class="about-team__constellation">
+        <div class="about-team__constellation" :style="constellationStyle">
         <!-- SVG : viewBox = container exact, overflow:visible pour les lignes débordantes -->
         <svg class="about-team__lines" viewBox="0 0 760 780" aria-hidden="true">
           <!-- 6 côtés de l'hexagone, centre (380,390) R=218 -->
@@ -158,18 +204,21 @@ useHead({
     <!-- Clients -->
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label" data-reveal>ILS NOUS FONT<br>CONFIANCE</h2>
-        <div class="clients-section__logos">
-          <img
-            v-for="(c, i) in clients"
-            :key="c.slug"
-            :src="`/clients/${c.slug}.png`"
-            :alt="c.name"
-            class="clients-section__logo"
-            data-reveal
-            :style="`--reveal-delay:${i * 80}ms`"
-          />
-        </div>
+        <h2 class="clients-section__label" data-reveal data-fit-text>ILS NOUS FONT CONFIANCE</h2>
+      </div>
+    </section>
+
+    <!-- Bandeau marques — marquee en défilement continu (identique à la home) -->
+    <section class="brand-marquee" aria-label="Marques" data-nav-theme="dark">
+      <div class="brand-marquee__track">
+        <img
+          v-for="(c, i) in marqueeLogos"
+          :key="`mq-${i}`"
+          :src="`/clients/${c.slug}.png`"
+          :alt="c.name"
+          class="brand-marquee__logo"
+          aria-hidden="true"
+        />
       </div>
     </section>
 

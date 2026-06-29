@@ -15,7 +15,19 @@
       "Bash(awk '{print $5, $9}')",
       "Bash(grep -o \"\\\\\\\\.[-a-z0-9_]*\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/assets/css/main.css\")",
       "Bash(grep -rho \"\\\\\\\\bclass=['\\\\\"][-a-z0-9_ :\\(\\){}\\\\\\\\[\\\\\\\\]]*['\\\\\"]\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/pages\" \"C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction/components\")",
-      "Bash(npx nuxt *)"
+      "Bash(npx nuxt *)",
+      "Bash(timeout 150 npx nuxi build)",
+      "Bash(npx nuxi *)",
+      "Bash(npx playwright *)",
+      "Bash(cp /tmp/shot.mjs /Users/rutabagarre/Documents/velar/1lifeproduction/shot.mjs)",
+      "Bash(node shot.mjs)",
+      "Read(//Users/rutabagarre/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/**)",
+      "Bash(node cli.js install chromium-headless-shell)",
+      "Bash(node /tmp/shot.mjs)",
+      "Bash(cp /tmp/shot.mjs /tmp/shot2.mjs)",
+      "Bash(sed -i '' \"s/channel: 'chrome'//\" /tmp/shot.mjs)",
+      "Bash(pkill -f \".output/server/index.mjs\")",
+      "Bash(rm -f /tmp/shot.mjs /tmp/shotm.mjs)"
     ]
   }
 }

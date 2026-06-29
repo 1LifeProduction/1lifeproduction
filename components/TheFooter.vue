@@ -3,6 +3,7 @@ import logoBg        from '~/assets/images/logoBg.png'
 import logoBgBlack   from '~/assets/images/logoFooterBlack.png'
 import logoImg       from '~/assets/images/logo.png'
 import logoBlackImg  from '~/assets/images/logoBlack.png'
+import arrowImg      from '~/assets/images/arrow.png'
 
 const pageTheme     = useState<'dark' | 'light'>('pageTheme', () => 'dark')
 const isLight       = computed(() => pageTheme.value === 'light')
@@ -11,8 +12,8 @@ const currentLogo   = computed(() => isLight.value ? logoBlackImg : logoImg)
 
 const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
-  { name: 'YouTube',   file: 'youtube.png',    href: 'https://youtube.com' },
-  { name: 'TikTok',    file: 'tiktok.png',     href: 'https://tiktok.com' },
+  { name: 'YouTube',   file: 'youtube.png',    href: 'https://www.youtube.com/@1LifeProduction' },
+  { name: 'TikTok',    file: 'tiktok.png',     href: 'https://www.tiktok.com/@1lifeprod' },
   { name: 'LinkedIn',  file: 'linkedin.webp',  href: 'https://www.linkedin.com/company/1life-production/' },
   { name: 'Facebook',  file: 'facebook.png',   href: 'https://facebook.com' },
 ]
@@ -32,10 +33,8 @@ const socials = [
     <!-- GET IN TOUCH avec O remplacé par le logo -->
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
+        <img :src="arrowImg" alt="" class="footer__cta-arrow-img" aria-hidden="true" />
         <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" /><span>UCH</span>
-        <svg class="footer__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 17L17 7M17 7H9M17 7v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->

@@ -88,9 +88,6 @@ watch(() => route.fullPath, () => {
   menuOpen.value     = false
   openDropdown.value = null
 })
-
-/* Groupes avec sous-catégories, pour le mega-panel desktop */
-const dropdownGroups = nav.filter(item => item.children && item.children.length)
 </script>
 
 <template>
@@ -131,7 +128,7 @@ const dropdownGroups = nav.filter(item => item.children && item.children.length)
               </svg>
             </NuxtLink>
 
-            <!-- Accordéon mobile -->
+            <!-- Dropdown desktop (au survol) / Accordéon mobile (au clic) -->
             <ul
               v-if="item.children"
               class="header__dropdown"
@@ -157,26 +154,5 @@ const dropdownGroups = nav.filter(item => item.children && item.children.length)
         <span></span><span></span><span></span>
       </button>
     </div>
-
-    <!-- Mega panel desktop : deux blocs distincts (Événementiel / Commercial) -->
-    <div class="header__panel" aria-hidden="true">
-      <div class="header__panel__inner container">
-        <div
-          v-for="group in dropdownGroups"
-          :key="`panel-${group.key}`"
-          class="header__panel__block"
-        >
-          <NuxtLink :to="group.href" class="header__panel__heading">{{ group.label }}</NuxtLink>
-          <ul class="header__panel__links">
-            <li v-for="child in group.children" :key="child.href">
-              <NuxtLink :to="child.href" class="header__panel__link">
-                {{ child.label }}
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
   </header>
 </template>

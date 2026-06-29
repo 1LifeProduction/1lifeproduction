@@ -182,18 +182,7 @@ useHead({
 
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label" data-reveal>ILS NOUS FONT CONFIANCE</h2>
-        <div class="clients-section__logos">
-          <img
-            v-for="(c, i) in clients"
-            :key="c.slug"
-            :src="`/clients/${c.slug}.png`"
-            :alt="c.name"
-            class="clients-section__logo"
-            data-reveal
-            :style="`--reveal-delay:${i * 80}ms`"
-          />
-        </div>
+        <h2 class="clients-section__label" data-reveal data-fit-text>ILS NOUS FONT CONFIANCE</h2>
       </div>
     </section>
 
