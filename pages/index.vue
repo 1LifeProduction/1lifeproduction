@@ -98,7 +98,11 @@ onMounted(() => {
     ro = new ResizeObserver(() => requestAnimationFrame(fitTitle))
     ro.observe(document.documentElement)
   })
-  window.addEventListener('scroll', onScroll, { passive: true })
+  // capture: true → on capte le scroll de N'IMPORTE quel conteneur de défilement
+  // (les événements scroll ne bullent pas ; sans capture, si le scroller n'est
+  // pas window — ex. body devenu scroll-container — le handler ne se déclenche
+  // jamais et le carrousel reste bloqué sur le 1er projet).
+  window.addEventListener('scroll', onScroll, { passive: true, capture: true })
   window.addEventListener('resize', onResize, { passive: true })
   window.addEventListener('orientationchange', measureVh)
 })
@@ -106,7 +110,7 @@ onMounted(() => {
 onUnmounted(() => {
   ro?.disconnect()
   if (scrollRaf) cancelAnimationFrame(scrollRaf)
-  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('scroll', onScroll, { capture: true })
   window.removeEventListener('resize', onResize)
   window.removeEventListener('orientationchange', measureVh)
 })
