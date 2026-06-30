@@ -80,7 +80,7 @@ const constellationStyle = computed(() => {
   // et grossit pendant que l'ambiance s'efface.
   const k = Math.min(progress.value / 0.5, 1)
   const scale = (0.92 + k * 0.23).toFixed(3) // 0.92 → 1.15
-  const ty = (22 - k * 22).toFixed(2)        // +22vh → 0 (centré)
+  const ty = (38 - k * 38).toFixed(2)        // +38vh → 0 (centré)
   return { transform: `translateY(${ty}vh) scale(${scale})` }
 })
 

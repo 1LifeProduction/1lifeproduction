@@ -27,7 +27,8 @@
       "Bash(cp /tmp/shot.mjs /tmp/shot2.mjs)",
       "Bash(sed -i '' \"s/channel: 'chrome'//\" /tmp/shot.mjs)",
       "Bash(pkill -f \".output/server/index.mjs\")",
-      "Bash(rm -f /tmp/shot.mjs /tmp/shotm.mjs)"
+      "Bash(rm -f /tmp/shot.mjs /tmp/shotm.mjs)",
+      "Bash(node *)"
     ]
   }
 }

@@ -22,9 +22,25 @@ const activeIndex = ref(0)
 
 /* Sensibilité du carrousel : fraction de viewport à scroller pour
    passer au projet suivant. Plus petit = plus sensible (moins de scroll).
-   Doit rester synchro avec --step-vh ci-dessous (STEP_VH = STEP * 100). */
-const STEP    = 0.5
-const STEP_VH = STEP * 100
+   La hauteur de section est dérivée en CSS via --vh + --step (voir main.css). */
+const STEP = 0.5
+
+/* Hauteur de viewport mesurée en JS et exposée via --vh.
+   On verrouille la valeur (mise à jour seulement si la LARGEUR change), ce qui
+   ignore les "resize" dus à la barre d'adresse mobile : ces resize changeaient
+   la hauteur (vh) de la page pendant le scroll et masquaient parfois le footer.
+   CSS et JS partagent ainsi la même base → le carrousel reste synchro au scroll. */
+const vhUnit = ref(0)
+let lastW = 0
+function measureVh() {
+  vhUnit.value = window.innerHeight
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
+}
+function onResize() {
+  if (window.innerWidth === lastW) return
+  lastW = window.innerWidth
+  measureVh()
+}
 
 /* Chemin du showreel (binding dynamique pour ne pas être résolu au build :
    le fichier public/showreel.mp4 peut être absent, le poster prend le relais). */
@@ -49,7 +65,7 @@ function onScroll() {
   const scrolled = window.scrollY - el.offsetTop
   if (scrolled < 0) return
   const newIndex = Math.min(
-    Math.floor(scrolled / (window.innerHeight * STEP)),
+    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * STEP)),
     featured.length - 1
   )
   if (newIndex !== activeIndex.value) {
@@ -58,17 +74,23 @@ function onScroll() {
 }
 
 onMounted(() => {
+  lastW = window.innerWidth
+  measureVh()
   document.fonts.ready.then(() => {
     fitTitle()
     ro = new ResizeObserver(() => requestAnimationFrame(fitTitle))
     ro.observe(document.documentElement)
   })
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onResize, { passive: true })
+  window.addEventListener('orientationchange', measureVh)
 })
 
 onUnmounted(() => {
   ro?.disconnect()
   window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onResize)
+  window.removeEventListener('orientationchange', measureVh)
 })
 
 useHead({
@@ -138,7 +160,7 @@ useHead({
     <section
       ref="theaterRef"
       class="projects-theater"
-      :style="{ '--project-count': featured.length, '--step-vh': `${STEP_VH}vh` }"
+      :style="{ '--project-count': featured.length, '--step': STEP }"
       aria-label="Projets mis en avant"
     >
       <!-- Blobs flottants — hors du stage pour déborder sur la section suivante -->

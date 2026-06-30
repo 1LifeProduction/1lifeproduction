@@ -630,7 +630,9 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
+  /* overflow visible : le halo flou doit déborder et passer par-dessus la
+     section suivante (sinon il est coupé net à la frontière de section). */
+  overflow: visible;
   z-index: 0;
 }
 
@@ -701,8 +703,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ---- Projects Theater ---- */
 .projects-theater {
-  /* --step-vh : distance de scroll par projet (sensibilité). Injecté par index.vue. */
-  height: calc(var(--project-count, 3) * var(--step-vh, 100vh) + 60vh);
+  /* Hauteur = (nb projets × pas + queue) × viewport mesuré.
+     --vh et --step sont injectés par index.vue ; --vh (= 1% de innerHeight)
+     est partagé avec le JS du carrousel pour rester synchro sur mobile.
+     Repli 1vh tant que le JS n'a pas tourné (sortie statique). */
+  height: calc(var(--vh, 1vh) * (var(--project-count, 3) * var(--step, 0.5) + 0.9) * 100);
   position: relative;
   overflow: visible;
 }
@@ -710,7 +715,7 @@ h1, h2, h3, h4, h5, h6 {
 .projects-theater__stage {
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -824,8 +829,8 @@ h1, h2, h3, h4, h5, h6 {
    =================================================== */
 .home-hero {
   position: relative;
-  height: 100vh;
-  min-height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -838,7 +843,7 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh; /* valeur absolue viewport — aucune dépendance au parent */
+  height: calc(var(--vh, 1vh) * 100); /* viewport mesuré — aucune dépendance au parent */
   object-fit: cover;
   object-position: center;
 }
@@ -1215,6 +1220,8 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   height: 300vh;
   overflow: visible;
+  /* Espace après la constellation, avant la section suivante (footer/clients). */
+  margin-bottom: 8vh;
 }
 
 .about-team__sticky {
@@ -1255,7 +1262,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow: visible;
   /* Constellation = élément principal. Au scroll elle remonte au centre et
      grossit (piloté via style inline sur desktop) ; valeur de départ ici. */
-  transform: translateY(22vh) scale(0.92);
+  transform: translateY(38vh) scale(0.92);
   transform-origin: center center;
   will-change: transform;
 }
@@ -1388,7 +1395,7 @@ h1, h2, h3, h4, h5, h6 {
    entrer en conflit), posé dans la partie lumineuse du dôme */
 .about-team__heading {
   position: absolute;
-  top: 20%;
+  top: 9%;
   left: 0;
   right: 0;
   text-align: center;
@@ -1396,8 +1403,9 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(2rem, 6vw, 6rem);
   text-transform: uppercase;
   letter-spacing: -0.01em;
-  /* Gris sombre semi-transparent : lisible par-dessus la sphère claire */
-  color: rgba(35,35,35,0.55);
+  /* Blanc semi-transparent : watermark discret, lisible sur le fond sombre
+     du haut où le titre apparaît avant de remonter/s'effacer au scroll. */
+  color: rgba(255,255,255,0.55);
   white-space: nowrap;
   z-index: 1;
 }
@@ -2177,7 +2185,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 88vw;
     height: calc(88vw * 780 / 760);
     overflow: hidden;
-    margin: 0 auto;
+    margin: 7rem auto 0;
     transform: none;
   }
 
