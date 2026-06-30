@@ -967,26 +967,9 @@ h1, h2, h3, h4, h5, h6 {
    BANDEAU MARQUES — marquee défilement continu
    =================================================== */
 .brand-marquee {
-  position: relative;
   overflow: hidden;
   padding: 3rem 0;
 }
-
-/* Fondu des bords par OVERLAY (et non mask-image, fragile sur mobile : il faisait
-   disparaître les logos). Cache aussi l'espace inter-logo qui "coupait" net au
-   bord. var(--bg) = #000 → dégradé propre, sans halo gris. */
-.brand-marquee::before,
-.brand-marquee::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 12%;
-  z-index: 2;
-  pointer-events: none;
-}
-.brand-marquee::before { left: 0;  background: linear-gradient(90deg,  var(--bg), transparent); }
-.brand-marquee::after  { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
 
 .brand-marquee__track {
   display: flex;
@@ -2059,11 +2042,16 @@ h1, h2, h3, h4, h5, h6 {
     height: auto;
   }
 
-  /* Blobs : pas de débordement horizontal sur mobile (sinon overflow-x de page
-     → dérive latérale au scroll). Le débordement vertical "passe-dessus" reste
-     actif sur desktop uniquement. */
+  /* Blobs sur mobile : on clippe l'HORIZONTAL (sinon overflow-x de page → dérive
+     latérale) mais on laisse le VERTICAL déborder pour que le blob chevauche la
+     frontière theater / clients-section.
+     - overflow: hidden  → repli (vieux navigateurs) : clippe tout, pas d'overflow.
+     - overflow-x: clip + overflow-y: visible → moderne : clip horizontal,
+       débordement vertical conservé. */
   .projects-grid__blobs {
     overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
   }
 
   .projects-theater__stage {

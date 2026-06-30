@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import logoBg        from '~/assets/images/logoBg.webp'
-import logoBgBlack   from '~/assets/images/logoFooterBlack.webp'
-import logoImg       from '~/assets/images/logo.png'
-import logoBlackImg  from '~/assets/images/logoBlack.png'
-import arrowImg      from '~/assets/images/arrow.png'
+import logoBg   from '~/assets/images/logoBg.webp'
+import logoImg  from '~/assets/images/logo.png'
+import arrowImg from '~/assets/images/arrow.png'
 
-const pageTheme     = useState<'dark' | 'light'>('pageTheme', () => 'dark')
-const isLight       = computed(() => pageTheme.value === 'light')
-const currentLogoBg = computed(() => isLight.value ? logoBgBlack : logoBg)
-const currentLogo   = computed(() => isLight.value ? logoBlackImg : logoImg)
-
-/* Le fond du footer est une image CSS (basse priorité) : sans préchargement il
-   est fetché en DERNIER → le footer "galère" à s'afficher. On le précharge en
-   priorité basse : il se charge tôt sans concurrencer le contenu au-dessus. */
-useHead(() => ({
-  link: [{ rel: 'preload', as: 'image', href: currentLogoBg.value, fetchpriority: 'low' }],
-}))
+/* Le site est entièrement en thème sombre (pageTheme n'est jamais mis à 'light').
+   Les variantes claires (logoFooterBlack ~120K, logoBlack ~189K) étaient
+   IMPORTÉES → donc préchargées par Nuxt sur CHAQUE page sans jamais servir, ce qui
+   encombrait le chargement du footer. On ne référence que les variantes sombres.
+   (Si un thème clair est ajouté un jour, recâbler ici via pageTheme.) */
 
 const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
@@ -27,7 +19,7 @@ const socials = [
 </script>
 
 <template>
-  <footer class="footer" :style="{ backgroundImage: `url(${currentLogoBg})` }">
+  <footer class="footer" :style="{ backgroundImage: `url(${logoBg})` }">
 
     <!-- Nav 4 liens principaux -->
     <nav class="footer__nav" aria-label="Navigation footer">
@@ -41,7 +33,7 @@ const socials = [
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
         <img :src="arrowImg" alt="" class="footer__cta-arrow-img" aria-hidden="true" fetchpriority="high" />
-        <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" fetchpriority="high" /><span>UCH</span>
+        <span>GET IN T</span><img :src="logoImg" alt="" class="footer__cta-logo" aria-hidden="true" fetchpriority="high" /><span>UCH</span>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->
