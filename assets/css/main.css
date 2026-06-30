@@ -48,6 +48,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  /* PAS d'overflow-x ici : ça ferait de html un conteneur de défilement et
+     casserait position:sticky (carrousel desktop). L'overflow-x se règle en
+     supprimant les sources (blobs clippés sur mobile). */
 }
 
 body {
@@ -968,20 +971,11 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3rem 0;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  /* Force une couche GPU stable : sans ça, sur mobile (iOS/Android), la
-     combinaison mask-image + enfant animé en transform fait "disparaître" les
-     logos par intermittence. */
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
 }
 
 .brand-marquee__track {
   display: flex;
   align-items: center;
-  /* Couche GPU dédiée + indice d'animation → compositing stable sur mobile. */
-  will-change: transform;
-  -webkit-backface-visibility: hidden;
-          backface-visibility: hidden;
   /* Piste = 2 moitiés identiques ; l'anim translateX(-50%) boucle sans couture. */
   width: max-content;
   animation: brand-marquee-scroll 40s linear infinite;
@@ -2056,6 +2050,13 @@ h1, h2, h3, h4, h5, h6 {
      est piloté par le timer auto (voir index.vue), le scroll de page est normal. */
   .projects-theater {
     height: auto;
+  }
+
+  /* Blobs : pas de débordement horizontal sur mobile (sinon overflow-x de page
+     → dérive latérale au scroll). Le débordement vertical "passe-dessus" reste
+     actif sur desktop uniquement. */
+  .projects-grid__blobs {
+    overflow: hidden;
   }
 
   .projects-theater__stage {
