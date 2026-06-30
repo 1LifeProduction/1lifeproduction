@@ -30,7 +30,8 @@ let raf = 0
 let offset = 0
 let setWidth = 0   // largeur d'UNE copie = largeur visible de piste / 2
 let lastTs = 0
-let paused = false
+let paused = false   // survol (hover)
+let visible = true   // dans le viewport (IntersectionObserver)
 let reduced = false
 
 function measure() {
@@ -42,7 +43,7 @@ function frame(ts: number) {
   if (!lastTs) lastTs = ts
   const dt = (ts - lastTs) / 1000
   lastTs = ts
-  if (!paused && !reduced && setWidth > 0) {
+  if (!paused && visible && !reduced && setWidth > 0) {
     offset -= SPEED * dt
     if (offset <= -setWidth) offset += setWidth // wrap exact (invisible)
     if (trackRef.value) trackRef.value.style.transform = `translateX(${offset}px)`
@@ -51,6 +52,8 @@ function frame(ts: number) {
 }
 
 let ro: ResizeObserver | null = null
+let io: IntersectionObserver | null = null
+const sectionRef = ref<HTMLElement>()
 
 onMounted(() => {
   reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -59,17 +62,23 @@ onMounted(() => {
   ro = new ResizeObserver(measure)
   if (trackRef.value) ro.observe(trackRef.value)
   if (document.fonts?.ready) document.fonts.ready.then(measure)
+  // Pause le défilement quand le bandeau est hors écran (évite de faire tourner
+  // le rAF en continu pour rien sur mobile).
+  io = new IntersectionObserver(([e]) => { visible = e.isIntersecting }, { rootMargin: '50px' })
+  if (sectionRef.value) io.observe(sectionRef.value)
   raf = requestAnimationFrame(frame)
 })
 
 onUnmounted(() => {
   cancelAnimationFrame(raf)
   ro?.disconnect()
+  io?.disconnect()
 })
 </script>
 
 <template>
   <section
+    ref="sectionRef"
     class="brand-marquee"
     aria-label="Marques"
     data-nav-theme="dark"

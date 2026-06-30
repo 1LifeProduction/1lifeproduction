@@ -16,9 +16,12 @@ const STEP_VH = STEP * 100
 
 const isDesktop = ref(true)
 
-/* Chemin du showreel (binding dynamique pour ne pas être résolu au build :
-   le fichier public/showreel.mp4 peut être absent, le poster prend le relais). */
+/* Showreel : tant que public/showreel.mp4 est absent, on n'affiche PAS de
+   <video> (sinon iOS pose un bouton play par-dessus le poster) — on montre le
+   poster en <img>. On sonde le fichier (HEAD) et on bascule en vidéo seulement
+   s'il existe vraiment. */
 const showreelSrc = '/showreel.mp4'
+const hasVideo = ref(false)
 
 function fitTitle() {
   const el = titleRef.value
@@ -92,6 +95,10 @@ onMounted(() => {
     ro = new ResizeObserver(() => requestAnimationFrame(fitTitle))
     ro.observe(document.documentElement)
   })
+  // Sonde le showreel : on n'affiche la <video> que s'il existe (sinon poster img).
+  fetch(showreelSrc, { method: 'HEAD' })
+    .then(r => { hasVideo.value = r.ok })
+    .catch(() => { hasVideo.value = false })
 })
 
 onUnmounted(() => {
@@ -145,6 +152,7 @@ useHead({
         (ou modifier le chemin du <source> ci-dessous).
       -->
       <video
+        v-if="hasVideo"
         class="home-hero__img home-hero__video"
         :poster="heroImg"
         autoplay
@@ -156,6 +164,7 @@ useHead({
       >
         <source :src="showreelSrc" type="video/mp4" />
       </video>
+      <img v-else class="home-hero__img" :src="heroImg" alt="" aria-hidden="true" />
       <div class="home-hero__overlay" aria-hidden="true"></div>
       <div class="home-hero__content">
         <div class="home-hero__sub" data-reveal="fade" style="--reveal-delay:100ms">

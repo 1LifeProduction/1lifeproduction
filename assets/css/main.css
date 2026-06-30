@@ -975,9 +975,10 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   /* Piste = 2 copies identiques. Le défilement est piloté en JS (rAF, wrap exact
-     en px) par le composant BrandMarquee → pas de saut au bouclage. */
+     en px) par le composant BrandMarquee → pas de saut au bouclage.
+     (Pas de will-change : sur mobile, la couche GPU permanente hors-écran peut
+     être abandonnée → le bandeau "n'apparaît pas bien" en arrivant dessus.) */
   width: max-content;
-  will-change: transform;
 }
 
 /* Desktop uniquement : garantir que chaque copie (≥110vw) dépasse l'écran, sinon
@@ -2053,6 +2054,17 @@ h1, h2, h3, h4, h5, h6 {
     overflow-x: clip;
     overflow-y: visible;
   }
+
+  /* Blobs allégés sur mobile : un blur de 90px sur un grand élément qui DÉBORDE
+     sur les sections du dessous (marquee, footer) crée une énorme couche floue
+     que le GPU mobile peine à composer → ces sections "n'apparaissent pas bien".
+     On réduit fortement le flou et la taille : le chevauchement reste, le coût
+     GPU s'effondre. */
+  .blob {
+    filter: blur(45px);
+  }
+  .blob--1 { width: 300px; height: 300px; }
+  .blob--2 { width: 340px; height: 340px; }
 
   .projects-theater__stage {
     position: relative;
