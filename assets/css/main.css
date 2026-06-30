@@ -2115,6 +2115,15 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
 
+  /* La piste plus courte rendait l'anim 3× plus lente (mêmes 40s pour ~3× moins
+     de distance) → boucle perceptible. On raccourcit la durée pour retrouver une
+     vitesse naturelle. will-change garde la (petite) couche GPU vivante entre les
+     itérations → pas de hitch de re-rendu au bouclage. */
+  .brand-marquee__track {
+    animation-duration: 13s;
+    will-change: transform;
+  }
+
   /* --- Clients --- */
   .clients-section {
     padding: 4rem 0 5rem;
