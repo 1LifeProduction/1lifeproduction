@@ -56,10 +56,8 @@ body {
   font-family: var(--font);
   line-height: 1.6;
   min-height: 100vh;
-  /* clip (et non hidden) : empêche le débordement horizontal SANS créer de
-     conteneur de défilement — sinon position:sticky casse sur mobile (le stage
-     du carrousel ne se fige plus). */
-  overflow-x: clip;
+  /* hidden : supporté partout (clip cassait sur iOS < 16 → overflow-x mobile). */
+  overflow-x: hidden;
 }
 
 img, video, iframe { max-width: 100%; display: block; }
@@ -984,15 +982,19 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  /* La piste = 2 moitiés identiques ; l'anim translateX(-50%) boucle sans
-     couture. min-width: 220vw garantit que CHAQUE moitié (≥110vw) dépasse
-     toujours l'écran → plus de trou/troncature en fin de cycle sur les écrans
-     larges. space-around répartit les logos uniformément (jointure comprise)
-     quand le contenu est plus étroit que la piste. */
+  /* Piste = 2 moitiés identiques ; l'anim translateX(-50%) boucle sans couture. */
   width: max-content;
-  min-width: 220vw;
-  justify-content: space-around;
   animation: brand-marquee-scroll 40s linear infinite;
+}
+
+/* Desktop uniquement : garantir que chaque moitié (≥110vw) dépasse l'écran,
+   sinon trou/troncature en fin de cycle sur écrans larges. space-around répartit
+   uniformément. Inutile sur mobile (le contenu y dépasse déjà l'écran). */
+@media (min-width: 768px) {
+  .brand-marquee__track {
+    min-width: 220vw;
+    justify-content: space-around;
+  }
 }
 
 .brand-marquee:hover .brand-marquee__track { animation-play-state: paused; }
@@ -2080,6 +2082,10 @@ h1, h2, h3, h4, h5, h6 {
      visibles et rendu clairsemé. On réduit taille + marge + padding. */
   .brand-marquee {
     padding: 1.75rem 0;
+    /* mask-image désactivé sur mobile : il provoquait la disparition
+       intermittente des logos (bug de compositing GPU mobile). */
+    -webkit-mask-image: none;
+            mask-image: none;
   }
 
   .brand-marquee__logo {
