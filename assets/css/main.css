@@ -970,12 +970,28 @@ h1, h2, h3, h4, h5, h6 {
   padding: 3rem 0;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  /* Force une couche GPU stable : sans ça, sur mobile (iOS/Android), la
+     combinaison mask-image + enfant animé en transform fait "disparaître" les
+     logos par intermittence. */
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
 }
 
 .brand-marquee__track {
   display: flex;
   align-items: center;
+  /* Couche GPU dédiée + indice d'animation → compositing stable sur mobile. */
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  /* La piste = 2 moitiés identiques ; l'anim translateX(-50%) boucle sans
+     couture. min-width: 220vw garantit que CHAQUE moitié (≥110vw) dépasse
+     toujours l'écran → plus de trou/troncature en fin de cycle sur les écrans
+     larges. space-around répartit les logos uniformément (jointure comprise)
+     quand le contenu est plus étroit que la piste. */
   width: max-content;
+  min-width: 220vw;
+  justify-content: space-around;
   animation: brand-marquee-scroll 40s linear infinite;
 }
 
