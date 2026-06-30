@@ -20,12 +20,12 @@ const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
 
-/* Sensibilité (--step) + queue (--tail) du carrousel. Allégées sur mobile :
-   moins de distance de scroll immobilisée → scroll moins "lourd"/bloquant.
-   Partagées avec le CSS pour calculer la hauteur de section (voir main.css). */
-const isDesktop = ref(true)
-const step = computed(() => (isDesktop.value ? 0.5 : 0.35))
-const tail = computed(() => (isDesktop.value ? 0.9 : 0.5))
+/* --step : distance de scroll (en viewports) pour passer au projet suivant.
+   --tail : marge de scroll après le dernier projet avant que la section se
+   détache. Contrainte de validité : tail >= 1 - step, sinon le dernier projet
+   n'est jamais atteint tant que le stage est figé. Partagés avec le CSS. */
+const STEP = 0.5
+const TAIL = 0.8
 
 /* Hauteur de viewport mesurée en JS et exposée via --vh.
    On verrouille la valeur (mise à jour seulement si la LARGEUR change), ce qui
@@ -39,7 +39,6 @@ function measureVh() {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 }
 function onResize() {
-  isDesktop.value = window.innerWidth >= 768
   if (window.innerWidth === lastW) return
   lastW = window.innerWidth
   measureVh()
@@ -65,10 +64,13 @@ let ro: ResizeObserver | null = null
 function updateIndex() {
   const el = theaterRef.value
   if (!el) return
-  const scrolled = window.scrollY - el.offsetTop
+  // getBoundingClientRect().top = position du haut de la section / viewport.
+  // Indépendant de offsetParent (offsetTop pouvait être faussé selon les
+  // ancêtres positionnés). scrolled = distance scrollée depuis le haut de section.
+  const scrolled = -el.getBoundingClientRect().top
   if (scrolled < 0) { activeIndex.value = 0; return }
   const newIndex = Math.min(
-    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * step.value)),
+    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * STEP)),
     featured.length - 1
   )
   if (newIndex !== activeIndex.value) {
@@ -89,7 +91,6 @@ function onScroll() {
 
 onMounted(() => {
   lastW = window.innerWidth
-  isDesktop.value = window.innerWidth >= 768
   measureVh()
   updateIndex()
   document.fonts.ready.then(() => {
@@ -177,7 +178,7 @@ useHead({
     <section
       ref="theaterRef"
       class="projects-theater"
-      :style="{ '--project-count': featured.length, '--step': step, '--tail': tail }"
+      :style="{ '--project-count': featured.length, '--step': STEP, '--tail': TAIL }"
       aria-label="Projets mis en avant"
     >
       <!-- Blobs flottants — hors du stage pour déborder sur la section suivante -->

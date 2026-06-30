@@ -56,7 +56,10 @@ body {
   font-family: var(--font);
   line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden;
+  /* clip (et non hidden) : empêche le débordement horizontal SANS créer de
+     conteneur de défilement — sinon position:sticky casse sur mobile (le stage
+     du carrousel ne se fige plus). */
+  overflow-x: clip;
 }
 
 img, video, iframe { max-width: 100%; display: block; }
