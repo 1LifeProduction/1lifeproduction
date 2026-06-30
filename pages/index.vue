@@ -20,29 +20,13 @@ const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
 
-/* --step : distance de scroll (en viewports) pour passer au projet suivant.
-   --tail : marge de scroll après le dernier projet avant que la section se
-   détache. Contrainte de validité : tail >= 1 - step, sinon le dernier projet
-   n'est jamais atteint tant que le stage est figé. Partagés avec le CSS. */
-const STEP = 0.5
-const TAIL = 0.8
+/* STEP_VH : distance de scroll (par projet) du carrousel "théâtre" piloté au
+   scroll sur DESKTOP. Sur mobile le scroll-jack est désactivé (trop fragile)
+   au profit d'un défilement automatique — voir applyMode(). */
+const STEP    = 0.5
+const STEP_VH = STEP * 100
 
-/* Hauteur de viewport mesurée en JS et exposée via --vh.
-   On verrouille la valeur (mise à jour seulement si la LARGEUR change), ce qui
-   ignore les "resize" dus à la barre d'adresse mobile : ces resize changeaient
-   la hauteur (vh) de la page pendant le scroll et masquaient parfois le footer.
-   CSS et JS partagent ainsi la même base → le carrousel reste synchro au scroll. */
-const vhUnit = ref(0)
-let lastW = 0
-function measureVh() {
-  vhUnit.value = window.innerHeight
-  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
-}
-function onResize() {
-  if (window.innerWidth === lastW) return
-  lastW = window.innerWidth
-  measureVh()
-}
+const isDesktop = ref(true)
 
 /* Chemin du showreel (binding dynamique pour ne pas être résolu au build :
    le fichier public/showreel.mp4 peut être absent, le poster prend le relais). */
@@ -61,58 +45,73 @@ function fitTitle() {
 
 let ro: ResizeObserver | null = null
 
+/* DESKTOP — carrousel piloté au scroll (stage figé en sticky). */
 function updateIndex() {
   const el = theaterRef.value
   if (!el) return
-  // getBoundingClientRect().top = position du haut de la section / viewport.
-  // Indépendant de offsetParent (offsetTop pouvait être faussé selon les
-  // ancêtres positionnés). scrolled = distance scrollée depuis le haut de section.
-  const scrolled = -el.getBoundingClientRect().top
+  const scrolled = window.scrollY - el.offsetTop
   if (scrolled < 0) { activeIndex.value = 0; return }
   const newIndex = Math.min(
-    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * STEP)),
+    Math.floor(scrolled / (window.innerHeight * STEP)),
     featured.length - 1
   )
-  if (newIndex !== activeIndex.value) {
-    activeIndex.value = newIndex
-  }
+  if (newIndex !== activeIndex.value) activeIndex.value = newIndex
 }
 
-/* Throttle au frame : un seul recalcul par rendu, quel que soit le débit
-   d'événements scroll (mobile en émet beaucoup). */
+/* Throttle au frame : un seul recalcul par rendu d'écran. */
 let scrollRaf = 0
 function onScroll() {
   if (scrollRaf) return
-  scrollRaf = requestAnimationFrame(() => {
-    scrollRaf = 0
+  scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; updateIndex() })
+}
+
+/* MOBILE — défilement automatique (le scroll-jack est désactivé). */
+let autoTimer = 0
+function startAuto() {
+  stopAuto()
+  autoTimer = window.setInterval(() => {
+    activeIndex.value = (activeIndex.value + 1) % featured.length
+  }, 4000)
+}
+function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = 0 } }
+
+/* Bascule du mode selon le breakpoint (768px), comme la page À propos. */
+function applyMode() {
+  if (isDesktop.value) {
+    stopAuto()
+    window.addEventListener('scroll', onScroll, { passive: true })
     updateIndex()
-  })
+  } else {
+    window.removeEventListener('scroll', onScroll)
+    activeIndex.value = 0
+    startAuto()
+  }
+}
+
+let mq: MediaQueryList | undefined
+function onMq(e: MediaQueryListEvent | MediaQueryList) {
+  isDesktop.value = e.matches
+  applyMode()
 }
 
 onMounted(() => {
-  lastW = window.innerWidth
-  measureVh()
-  updateIndex()
+  mq = window.matchMedia('(min-width: 768px)')
+  isDesktop.value = mq.matches
+  mq.addEventListener('change', onMq)
+  applyMode()
   document.fonts.ready.then(() => {
     fitTitle()
     ro = new ResizeObserver(() => requestAnimationFrame(fitTitle))
     ro.observe(document.documentElement)
   })
-  // capture: true → on capte le scroll de N'IMPORTE quel conteneur de défilement
-  // (les événements scroll ne bullent pas ; sans capture, si le scroller n'est
-  // pas window — ex. body devenu scroll-container — le handler ne se déclenche
-  // jamais et le carrousel reste bloqué sur le 1er projet).
-  window.addEventListener('scroll', onScroll, { passive: true, capture: true })
-  window.addEventListener('resize', onResize, { passive: true })
-  window.addEventListener('orientationchange', measureVh)
 })
 
 onUnmounted(() => {
   ro?.disconnect()
   if (scrollRaf) cancelAnimationFrame(scrollRaf)
-  window.removeEventListener('scroll', onScroll, { capture: true })
-  window.removeEventListener('resize', onResize)
-  window.removeEventListener('orientationchange', measureVh)
+  stopAuto()
+  window.removeEventListener('scroll', onScroll)
+  mq?.removeEventListener('change', onMq)
 })
 
 useHead({
@@ -182,7 +181,7 @@ useHead({
     <section
       ref="theaterRef"
       class="projects-theater"
-      :style="{ '--project-count': featured.length, '--step': STEP, '--tail': TAIL }"
+      :style="{ '--project-count': featured.length, '--step-vh': `${STEP_VH}vh` }"
       aria-label="Projets mis en avant"
     >
       <!-- Blobs flottants — hors du stage pour déborder sur la section suivante -->
