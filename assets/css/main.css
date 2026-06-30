@@ -967,11 +967,26 @@ h1, h2, h3, h4, h5, h6 {
    BANDEAU MARQUES — marquee défilement continu
    =================================================== */
 .brand-marquee {
+  position: relative;
   overflow: hidden;
   padding: 3rem 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
+
+/* Fondu des bords par OVERLAY (et non mask-image, fragile sur mobile : il faisait
+   disparaître les logos). Cache aussi l'espace inter-logo qui "coupait" net au
+   bord. var(--bg) = #000 → dégradé propre, sans halo gris. */
+.brand-marquee::before,
+.brand-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  z-index: 2;
+  pointer-events: none;
+}
+.brand-marquee::before { left: 0;  background: linear-gradient(90deg,  var(--bg), transparent); }
+.brand-marquee::after  { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
 
 .brand-marquee__track {
   display: flex;
@@ -2083,10 +2098,6 @@ h1, h2, h3, h4, h5, h6 {
      visibles et rendu clairsemé. On réduit taille + marge + padding. */
   .brand-marquee {
     padding: 1.75rem 0;
-    /* mask-image désactivé sur mobile : il provoquait la disparition
-       intermittente des logos (bug de compositing GPU mobile). */
-    -webkit-mask-image: none;
-            mask-image: none;
   }
 
   .brand-marquee__logo {

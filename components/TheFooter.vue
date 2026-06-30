@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import logoBg        from '~/assets/images/logoBg.png'
-import logoBgBlack   from '~/assets/images/logoFooterBlack.png'
+import logoBg        from '~/assets/images/logoBg.webp'
+import logoBgBlack   from '~/assets/images/logoFooterBlack.webp'
 import logoImg       from '~/assets/images/logo.png'
 import logoBlackImg  from '~/assets/images/logoBlack.png'
 import arrowImg      from '~/assets/images/arrow.png'
@@ -9,6 +9,13 @@ const pageTheme     = useState<'dark' | 'light'>('pageTheme', () => 'dark')
 const isLight       = computed(() => pageTheme.value === 'light')
 const currentLogoBg = computed(() => isLight.value ? logoBgBlack : logoBg)
 const currentLogo   = computed(() => isLight.value ? logoBlackImg : logoImg)
+
+/* Le fond du footer est une image CSS (basse priorité) : sans préchargement il
+   est fetché en DERNIER → le footer "galère" à s'afficher. On le précharge en
+   priorité basse : il se charge tôt sans concurrencer le contenu au-dessus. */
+useHead(() => ({
+  link: [{ rel: 'preload', as: 'image', href: currentLogoBg.value, fetchpriority: 'low' }],
+}))
 
 const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
