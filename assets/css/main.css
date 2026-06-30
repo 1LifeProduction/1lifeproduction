@@ -2106,6 +2106,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 2.5rem;
   }
 
+  /* CRUCIAL mobile : on ne garde que 8 logos (= 2 moitiés identiques de 4, donc
+     boucle -50% toujours sans couture). La piste passe de ~2833px à ~950px : la
+     couche GPU animée (largeur × DPR) repasse SOUS la limite de texture des GPU
+     mobiles (~8192px à DPR 3), ce qui élimine la disparition/coupure du bandeau.
+     Le fondu en overlay masque le petit écart de bord éventuel. */
+  .brand-marquee__logo:nth-child(n + 9) {
+    display: none;
+  }
+
   /* --- Clients --- */
   .clients-section {
     padding: 4rem 0 5rem;
