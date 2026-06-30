@@ -2045,7 +2045,7 @@ h1, h2, h3, h4, h5, h6 {
     height: auto;
     /* Plus d'air autour du carrousel (surtout au-dessus) pour qu'il ne soit
        pas collé au titre du hero. */
-    padding: 4rem var(--gutter) 3rem;
+    padding: 6.5rem var(--gutter) 4.5rem;
   }
 
   .projects-theater__card {
@@ -2292,7 +2292,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .projects-theater__stage {
-    padding: 3rem var(--gutter) 2.5rem;
+    padding: 5.5rem var(--gutter) 4rem;
   }
 }
 
