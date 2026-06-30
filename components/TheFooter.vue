@@ -40,8 +40,8 @@ const socials = [
     <!-- GET IN TOUCH avec O remplacé par le logo -->
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
-        <img :src="arrowImg" alt="" class="footer__cta-arrow-img" aria-hidden="true" />
-        <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" /><span>UCH</span>
+        <img :src="arrowImg" alt="" class="footer__cta-arrow-img" aria-hidden="true" fetchpriority="high" />
+        <span>GET IN T</span><img :src="currentLogo" alt="" class="footer__cta-logo" aria-hidden="true" fetchpriority="high" /><span>UCH</span>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->
@@ -56,7 +56,7 @@ const socials = [
             :aria-label="s.name"
             class="footer__social-link"
           >
-            <img :src="`/icons/${s.file}`" :alt="s.name" class="footer__social-icon" />
+            <img :src="`/icons/${s.file}`" :alt="s.name" class="footer__social-icon" fetchpriority="high" />
           </a>
         </div>
         <a href="mailto:1lifeprod@unlockcollectif.com" class="footer__email">

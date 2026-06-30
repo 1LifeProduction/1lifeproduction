@@ -4,18 +4,6 @@ import heroImg from '~/assets/images/imgHeader.png'
 
 const featured = projectsData.filter(p => p.featured)
 
-const clients = [
-  { name: 'Formula 1', slug: 'f1'      },
-  { name: 'Nike',      slug: 'nike'    },
-  { name: 'Spotify',   slug: 'spotify' },
-  { name: 'Chanel',    slug: 'chanel'  },
-]
-
-/* Marquee : densifié puis dupliqué en deux moitiés identiques
-   pour une boucle continue sans couture (animation -> -50%). */
-const marqueeBase  = [...clients, ...clients, ...clients]
-const marqueeLogos = [...marqueeBase, ...marqueeBase]
-
 const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
@@ -229,23 +217,8 @@ useHead({
       </div>
     </section>
 
-    <!--
-      BANDEAU MARQUES — marquee en défilement continu.
-      TODO data : alimenté ici par les 4 logos clients existants (placeholder).
-      Pour brancher sur les marques des réalisations, voir liste finale.
-    -->
-    <section class="brand-marquee" aria-label="Marques" data-nav-theme="dark">
-      <div class="brand-marquee__track">
-        <img
-          v-for="(c, i) in marqueeLogos"
-          :key="`mq-${i}`"
-          :src="`/clients/${c.slug}.png`"
-          :alt="c.name"
-          class="brand-marquee__logo"
-          aria-hidden="true"
-        />
-      </div>
-    </section>
+    <!-- Bandeau marques — défilement continu (composant à boucle JS parfaite) -->
+    <BrandMarquee />
 
   </div>
 </template>

@@ -1,14 +1,4 @@
 <script setup lang="ts">
-/* Marques pour le bandeau défilant (identique à la home) */
-const clients = [
-  { name: 'Formula 1', slug: 'f1'      },
-  { name: 'Nike',      slug: 'nike'    },
-  { name: 'Spotify',   slug: 'spotify' },
-  { name: 'Chanel',    slug: 'chanel'  },
-]
-const marqueeBase  = [...clients, ...clients, ...clients]
-const marqueeLogos = [...marqueeBase, ...marqueeBase]
-
 // Hexagon vertices clockwise from top, matching SVG coords (container 760×780)
 const HEX_W = 760, HEX_H = 780
 const VERTICES = [
@@ -208,19 +198,8 @@ useHead({
       </div>
     </section>
 
-    <!-- Bandeau marques — marquee en défilement continu (identique à la home) -->
-    <section class="brand-marquee" aria-label="Marques" data-nav-theme="dark">
-      <div class="brand-marquee__track">
-        <img
-          v-for="(c, i) in marqueeLogos"
-          :key="`mq-${i}`"
-          :src="`/clients/${c.slug}.png`"
-          :alt="c.name"
-          class="brand-marquee__logo"
-          aria-hidden="true"
-        />
-      </div>
-    </section>
+    <!-- Bandeau marques — défilement continu (composant à boucle JS parfaite) -->
+    <BrandMarquee />
 
   </div>
 </template>

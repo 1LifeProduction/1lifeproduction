@@ -991,22 +991,21 @@ h1, h2, h3, h4, h5, h6 {
 .brand-marquee__track {
   display: flex;
   align-items: center;
-  /* Piste = 2 moitiés identiques ; l'anim translateX(-50%) boucle sans couture. */
+  /* Piste = 2 copies identiques. Le défilement est piloté en JS (rAF, wrap exact
+     en px) par le composant BrandMarquee → pas de saut au bouclage. */
   width: max-content;
-  animation: brand-marquee-scroll 40s linear infinite;
+  will-change: transform;
 }
 
-/* Desktop uniquement : garantir que chaque moitié (≥110vw) dépasse l'écran,
-   sinon trou/troncature en fin de cycle sur écrans larges. space-around répartit
-   uniformément. Inutile sur mobile (le contenu y dépasse déjà l'écran). */
+/* Desktop uniquement : garantir que chaque copie (≥110vw) dépasse l'écran, sinon
+   trou en bout de boucle sur écrans larges. space-around répartit uniformément
+   (et garde les 2 copies identiques → wrap JS invisible). Inutile sur mobile. */
 @media (min-width: 768px) {
   .brand-marquee__track {
     min-width: 220vw;
     justify-content: space-around;
   }
 }
-
-.brand-marquee:hover .brand-marquee__track { animation-play-state: paused; }
 
 .brand-marquee__logo {
   height: 40px;
@@ -1019,14 +1018,7 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.55;
 }
 
-@keyframes brand-marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brand-marquee__track { animation: none; }
-}
+/* (Défilement géré en JS — voir BrandMarquee.vue ; respecte prefers-reduced-motion.) */
 
 /* ===================================================
    ÉVÉNEMENTIEL / COMMERCIAL — page éditoriale
@@ -2115,14 +2107,6 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
 
-  /* La piste plus courte rendait l'anim 3× plus lente (mêmes 40s pour ~3× moins
-     de distance) → boucle perceptible. On raccourcit la durée pour retrouver une
-     vitesse naturelle. will-change garde la (petite) couche GPU vivante entre les
-     itérations → pas de hitch de re-rendu au bouclage. */
-  .brand-marquee__track {
-    animation-duration: 13s;
-    will-change: transform;
-  }
 
   /* --- Clients --- */
   .clients-section {
