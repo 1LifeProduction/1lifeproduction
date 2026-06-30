@@ -1,38 +1,32 @@
 <script setup lang="ts">
 /* Bandeau de marques — défilement continu PARFAITEMENT bouclé.
 
-   Pourquoi pas l'animation CSS `translateX(-50%)` : le `-50%` est un pourcentage
-   que le navigateur arrondit (sub-pixel), et le redémarrage de keyframe provoque
-   une re-rastérisation → "saut" visible au bouclage (surtout sur iOS).
+   Logos = content/clients.json (le client les édite/ajoute lui-même).
 
-   Ici : boucle en JS (rAF) qui translate la piste en PIXELS et "wrappe" exactement
-   de la largeur d'UNE copie (mesurée). Comme la piste contient 2 copies identiques,
-   le wrap est invisible → boucle parfaite, sans saut, sur tous les appareils.
-   C'est la même approche que GSAP horizontalLoop, sans la dépendance. */
+   Boucle : pilotée en JS (rAF) qui translate la piste en PIXELS et "wrappe"
+   exactement de la largeur d'UN groupe (mesurée). Les 2 groupes étant identiques,
+   le wrap est invisible → boucle parfaite sans saut, sur tous les appareils.
+   (Même principe que GSAP horizontalLoop, sans la dépendance.) */
 
-const clients = [
-  { name: 'Formula 1', slug: 'f1'      },
-  { name: 'Nike',      slug: 'nike'    },
-  { name: 'Spotify',   slug: 'spotify' },
-  { name: 'Chanel',    slug: 'chanel'  },
-]
-
-// Liste densifiée puis dupliquée → 2 copies identiques.
-// (Sur mobile, le CSS masque les logos au-delà du 8e → piste courte = couche GPU
-//  sous la limite de texture ; setWidth est mesuré, donc le wrap reste exact.)
-const baseLogos = [...clients, ...clients, ...clients]
-const logos     = [...baseLogos, ...baseLogos]
+import clients from '~/content/clients.json'
 
 const SPEED = 50 // px/s — vitesse constante quelle que soit la largeur d'écran
 
-const trackRef = ref<HTMLElement>()
-let raf = 0
-let offset = 0
-let setWidth = 0   // largeur d'UNE copie = largeur visible de piste / 2
-let lastTs = 0
-let paused = false   // survol (hover)
-let visible = true   // dans le viewport (IntersectionObserver)
-let reduced = false
+const trackRef   = ref<HTMLElement>()
+const sectionRef = ref<HTMLElement>()
+const isMobile   = ref(false)
+
+/* Densité vs perf GPU :
+   - desktop : on répète la liste (×3) pour bien remplir la largeur ;
+   - mobile  : une seule passe → piste courte = couche GPU sous la limite de
+     texture des mobiles (sinon le bandeau "coupe"/disparaît).
+   Le rAF mesure la largeur réelle, donc le défilement reste exact quel que soit
+   le nombre de logos. */
+const reps  = computed(() => (isMobile.value ? 1 : 3))
+const group = computed(() => Array.from({ length: reps.value }).flatMap(() => clients))
+
+let raf = 0, offset = 0, setWidth = 0, lastTs = 0
+let paused = false, visible = true, reduced = false
 
 function measure() {
   const el = trackRef.value
@@ -45,7 +39,7 @@ function frame(ts: number) {
   lastTs = ts
   if (!paused && visible && !reduced && setWidth > 0) {
     offset -= SPEED * dt
-    if (offset <= -setWidth) offset += setWidth // wrap exact (invisible)
+    while (offset <= -setWidth) offset += setWidth // wrap exact (invisible)
     if (trackRef.value) trackRef.value.style.transform = `translateX(${offset}px)`
   }
   raf = requestAnimationFrame(frame)
@@ -53,17 +47,23 @@ function frame(ts: number) {
 
 let ro: ResizeObserver | null = null
 let io: IntersectionObserver | null = null
-const sectionRef = ref<HTMLElement>()
+let mq: MediaQueryList | undefined
+function onMq(e: MediaQueryListEvent | MediaQueryList) {
+  isMobile.value = e.matches
+  nextTick(measure)
+}
 
 onMounted(() => {
   reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  mq = window.matchMedia('(max-width: 767px)')
+  isMobile.value = mq.matches
+  mq.addEventListener('change', onMq)
   measure()
-  // La largeur change quand logos/police finissent de charger → re-mesure.
+  // La largeur change quand logos/police chargent, ou quand reps change → re-mesure.
   ro = new ResizeObserver(measure)
   if (trackRef.value) ro.observe(trackRef.value)
   if (document.fonts?.ready) document.fonts.ready.then(measure)
-  // Pause le défilement quand le bandeau est hors écran (évite de faire tourner
-  // le rAF en continu pour rien sur mobile).
+  // Pause le défilement hors écran (pas de rAF qui tourne pour rien).
   io = new IntersectionObserver(([e]) => { visible = e.isIntersecting }, { rootMargin: '50px' })
   if (sectionRef.value) io.observe(sectionRef.value)
   raf = requestAnimationFrame(frame)
@@ -73,6 +73,7 @@ onUnmounted(() => {
   cancelAnimationFrame(raf)
   ro?.disconnect()
   io?.disconnect()
+  mq?.removeEventListener('change', onMq)
 })
 </script>
 
@@ -86,14 +87,27 @@ onUnmounted(() => {
     @mouseleave="paused = false"
   >
     <div ref="trackRef" class="brand-marquee__track">
-      <img
-        v-for="(c, i) in logos"
-        :key="`mq-${i}`"
-        :src="`/clients/${c.slug}.png`"
-        :alt="c.name"
-        class="brand-marquee__logo"
-        aria-hidden="true"
-      />
+      <!-- 2 groupes IDENTIQUES : la boucle wrappe exactement d'un groupe -->
+      <div class="brand-marquee__group">
+        <img
+          v-for="(c, i) in group"
+          :key="`a-${i}`"
+          :src="`/clients/${c.logo}`"
+          :alt="c.nom"
+          class="brand-marquee__logo"
+          aria-hidden="true"
+        />
+      </div>
+      <div class="brand-marquee__group" aria-hidden="true">
+        <img
+          v-for="(c, i) in group"
+          :key="`b-${i}`"
+          :src="`/clients/${c.logo}`"
+          :alt="c.nom"
+          class="brand-marquee__logo"
+          aria-hidden="true"
+        />
+      </div>
     </div>
   </section>
 </template>

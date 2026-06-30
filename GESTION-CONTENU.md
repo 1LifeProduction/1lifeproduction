@@ -68,7 +68,7 @@ La `category` doit appartenir à la même `section` :
 - `films`
 - `scenographie-3d`
 
-> Ces catégories sont définies dans `data/categories.ts`. Si une nouvelle catégorie est nécessaire, c'est ce fichier qu'il faut faire évoluer (demander à un dev).
+> La **liste** des catégories (slugs) est définie dans `data/categories.ts`. Si une nouvelle catégorie est nécessaire, c'est ce fichier qu'il faut faire évoluer (demander à un dev). Pour modifier leurs **textes** (titres, descriptions, mots-clés), voir la [section 2](#2-les-textes-des-catégories-titres-descriptions-mots-clés).
 
 ### Où apparaît un projet ?
 
@@ -136,7 +136,97 @@ Pour changer la vignette : déposer la nouvelle image dans `public/thumbnails/` 
 
 ---
 
-## 2. Les membres de l'équipe (page « À propos »)
+## 2. Les textes des catégories (titres, descriptions, mots-clés)
+
+Tous les **textes** des catégories et sous-catégories sont dans :
+
+```
+content/categories.json
+```
+
+> 💡 On ne modifie que ce qui est **entre les guillemets `"..."`**. On ne touche **jamais** aux clés à gauche des `:` (comme `captations`, `titre`, `description`) : elles servent aux adresses des pages.
+
+### Structure d'une sous-catégorie
+
+```json
+"captations": {
+  "titre": "Captations",
+  "description": "Nous capturons vos événements avec précision...",
+  "tags": ["Multicaméra", "Conférences", "Festivals", "Son pro"]
+}
+```
+
+| Champ | Description |
+|-------|-------------|
+| `titre` | Le nom affiché de la (sous-)catégorie. |
+| `description` | Le texte de présentation. Laisser `""` (vide) si pas encore rédigé → un repère `{{...}}` s'affiche en attendant. |
+| `tags` | Les petites bulles de mots-clés. Liste entre crochets, chaque mot entre guillemets, séparés par des virgules. `[]` = aucune bulle. |
+
+### Exemple — remplir une description vide
+
+Avant :
+```json
+"clips": {
+  "titre": "Clips",
+  "description": "",
+  "tags": []
+}
+```
+
+Après :
+```json
+"clips": {
+  "titre": "Clips",
+  "description": "Nous réalisons des clips musicaux à l'identité forte, du concept au montage.",
+  "tags": ["Musique", "Réalisation", "Montage"]
+}
+```
+
+> ⚠️ Pour **ajouter une nouvelle catégorie** (et pas seulement modifier son texte), il faut faire évoluer `data/categories.ts` → demander à un dev. Ici, vous modifiez uniquement **les textes** des catégories existantes.
+
+---
+
+## 3. Les logos clients (bandeau défilant)
+
+Le bandeau de logos qui défile (accueil + page « À propos ») est alimenté par :
+
+```
+content/clients.json
+```
+
+### Étape 1 — Déposer l'image du logo
+Placez le fichier dans le dossier **`public/clients/`**.
+
+- Format conseillé : **PNG à fond transparent**.
+- ⚠️ Les logos sont affichés **en blanc** (un filtre est appliqué automatiquement) : choisissez des logos lisibles en silhouette unie (un logo monochrome rend mieux).
+- Exemple : `public/clients/adidas.png`
+
+### Étape 2 — L'ajouter à la liste
+Ouvrez `content/clients.json` et ajoutez une ligne :
+
+```json
+[
+  { "nom": "Formula 1", "logo": "f1.png" },
+  { "nom": "Nike", "logo": "nike.png" },
+  { "nom": "Spotify", "logo": "spotify.png" },
+  { "nom": "Chanel", "logo": "chanel.png" },
+  { "nom": "Adidas", "logo": "adidas.png" }
+]
+```
+
+| Champ | Description |
+|-------|-------------|
+| `nom` | Le nom de la marque (pour l'accessibilité). |
+| `logo` | Le **nom exact du fichier** déposé dans `public/clients/`. |
+
+- Mettre une **virgule** entre chaque ligne, mais **pas** après la dernière.
+- Pour **supprimer** un logo : effacer sa ligne.
+
+> 💡 **Conseil** : garder le bandeau à **~10 logos maximum** pour qu'il reste fluide sur les téléphones. Au-delà, le défilement peut saccader sur certains mobiles.
+
+---
+
+## 4. Les membres de l'équipe (page « À propos »)
 
 L'équipe s'affiche dans l'**hexagone** de la page `/a-propos`. Elle est définie dans :
 
@@ -184,7 +274,7 @@ Soit on remplace directement le fichier dans `public/team/` (en gardant le même
 
 ---
 
-## 3. Bonus — réseaux sociaux & e-mail du footer
+## 5. Bonus — réseaux sociaux & e-mail du footer
 
 Les liens des réseaux sociaux et l'adresse e-mail se trouvent dans :
 

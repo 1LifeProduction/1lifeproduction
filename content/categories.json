@@ -1,0 +1,64 @@
+{
+  "_aide": "Modifie ici les TITRES, DESCRIPTIONS et TAGS des catégories. Ne change PAS les clés (captations, produits, etc.) ni la structure. Voir GESTION-CONTENU.md.",
+
+  "evenementiel": {
+    "titre": "Événementiel"
+  },
+  "commercial": {
+    "titre": "Commercial"
+  },
+
+  "sous-categories": {
+    "captations": {
+      "titre": "Captations",
+      "description": "Nous capturons vos événements avec précision pour en retranscrire toute l'énergie. Conférences, lancements, performances ou soirées : chaque moment est pensé pour être documenté avec justesse et impact.",
+      "tags": ["Multicaméra", "Conférences", "Festivals", "Son pro"]
+    },
+    "livestreams": {
+      "titre": "Livestreams",
+      "description": "Diffusez vos événements en direct avec une qualité de production professionnelle. Nous assurons une diffusion sur les plateformes adaptées pour toucher votre audience en temps réel.",
+      "tags": []
+    },
+    "lives-sessions": {
+      "titre": "Lives sessions",
+      "description": "",
+      "tags": []
+    },
+    "afterfilms": {
+      "titre": "Afterfilms",
+      "description": "Des images pensées pour prolonger l'expérience au-delà de l'événement. Nous réalisons des afterfilms immersifs qui retranscrivent l'ambiance, l'intensité et les temps forts avec un regard cinématographique.",
+      "tags": []
+    },
+
+    "podcasts-emissions": {
+      "titre": "Podcasts & Émissions",
+      "description": "Captation vidéo de vos podcasts et émissions avec une mise en image professionnelle. Son soigné, cadrage dynamique et post-production adaptée pour valoriser vos contenus sur toutes les plateformes.",
+      "tags": []
+    },
+    "produits": {
+      "titre": "Produits",
+      "description": "Nous mettons en valeur vos produits à travers une direction artistique soignée. Chaque détail est pensé pour sublimer la matière, la forme et l'identité de marque avec une image nette et impactante.",
+      "tags": []
+    },
+    "publicites-vfx": {
+      "titre": "Publicités & VFX",
+      "description": "Des spots publicitaires percutants pour diffuser votre message sur tous les écrans. Concept, tournage, montage : nous prenons en charge chaque étape pour livrer une publicité mémorable et efficace.",
+      "tags": ["Spots", "VFX / CGI", "Campagnes"]
+    },
+    "clips": {
+      "titre": "Clips",
+      "description": "",
+      "tags": []
+    },
+    "films": {
+      "titre": "Films",
+      "description": "Des films de marque à la narration cinématographique, conçus pour ancrer votre identité dans l'imaginaire de votre audience. Nous construisons des récits visuels qui donnent du sens à votre univers.",
+      "tags": []
+    },
+    "scenographie-3d": {
+      "titre": "Scénographie & 3D",
+      "description": "",
+      "tags": []
+    }
+  }
+}
