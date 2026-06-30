@@ -20,10 +20,12 @@ const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
 
-/* Sensibilité du carrousel : fraction de viewport à scroller pour
-   passer au projet suivant. Plus petit = plus sensible (moins de scroll).
-   La hauteur de section est dérivée en CSS via --vh + --step (voir main.css). */
-const STEP = 0.5
+/* Sensibilité (--step) + queue (--tail) du carrousel. Allégées sur mobile :
+   moins de distance de scroll immobilisée → scroll moins "lourd"/bloquant.
+   Partagées avec le CSS pour calculer la hauteur de section (voir main.css). */
+const isDesktop = ref(true)
+const step = computed(() => (isDesktop.value ? 0.5 : 0.35))
+const tail = computed(() => (isDesktop.value ? 0.9 : 0.5))
 
 /* Hauteur de viewport mesurée en JS et exposée via --vh.
    On verrouille la valeur (mise à jour seulement si la LARGEUR change), ce qui
@@ -37,6 +39,7 @@ function measureVh() {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 }
 function onResize() {
+  isDesktop.value = window.innerWidth >= 768
   if (window.innerWidth === lastW) return
   lastW = window.innerWidth
   measureVh()
@@ -59,13 +62,13 @@ function fitTitle() {
 
 let ro: ResizeObserver | null = null
 
-function onScroll() {
+function updateIndex() {
   const el = theaterRef.value
   if (!el) return
   const scrolled = window.scrollY - el.offsetTop
-  if (scrolled < 0) return
+  if (scrolled < 0) { activeIndex.value = 0; return }
   const newIndex = Math.min(
-    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * STEP)),
+    Math.floor(scrolled / ((vhUnit.value || window.innerHeight) * step.value)),
     featured.length - 1
   )
   if (newIndex !== activeIndex.value) {
@@ -73,9 +76,22 @@ function onScroll() {
   }
 }
 
+/* Throttle au frame : un seul recalcul par rendu, quel que soit le débit
+   d'événements scroll (mobile en émet beaucoup). */
+let scrollRaf = 0
+function onScroll() {
+  if (scrollRaf) return
+  scrollRaf = requestAnimationFrame(() => {
+    scrollRaf = 0
+    updateIndex()
+  })
+}
+
 onMounted(() => {
   lastW = window.innerWidth
+  isDesktop.value = window.innerWidth >= 768
   measureVh()
+  updateIndex()
   document.fonts.ready.then(() => {
     fitTitle()
     ro = new ResizeObserver(() => requestAnimationFrame(fitTitle))
@@ -88,6 +104,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   ro?.disconnect()
+  if (scrollRaf) cancelAnimationFrame(scrollRaf)
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('resize', onResize)
   window.removeEventListener('orientationchange', measureVh)
@@ -160,7 +177,7 @@ useHead({
     <section
       ref="theaterRef"
       class="projects-theater"
-      :style="{ '--project-count': featured.length, '--step': STEP }"
+      :style="{ '--project-count': featured.length, '--step': step, '--tail': tail }"
       aria-label="Projets mis en avant"
     >
       <!-- Blobs flottants — hors du stage pour déborder sur la section suivante -->

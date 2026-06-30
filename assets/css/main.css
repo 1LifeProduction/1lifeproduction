@@ -707,7 +707,7 @@ h1, h2, h3, h4, h5, h6 {
      --vh et --step sont injectés par index.vue ; --vh (= 1% de innerHeight)
      est partagé avec le JS du carrousel pour rester synchro sur mobile.
      Repli 1vh tant que le JS n'a pas tourné (sortie statique). */
-  height: calc(var(--vh, 1vh) * (var(--project-count, 3) * var(--step, 0.5) + 0.9) * 100);
+  height: calc(var(--vh, 1vh) * (var(--project-count, 3) * var(--step, 0.5) + var(--tail, 0.9)) * 100);
   position: relative;
   overflow: visible;
 }
