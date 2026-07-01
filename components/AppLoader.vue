@@ -7,18 +7,79 @@
  * Puis fondu de sortie. Uniquement transform/opacity → animations GPU.
  */
 
-// Durée de la séquence avant le fondu (rotation + aimantation de tous les cercles).
+// Durée MINIMALE d'affichage : l'animation joue au moins une fois en entier.
 // Doit rester >= au plus grand --md (délai d'aimantation) + 0.7s.
 const SEQUENCE_MS = 4300
+// Plafond de sécurité : on ne reste jamais bloqué au-delà, même si une ressource traîne.
+const MAX_WAIT_MS = 9000
 
 const exiting = ref(false)
 const hidden  = ref(false)
 
 onMounted(() => {
-  setTimeout(() => {
+  // ── Verrou de scroll pendant le loader (surtout mobile : empêche de scroller
+  //    la page derrière l'overlay). Ici html est le conteneur de défilement :
+  //    overflow:hidden ne suffit pas (propagation vers le viewport), on fige donc
+  //    body en position:fixed. Le scroll vaut 0 au chargement initial → aucun saut.
+  const html = document.documentElement
+  const body = document.body
+  const prev = {
+    htmlOverflow: html.style.overflow,
+    position:     body.style.position,
+    top:          body.style.top,
+    left:         body.style.left,
+    right:        body.style.right,
+    width:        body.style.width,
+    overflow:     body.style.overflow,
+    touchAction:  body.style.touchAction,
+    overscroll:   body.style.overscrollBehavior,
+  }
+  html.style.overflow = 'hidden'
+  body.style.position = 'fixed'
+  body.style.top = '0'
+  body.style.left = '0'
+  body.style.right = '0'
+  body.style.width = '100%'
+  body.style.overflow = 'hidden'
+  body.style.touchAction = 'none'          // bloque le geste de scroll tactile
+  body.style.overscrollBehavior = 'none'   // supprime le rebond (rubber-band) iOS
+
+  const unlock = () => {
+    html.style.overflow = prev.htmlOverflow
+    body.style.position = prev.position
+    body.style.top = prev.top
+    body.style.left = prev.left
+    body.style.right = prev.right
+    body.style.width = prev.width
+    body.style.overflow = prev.overflow
+    body.style.touchAction = prev.touchAction
+    body.style.overscrollBehavior = prev.overscroll
+  }
+
+  // ── Sortie : quand l'animation a joué (>= SEQUENCE_MS) ET que la page est
+  //    réellement chargée (footer + images prêts), avec un plafond de sécurité ─
+  const t0 = performance.now()
+  let started = false
+  const startExit = () => {
+    if (started) return
+    started = true
     exiting.value = true
-    setTimeout(() => { hidden.value = true }, 700) // = durée du fondu
-  }, SEQUENCE_MS)
+    setTimeout(() => {
+      hidden.value = true
+      unlock()
+    }, 700) // = durée du fondu
+  }
+
+  const onReady = () => {
+    const wait = Math.max(0, SEQUENCE_MS - (performance.now() - t0))
+    setTimeout(startExit, wait)
+  }
+
+  if (document.readyState === 'complete') onReady()
+  else window.addEventListener('load', onReady, { once: true })
+
+  // Filet de sécurité : quoi qu'il arrive, on sort au bout de MAX_WAIT_MS.
+  setTimeout(startExit, MAX_WAIT_MS)
 })
 </script>
 
