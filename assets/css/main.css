@@ -63,6 +63,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Conteneur racine du site : clippe tout débordement horizontal résiduel
+   (décors absolus type .about-team__sphere, sous-pixels du header fixe…).
+   IMPORTANT : overflow-x:clip — PAS hidden — car clip ne crée pas de conteneur
+   de défilement → position:sticky (carrousel desktop) reste intact. On ne touche
+   toujours PAS à <html> (là, ça casserait le sticky). Body a déjà overflow-x:hidden
+   mais html étant le scroller, seul le clip sur .app supprime le scroll horizontal. */
+.app {
+  overflow-x: clip;
+}
+
 img, video, iframe { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
