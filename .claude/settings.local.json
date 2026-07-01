@@ -35,7 +35,24 @@
       "PowerShell(Get-Process *)",
       "PowerShell(try { Stop-Process -Id 30064 -Force -ErrorAction Stop; \"killed 30064\" } catch { $_.Exception.Message })",
       "Bash(git checkout *)",
-      "Bash(npm ci *)"
+      "Bash(npm ci *)",
+      "Bash(ffprobe *)",
+      "Bash(mkdir -p /tmp/loaderframes)",
+      "Bash(ffmpeg -y -v error -i videoLoader.mov -vf \"fps=25,scale=307:-1,tile=5x5,drawbox=color=gray@1:t=fill\" /tmp/loaderframes/nope.png)",
+      "Bash(ffmpeg -y -v error -i videoLoader.mov -vf \"select='not\\(mod\\(n\\\\,25\\)\\)',scale=200:-1,tile=5x2\" -frames:v 1 -filter_complex \"color=gray\" /tmp/loaderframes/test.png)",
+      "Bash(ffmpeg -y -v error -i videoLoader.mov -filter_complex \"color=c=black:s=613x400[bg];[0:v]crop=613:400:0:230,fps=2.5[cr];[bg][cr]overlay=shortest=1,eq=contrast=3.0,scale=300:-1,tile=5x5\" -frames:v 1 -update 1 \"C:/Users/arthu/AppData/Local/Temp/loaderframes/zoom.png\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --disable-gpu --hide-scrollbars --window-size=520,520 --screenshot=preview.png --virtual-time-budget=1200 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview.html\")",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=520,520 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cud\" --screenshot=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/shot.png\" --virtual-time-budget=1500 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview.html\")",
+      "Bash(grep -qiE \"Local:|listening|http://localhost\" /tmp/nuxtdev.log)",
+      "Bash(break)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /tmp/home.html -w \"%{http_code}\" http://localhost:3123/)",
+      "Bash(curl -s -o /dev/null -w \"server 3124: %{http_code}\\\\n\" http://localhost:3124/evenementiel)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(taskkill //F //IM chrome.exe)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --remote-debugging-port=9334 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2\" \"about:blank\")",
+      "Bash(curl -s http://localhost:9334/json/version)",
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=375,812 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2b\" --screenshot=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/loader_mobile.png\" --virtual-time-budget=1500 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview2.html\")"
     ]
   }
 }
