@@ -758,7 +758,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .theater__img.is-active { opacity: 1; }
 
-.projects-theater__card { cursor: default; }
+.projects-theater__card { cursor: pointer; }
 
 /* Theater — fade texte */
 .theater-text-enter-active,

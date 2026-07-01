@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import projectsData from '~/data/projects.json'
 import heroImg from '~/assets/images/imgHeader.png'
+import { categoryHref, type Section } from '~/data/categories'
 
 const featured = projectsData.filter(p => p.featured)
 
 const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
 const activeIndex = ref(0)
+
+/* Lien du projet affiché : renvoie vers sa page catégorie (ex. /evenementiel?category=captations). */
+const activeHref = computed(() =>
+  categoryHref(featured[activeIndex.value].section as Section, featured[activeIndex.value].category),
+)
 
 /* STEP_VH : distance de scroll (par projet) du carrousel "théâtre" piloté au
    scroll sur DESKTOP. Sur mobile le scroll-jack est désactivé (trop fragile)
@@ -189,8 +195,12 @@ useHead({
 
       <div class="projects-theater__stage">
 
-        <!-- Bloc fixe : images stackées en crossfade -->
-        <div class="project-card projects-theater__card">
+        <!-- Bloc fixe : images stackées en crossfade — cliquable vers la catégorie -->
+        <NuxtLink
+          :to="activeHref"
+          class="project-card projects-theater__card"
+          :aria-label="`Voir ${featured[activeIndex].title}`"
+        >
           <img
             v-for="(p, i) in featured"
             :key="p.id"
@@ -206,7 +216,7 @@ useHead({
               </div>
             </Transition>
           </div>
-        </div>
+        </NuxtLink>
 
         <!-- Indicateur de progression -->
         <div class="projects-theater__dots" aria-hidden="true">

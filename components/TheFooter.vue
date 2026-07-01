@@ -9,6 +9,19 @@ import arrowImg from '~/assets/images/arrow.png'
    encombrait le chargement du footer. On ne référence que les variantes sombres.
    (Si un thème clair est ajouté un jour, recâbler ici via pageTheme.) */
 
+/* Sur une page en thème clair (ex. /commercial), le footer passe en variantes NOIRES :
+   - le "O" de GET IN T[O]UCH → logoBlack.png
+   - le background du footer   → logoFooterBlack.png
+   Ces variantes sont servies depuis /public (et non importées) pour ne PAS être
+   préchargées sur les pages sombres qui ne s'en servent jamais. */
+const pageTheme = useState<'dark' | 'light'>('pageTheme', () => 'dark')
+const ctaLogo = computed(() =>
+  pageTheme.value === 'light' ? '/logoBlack.png' : logoImg,
+)
+const footerBg = computed(() =>
+  pageTheme.value === 'light' ? 'url(/logoFooterBlack.png)' : `url(${logoBg})`,
+)
+
 const socials = [
   { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
   { name: 'YouTube',   file: 'youtube.png',    href: 'https://www.youtube.com/@1LifeProduction' },
@@ -19,7 +32,7 @@ const socials = [
 </script>
 
 <template>
-  <footer class="footer" :style="{ backgroundImage: `url(${logoBg})` }">
+  <footer class="footer" :style="{ backgroundImage: footerBg }">
 
     <!-- Nav 4 liens principaux -->
     <nav class="footer__nav" aria-label="Navigation footer">
@@ -33,7 +46,7 @@ const socials = [
     <div class="footer__bottom">
       <NuxtLink to="/contact" class="footer__cta" aria-label="Nous contacter">
         <img :src="arrowImg" alt="" class="footer__cta-arrow-img" aria-hidden="true" fetchpriority="high" />
-        <span>GET IN T</span><img :src="logoImg" alt="" class="footer__cta-logo" aria-hidden="true" fetchpriority="high" /><span>UCH</span>
+        <span>GET IN T</span><img :src="ctaLogo" alt="" class="footer__cta-logo" aria-hidden="true" fetchpriority="high" /><span>UCH</span>
       </NuxtLink>
 
       <!-- Réseaux sociaux + email -->
