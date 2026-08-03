@@ -666,6 +666,10 @@ h1, h2, h3, h4, h5, h6 {
   height: auto;
   max-height: 86vh;
   z-index: 1;
+  /* La cellule de grille suit la hauteur 16:9 de la carte : sans ça, la hauteur
+     intrinsèque des images étire la ligne → l'overlay (et donc le texte, calé en
+     bas) déborde sous la carte et sort du viewport. */
+  grid-template-rows: 100%;
 }
 
 /* Theater — images en crossfade (absolute : remplissent exactement la carte,

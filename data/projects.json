@@ -20,9 +20,9 @@
     "year": 2025,
     "client": "Sköne",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["session", "live"],
+    "thumbnail": "/thumbnails/skone-live-session.jpg",
+    "description": "Live session de Sköne : performance filmée en conditions live, mise en lumière et montage rythmé.",
+    "tags": ["live session", "musique", "performance"],
     "featured": false
   },
   {
@@ -108,12 +108,12 @@
     "title": "CKO × NIKE",
     "section": "live",
     "category": "livestream",
-    "year": 2025,
+    "year": 2024,
     "client": "CKO × Nike",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["livestream", "direct"],
+    "thumbnail": "/thumbnails/cko.png",
+    "description": "Diffusion en direct d'un événement CKO avec une réalisation multicaméra et une qualité de production professionnelle.",
+    "tags": ["livestream", "direct", "multicaméra"],
     "featured": false
   },
   {
@@ -124,9 +124,9 @@
     "year": 2025,
     "client": "Brutalismus 3000",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["livestream", "direct"],
+    "thumbnail": "/thumbnails/fdlm-brutalismus.png",
+    "description": "Livestream du set Brutalismus : diffusion en temps réel, ambiance club et rendu haute intensité.",
+    "tags": ["livestream", "club", "musique"],
     "featured": false
   },
   {
@@ -134,12 +134,12 @@
     "title": "GÂTINAIS LIBRE",
     "section": "live",
     "category": "livestream",
-    "year": 2025,
+    "year": 2024,
     "client": "Gâtinais Libre",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["livestream", "direct"],
+    "thumbnail": "/thumbnails/gatinais-libre.png",
+    "description": "Diffusion en direct de l'événement Gâtinais Libre pour toucher l'audience au-delà du lieu, en temps réel.",
+    "tags": ["livestream", "direct", "événement"],
     "featured": false
   },
   {
@@ -176,9 +176,9 @@
     "year": 2025,
     "client": "Charlatte",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["film de marque"],
+    "thumbnail": "/thumbnails/charlatte.png",
+    "description": "Film de marque pour Charlatte : narration cinématographique conçue pour ancrer l'identité dans l'imaginaire.",
+    "tags": ["film", "marque", "narration"],
     "featured": false
   },
   {
@@ -273,6 +273,19 @@
     "featured": false
   },
   {
+    "id": "loewe",
+    "title": "LOEWE",
+    "section": "marque",
+    "category": "film-produit",
+    "year": 2026,
+    "client": "Loewe",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/loewe.png",
+    "description": "Mise en valeur produit pour Loewe : direction artistique soignée, image nette et matière sublimée.",
+    "tags": ["produit", "luxe", "studio"],
+    "featured": false
+  },
+  {
     "id": "lacoste-podcast",
     "title": "LACOSTE",
     "section": "marque",
@@ -309,6 +322,19 @@
     "thumbnail": "",
     "description": "",
     "tags": ["podcast", "émission"],
+    "featured": false
+  },
+  {
+    "id": "vertical-art",
+    "title": "VERTICAL'ART",
+    "section": "marque",
+    "category": "podcasts-emissions",
+    "year": 2025,
+    "client": "Vertical'Art",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/vertical-art.png",
+    "description": "Captation vidéo d'une émission Vertical'Art : mise en image professionnelle, son soigné et cadrage dynamique.",
+    "tags": ["podcast", "émission", "plateau"],
     "featured": false
   },
   {
@@ -351,6 +377,19 @@
     "featured": false
   },
   {
+    "id": "uniqlo",
+    "title": "UNIQLO",
+    "section": "marque",
+    "category": "publicite-vfx",
+    "year": 2025,
+    "client": "Uniqlo",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/uniqlo.png",
+    "description": "Publicité Uniqlo avec intégration VFX : concept, tournage et post-production pour un spot percutant.",
+    "tags": ["publicité", "vfx", "campagne"],
+    "featured": false
+  },
+  {
     "id": "vagabond-studio",
     "title": "VAGABOND STUDIO",
     "section": "marque",
@@ -368,12 +407,12 @@
     "title": "COACHELLA",
     "section": "marque",
     "category": "3d-scenographie",
-    "year": 2025,
+    "year": 2026,
     "client": "Coachella",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["3d", "scénographie"],
+    "thumbnail": "/thumbnails/coachella.png",
+    "description": "Scénographie et 3D pour Coachella : conception d'espaces et rendus immersifs au service de l'expérience.",
+    "tags": ["scénographie", "3d", "événement"],
     "featured": false
   },
   {
@@ -381,12 +420,12 @@
     "title": "SHOW SCÉNO",
     "section": "marque",
     "category": "3d-scenographie",
-    "year": 2025,
-    "client": "",
+    "year": 2026,
+    "client": "1LIFE Production",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["3d", "scénographie"],
+    "thumbnail": "/thumbnails/scenographie-showreel.png",
+    "description": "Showreel de nos travaux de scénographie et 3D : aperçu des concepts, rendus et réalisations immersives.",
+    "tags": ["showreel", "3d", "scénographie"],
     "featured": false
   },
   {
@@ -394,10 +433,10 @@
     "title": "CKO × NIKE",
     "section": "evenementiel",
     "category": "aftermovie",
-    "year": 2025,
+    "year": 2024,
     "client": "CKO × Nike",
     "vimeo_url": "",
-    "thumbnail": "",
+    "thumbnail": "/thumbnails/cko.png",
     "description": "",
     "tags": ["aftermovie"],
     "featured": false
@@ -407,12 +446,12 @@
     "title": "COULEUR CAFÉ FESTIVAL",
     "section": "evenementiel",
     "category": "aftermovie",
-    "year": 2025,
+    "year": 2024,
     "client": "Couleur Café",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["aftermovie", "festival"],
+    "thumbnail": "/thumbnails/couleur-cafe-festival.png",
+    "description": "Afterfilm du festival Couleur Café : énergie des scènes, public et temps forts condensés dans un montage immersif.",
+    "tags": ["afterfilm", "festival", "musique"],
     "featured": false
   },
   {
@@ -427,6 +466,19 @@
     "description": "Afterfilm de la soirée Impact avec Skone. Ambiance scène, foule et lumières rouges.",
     "tags": ["afterfilm", "club", "event"],
     "featured": true
+  },
+  {
+    "id": "vladimir-cauchemar",
+    "title": "VLADIMIR CAUCHEMAR",
+    "section": "evenementiel",
+    "category": "aftermovie",
+    "year": 2025,
+    "client": "Vladimir Cauchemar",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/vladimir-cauchemar.png",
+    "description": "Afterfilm autour de Vladimir Cauchemar : direction artistique marquée et montage nerveux au service de l'ambiance.",
+    "tags": ["afterfilm", "live", "musique"],
+    "featured": false
   },
   {
     "id": "vivatech-stand-amazon",
@@ -449,9 +501,9 @@
     "year": 2025,
     "client": "Institut des Études Avancées",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["conférence", "institutionnel"],
+    "thumbnail": "/thumbnails/institut-etudes-avancees.png",
+    "description": "Captation d'un cycle de conférences de l'Institut des Études Avancées, pensée pour valoriser les intervenants.",
+    "tags": ["conférence", "institutionnel", "captation"],
     "featured": false
   },
   {
@@ -460,11 +512,24 @@
     "section": "evenementiel",
     "category": "conferences-institutionnel",
     "year": 2025,
-    "client": "Technion",
+    "client": "Technion France",
     "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["conférence", "institutionnel"],
+    "thumbnail": "/thumbnails/conference-technion.png",
+    "description": "Captation multicaméra de la plénière de la conférence Technion France : interventions, table ronde et temps forts.",
+    "tags": ["conférence", "multicaméra", "corporate"],
+    "featured": false
+  },
+  {
+    "id": "conseil-administration",
+    "title": "CONSEIL D'ADMINISTRATION",
+    "section": "evenementiel",
+    "category": "conferences-institutionnel",
+    "year": 2024,
+    "client": "Confidentiel",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/conseil-administration.png",
+    "description": "Captation d'un conseil d'administration : prise de son professionnelle et cadrage sobre pour une diffusion interne.",
+    "tags": ["corporate", "captation", "institutionnel"],
     "featured": false
   }
 ]
