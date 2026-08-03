@@ -2,6 +2,8 @@
 import logoBg   from '~/assets/images/logoBg.webp'
 import logoImg  from '~/assets/images/logo.png'
 import arrowImg from '~/assets/images/arrow.png'
+import globalContent from '~/content/global.json'
+import { CATEGORIES } from '~/data/categories'
 
 /* Le site est entièrement en thème sombre (pageTheme n'est jamais mis à 'light').
    Les variantes claires (logoFooterBlack ~120K, logoBlack ~189K) étaient
@@ -22,24 +24,37 @@ const footerBg = computed(() =>
   pageTheme.value === 'light' ? 'url(/logoFooterBlack.png)' : `url(${logoBg})`,
 )
 
-const socials = [
-  { name: 'Instagram', file: 'instagram.webp', href: 'https://instagram.com/1lifeproduction' },
-  { name: 'YouTube',   file: 'youtube.png',    href: 'https://www.youtube.com/@1LifeProduction' },
-  { name: 'TikTok',    file: 'tiktok.png',     href: 'https://www.tiktok.com/@1lifeprod' },
-  { name: 'LinkedIn',  file: 'linkedin.webp',  href: 'https://www.linkedin.com/company/1life-production/' },
-  { name: 'Facebook',  file: 'facebook.png',   href: 'https://facebook.com' },
+/* URLs éditées dans content/global.json (footer.reseaux) ; les icônes
+   restent mappées ici sur les fichiers de public/icons/. */
+const SOCIAL_ICONS: Record<string, { name: string; file: string }> = {
+  instagram: { name: 'Instagram', file: 'instagram.webp' },
+  youtube:   { name: 'YouTube',   file: 'youtube.png' },
+  tiktok:    { name: 'TikTok',    file: 'tiktok.png' },
+  linkedin:  { name: 'LinkedIn',  file: 'linkedin.webp' },
+}
+
+const socials = Object.entries(globalContent.footer.reseaux)
+  .filter(([key, href]) => SOCIAL_ICONS[key] && href)
+  .map(([key, href]) => ({ ...SOCIAL_ICONS[key], href }))
+
+const footerNav = [
+  ...CATEGORIES.map(g => ({ label: g.label, href: `/${g.section}` })),
+  { label: globalContent.nav.equipe,  href: '/equipe' },
+  { label: globalContent.nav.contact, href: '/contact' },
 ]
+
+const email        = globalContent.footer.email
+const adresseLines = globalContent.footer.adresse.split('\n')
 </script>
 
 <template>
   <footer class="footer" :style="{ backgroundImage: footerBg }">
 
-    <!-- Nav 4 liens principaux -->
+    <!-- Nav liens principaux (libellés : content/categories.json + global.json) -->
     <nav class="footer__nav" aria-label="Navigation footer">
-      <NuxtLink to="/evenementiel" class="footer__nav-link">Événementiel</NuxtLink>
-      <NuxtLink to="/commercial"   class="footer__nav-link">Commercial</NuxtLink>
-      <NuxtLink to="/a-propos"     class="footer__nav-link">À propos</NuxtLink>
-      <NuxtLink to="/contact"      class="footer__nav-link">Contact</NuxtLink>
+      <NuxtLink v-for="item in footerNav" :key="item.href" :to="item.href" class="footer__nav-link">
+        {{ item.label }}
+      </NuxtLink>
     </nav>
 
     <!-- GET IN TOUCH avec O remplacé par le logo -->
@@ -64,13 +79,17 @@ const socials = [
             <img :src="`/icons/${s.file}`" :alt="s.name" class="footer__social-icon" fetchpriority="high" />
           </a>
         </div>
-        <a href="mailto:1lifeprod@unlockcollectif.com" class="footer__email">
-          1lifeprod@unlockcollectif.com
+        <a :href="`mailto:${email}`" class="footer__email">
+          {{ email }}
         </a>
       </div>
 
       <!-- Localisation -->
-      <p class="footer__location">Rue La Fayette,<br>75010 Paris</p>
+      <p class="footer__location">
+        <template v-for="(line, i) in adresseLines" :key="i">
+          <br v-if="i > 0">{{ line }}
+        </template>
+      </p>
     </div>
 
   </footer>

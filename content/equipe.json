@@ -1,0 +1,67 @@
+{
+  "_aide": "Textes de la page Équipe. **mot** = mot en gras dans les paragraphes. Pour les membres : photo = fichier dans public/team/ écrit sans /public (ex. /team/1.png), \"\" = bulle avec l'initiale du prénom. On peut ajouter/retirer des membres, la forme s'adapte.",
+
+  "seo": {
+    "titre": "L'équipe | 1LIFE PRODUCTION",
+    "description": "Découvrez l'équipe, les métiers et le regard de 1Life Production, studio audiovisuel basé rue La Fayette à Paris."
+  },
+
+  "hero": {
+    "titre": "Équipe"
+  },
+
+  "intro": {
+    "paragraphes": [
+      "**On ne s'est jamais dit qu'on allait créer une boîte de production. On voulait simplement faire des films auxquels on croyait.**",
+      "**1Life Production** est un studio de production audiovisuelle basé à Paris. Nous produisons des projets en France comme à l'international, avec une attention particulière portée au **live**, au **documentaire**, aux **films de marque** et aux **productions artistiques**.",
+      "Un documentaire en Ukraine. Une live session dans un lieu oublié. Un artisan qui répète le même geste depuis trente ans. Un festival qui rassemble des milliers de personnes. Une marque qui cherche autre chose qu'une publicité.",
+      "**Les projets changent. Le regard reste le même.**",
+      "Selon les productions, nous réunissons les profils les plus adaptés : réalisation, image, son, direction artistique, drone, VFX, photographie ou journalisme. Une équipe construite autour du projet, jamais l'inverse."
+    ]
+  },
+
+  "equipe": {
+    "titre": "Notre équipe",
+    "membres": [
+      { "photo": "", "nom": "QUENTIN",         "role": "Directeur de production" },
+      { "photo": "", "nom": "TITOUAN",         "role": "Réalisateur · Directeur technique" },
+      { "photo": "", "nom": "RICARDO",         "role": "Directeur artistique · Photographe" },
+      { "photo": "", "nom": "IRÈNE",           "role": "Direction artistique · Scénographie" },
+      { "photo": "", "nom": "ARTHUR",          "role": "Chargé de projet · Cadreur" },
+      { "photo": "", "nom": "THÉO LACASSAGNE", "role": "Monteur · Étalonneur" },
+      { "photo": "", "nom": "BAPTISTE",        "role": "Journaliste Reporter d'Images (JRI)" },
+      { "photo": "", "nom": "VALENTIN",        "role": "Artiste 3D · VFX" }
+    ]
+  },
+
+  "reperes": {
+    "eyebrow": "Quelques repères",
+    "titre": "Les chiffres ne disent pas tout. Mais ils donnent une idée du chemin.",
+    "stats": [
+      { "chiffre": "100%", "texte": "Productions pensées sur mesure" },
+      { "chiffre": "80+",  "texte": "Productions réalisées" },
+      { "chiffre": "8",    "texte": "Pays filmés" }
+    ],
+    "signature": {
+      "titre": "Jamais assez de café.",
+      "texte": "Pas un chiffre officiel. Juste une constante de production."
+    }
+  },
+
+  "faq": {
+    "titre": "Équipe & production.",
+    "items": [
+      { "q": "1Life Production est-il une agence ou un studio de production ?", "a": "Nous nous définissons comme un studio de production audiovisuelle. Une agence part souvent d'un besoin de communication. Nous partons d'un projet, d'un regard et d'une intention de film, tout en collaborant avec des marques, entreprises et agences." },
+      { "q": "Constituez-vous une équipe différente selon les projets ?", "a": "Oui. Chaque production demande une équipe spécifique. Selon les besoins, nous réunissons réalisateurs, cadreurs, ingénieurs du son, photographes, directeurs artistiques, pilotes drone, motion designers, artistes VFX ou journalistes." },
+      { "q": "Prenez-vous en charge la production complète ?", "a": "Oui, lorsque le projet le demande. Nous pouvons intervenir sur le concept, le repérage, la direction artistique, la production, le tournage, la post-production et la livraison, ou rejoindre une production existante sur une étape précise." },
+      { "q": "Travaillez-vous uniquement dans la musique ?", "a": "Non. La musique est notre point de départ, mais nous développons aussi des projets documentaires, culturels, événementiels, des films de marque et des productions autour des savoir-faire et des territoires." },
+      { "q": "Où êtes-vous basés ?", "a": "1Life Production est installée à Paris, rue La Fayette. L'équipe produit des projets en Île-de-France, partout en France et à l'international selon les besoins artistiques, techniques et logistiques de chaque production." }
+    ]
+  },
+
+  "cta": {
+    "titre": "Si notre manière de travailler vous parle...",
+    "texte": "Alors on devrait probablement se rencontrer.",
+    "bouton": "Parlons de votre projet"
+  }
+}

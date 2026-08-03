@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import logoImg      from '~/assets/images/logo.png'
 import logoBlackImg from '~/assets/images/logoBlack.png'
-import { CATEGORIES, categoryHref } from '~/data/categories'
+import globalContent from '~/content/global.json'
+import { CATEGORIES } from '~/data/categories'
 
 const route = useRoute()
 
@@ -30,22 +31,19 @@ function updateNavTheme() {
   navTheme.value = found
 }
 
-const menuOpen     = ref(false)
-const openDropdown = ref<string | null>(null)
+const menuOpen = ref(false)
 
-/* Nav construite depuis la source de vérité (data/categories.ts) */
+/* Nav construite depuis la source de vérité (data/categories.ts).
+   Pas de dropdown : les sous-catégories sont accessibles depuis la page
+   de leur catégorie. */
 const nav = [
   ...CATEGORIES.map(g => ({
-    label:    g.label,
-    href:     `/${g.section}`,
-    key:      g.section,
-    children: g.children.map(c => ({
-      label: c.label,
-      href:  categoryHref(g.section, c.slug),
-    })),
+    label: g.label,
+    href:  `/${g.section}`,
+    key:   g.section,
   })),
-  { label: 'À propos', href: '/a-propos', key: 'a-propos', children: undefined as undefined | { label: string; href: string }[] },
-  { label: 'Contact',  href: '/contact',  key: 'contact',  children: undefined },
+  { label: globalContent.nav.equipe,  href: '/equipe',  key: 'equipe' },
+  { label: globalContent.nav.contact, href: '/contact', key: 'contact' },
 ]
 
 onMounted(() => {
@@ -66,18 +64,6 @@ watch(() => route.path, () => {
 /* ---- Mobile ---- */
 function toggleMenu() {
   menuOpen.value = !menuOpen.value
-  if (!menuOpen.value) openDropdown.value = null
-}
-
-function toggleDropdown(key: string) {
-  openDropdown.value = openDropdown.value === key ? null : key
-}
-
-function handleNavClick(e: Event, item: typeof nav[0]) {
-  if (menuOpen.value && item.children) {
-    e.preventDefault()
-    toggleDropdown(item.key)
-  }
 }
 
 function isActive(href: string) {
@@ -85,8 +71,7 @@ function isActive(href: string) {
 }
 
 watch(() => route.fullPath, () => {
-  menuOpen.value     = false
-  openDropdown.value = null
+  menuOpen.value = false
 })
 </script>
 
@@ -113,33 +98,11 @@ watch(() => route.fullPath, () => {
             <NuxtLink
               :to="item.href"
               class="header__nav-link"
-              :class="{ 'is-active': isActive(item.href), 'has-children': !!item.children }"
+              :class="{ 'is-active': isActive(item.href) }"
               :aria-current="isActive(item.href) ? 'page' : undefined"
-              @click="item.children ? handleNavClick($event, item) : undefined"
             >
               {{ item.label }}
-              <svg
-                v-if="item.children"
-                class="header__chevron"
-                :class="{ 'is-open': openDropdown === item.key }"
-                viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"
-              >
-                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
             </NuxtLink>
-
-            <!-- Dropdown desktop (au survol) / Accordéon mobile (au clic) -->
-            <ul
-              v-if="item.children"
-              class="header__dropdown"
-              :class="{ 'is-open': openDropdown === item.key }"
-            >
-              <li v-for="child in item.children" :key="child.href">
-                <NuxtLink :to="child.href" class="header__dropdown-link">
-                  {{ child.label }}
-                </NuxtLink>
-              </li>
-            </ul>
           </li>
         </ul>
       </nav>

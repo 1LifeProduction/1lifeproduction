@@ -1,18 +1,48 @@
 <script setup lang="ts">
+import content from '~/content/contact.json'
+import { CATEGORIES, type Section } from '~/data/categories'
+
 useHead({
-  title: '1LIFE PRODUCTION',
+  title: content.seo.titre,
   meta: [
-    { name: 'description',        content: 'Contactez 1LIFE PRODUCTION pour votre prochain projet audiovisuel. Échangeons sur vos besoins créatifs.' },
-    { property: 'og:description', content: 'Contactez 1LIFE PRODUCTION pour votre prochain projet audiovisuel. Échangeons sur vos besoins créatifs.' },
+    { name: 'description',        content: content.seo.description },
+    { property: 'og:description', content: content.seo.description },
   ],
 })
 
+const route = useRoute()
+
+const heroTitleLines = content.hero.titre.split('\n')
+const champs = content.formulaire.champs
+
+/* Types de projet = les 4 catégories + Autre */
+const PROJECT_TYPES = [
+  ...CATEGORIES.map(g => ({ value: g.section, label: g.label })),
+  { value: 'autre', label: content.formulaire.typeAutre },
+]
+
+/* Budgets : labels édités dans content/contact.json (les 'valeur' sont
+   figées — validées côté serveur dans server/api/contact.post.ts). */
+const BUDGETS = content.formulaire.budgets.map(b => ({ value: b.valeur, label: b.label }))
+
 const form = reactive({
-  name:    '',
-  email:   '',
-  subject: '',
-  message: '',
+  name:        '',
+  company:     '',
+  email:       '',
+  phone:       '',
+  projectType: '',
+  budget:      '',
+  message:     '',
 })
+
+/* Préremplissage depuis les CTA "Demander un devis" (/contact?type=live…) */
+const validTypes = PROJECT_TYPES.map(t => t.value)
+if (typeof route.query.type === 'string' && validTypes.includes(route.query.type as Section | 'autre' as string)) {
+  form.projectType = route.query.type
+}
+
+/* Le budget ne se choisit qu'une fois le type de projet renseigné */
+watch(() => form.projectType, (val) => { if (!val) form.budget = '' })
 
 const status    = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
 const errorMsg  = ref('')
@@ -24,20 +54,21 @@ async function submitForm() {
     await $fetch('/api/contact', {
       method: 'POST',
       body: {
-        name:    form.name,
-        email:   form.email,
-        subject: form.subject,
-        message: form.message,
+        name:        form.name,
+        company:     form.company,
+        email:       form.email,
+        phone:       form.phone,
+        projectType: form.projectType,
+        budget:      form.budget,
+        message:     form.message,
       },
     })
-    status.value   = 'success'
-    form.name    = ''
-    form.email   = ''
-    form.subject = ''
-    form.message = ''
+    status.value = 'success'
+    form.name = ''; form.company = ''; form.email = ''; form.phone = ''
+    form.projectType = ''; form.budget = ''; form.message = ''
   } catch (err: any) {
     status.value   = 'error'
-    errorMsg.value = err?.data?.message || err?.data?.statusMessage || err?.message || 'Une erreur est survenue, réessayez.'
+    errorMsg.value = err?.data?.message || err?.data?.statusMessage || err?.message || content.formulaire.messages.erreur
     console.error('[contact form]', err)
   }
 }
@@ -48,61 +79,72 @@ async function submitForm() {
 
     <!-- Titre -->
     <section class="contact-hero">
-      <h1 class="contact-hero__title" data-reveal>GET<br>IN TOUCH</h1>
+      <h1 class="contact-hero__title" data-reveal>
+        <template v-for="(line, i) in heroTitleLines" :key="i">
+          <br v-if="i > 0">{{ line }}
+        </template>
+      </h1>
+      <p class="contact-hero__sub" data-reveal style="--reveal-delay:120ms">
+        {{ content.hero.sousTitre }}
+      </p>
     </section>
 
-    <!-- Carte contact + formulaire -->
+    <!-- Formulaire -->
     <section class="contact-info">
 
-      <!-- Bandeau 3 liens : une ligne en desktop, empilé en mobile -->
-      <div class="contact-info__card" data-reveal="left">
-        <a href="https://instagram.com/1lifeproduction" target="_blank" rel="noopener"
-           class="contact-info__row">
-          <span class="contact-info__label">Instagram</span>
-          <span class="contact-info__value">@1lifeproduction</span>
-        </a>
-        <a href="https://www.linkedin.com/company/1life-production/" target="_blank" rel="noopener"
-           class="contact-info__row">
-          <span class="contact-info__label">LinkedIn</span>
-          <span class="contact-info__value">1Life Production</span>
-        </a>
-        <a href="mailto:1lifeprod@unlockcollectif.com"
-           class="contact-info__row">
-          <span class="contact-info__label">Mail</span>
-          <span class="contact-info__value">1lifeprod@unlockcollectif.com</span>
-        </a>
-      </div>
-
-      <form class="contact-form" data-reveal="right" style="--reveal-delay:120ms" @submit.prevent="submitForm">
-        <div class="contact-form__row">
-          <label class="contact-form__label" for="cf-name">Nom</label>
-          <input id="cf-name" v-model="form.name" class="contact-form__input"
-                 type="text" placeholder="Votre nom" required />
-        </div>
-        <div class="contact-form__row">
-          <label class="contact-form__label" for="cf-email">Email</label>
-          <input id="cf-email" v-model="form.email" class="contact-form__input"
-                 type="email" placeholder="votre@email.com" required />
-        </div>
-        <div class="contact-form__row">
-          <label class="contact-form__label" for="cf-subject">Objet</label>
-          <input id="cf-subject" v-model="form.subject" class="contact-form__input"
-                 type="text" placeholder="Sujet du message" required />
+      <form class="contact-form contact-form--devis" data-reveal style="--reveal-delay:120ms" @submit.prevent="submitForm">
+        <div class="contact-form__grid">
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-name">{{ champs.nom.label }}</label>
+            <input id="cf-name" v-model="form.name" class="contact-form__input"
+                   type="text" autocomplete="name" :placeholder="champs.nom.placeholder" required />
+          </div>
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-company">{{ champs.societe.label }}</label>
+            <input id="cf-company" v-model="form.company" class="contact-form__input"
+                   type="text" autocomplete="organization" :placeholder="champs.societe.placeholder" />
+          </div>
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-email">{{ champs.email.label }}</label>
+            <input id="cf-email" v-model="form.email" class="contact-form__input"
+                   type="email" autocomplete="email" :placeholder="champs.email.placeholder" required />
+          </div>
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-phone">{{ champs.telephone.label }}</label>
+            <input id="cf-phone" v-model="form.phone" class="contact-form__input"
+                   type="tel" autocomplete="tel" :placeholder="champs.telephone.placeholder" />
+          </div>
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-type">{{ champs.type.label }}</label>
+            <select id="cf-type" v-model="form.projectType" class="contact-form__select"
+                    :class="{ 'is-filled': !!form.projectType }" required>
+              <option value="" disabled>{{ champs.type.placeholder }}</option>
+              <option v-for="t in PROJECT_TYPES" :key="t.value" :value="t.value">{{ t.label }}</option>
+            </select>
+          </div>
+          <div class="contact-form__row">
+            <label class="contact-form__label" for="cf-budget">{{ champs.budget.label }}</label>
+            <select id="cf-budget" v-model="form.budget" class="contact-form__select"
+                    :class="{ 'is-filled': !!form.budget }" :disabled="!form.projectType" required>
+              <option value="" disabled>{{ champs.budget.placeholder }}</option>
+              <option v-for="b in BUDGETS" :key="b.value" :value="b.value">{{ b.label }}</option>
+            </select>
+          </div>
         </div>
         <div class="contact-form__row contact-form__row--message">
-          <label class="contact-form__label" for="cf-message">Message</label>
+          <label class="contact-form__label" for="cf-message">{{ champs.message.label }}</label>
           <textarea id="cf-message" v-model="form.message" class="contact-form__textarea"
-                    placeholder="Votre message..." required></textarea>
+                    :placeholder="champs.message.placeholder" required></textarea>
         </div>
         <div class="contact-form__submit-row">
           <button class="contact-form__submit" type="submit" :disabled="status === 'sending'">
-            {{ status === 'sending' ? 'Envoi…' : 'Envoyer' }}
+            {{ status === 'sending' ? content.formulaire.boutonEnvoi : content.formulaire.bouton }}
           </button>
           <p v-if="status === 'success'" class="contact-form__status contact-form__status--success">
-            Message envoyé avec succès.
+            {{ content.formulaire.messages.succes }}
           </p>
           <p v-if="status === 'error'" class="contact-form__status contact-form__status--error">
-            {{ errorMsg || 'Une erreur est survenue, réessayez.' }}
+            {{ errorMsg || content.formulaire.messages.erreur }}
           </p>
         </div>
       </form>

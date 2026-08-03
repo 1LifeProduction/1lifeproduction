@@ -1,64 +1,277 @@
 {
-  "_aide": "Modifie ici les TITRES, DESCRIPTIONS et TAGS des catégories. Ne change PAS les clés (captations, produits, etc.) ni la structure. Voir GESTION-CONTENU.md.",
+  "_aide": "Modifie ici les TEXTES des catégories : hero, titres, descriptions, tags, process, FAQ et CTA. Ne change PAS les clés (live, documentaire, marque, evenementiel, ni les slugs de sous-catégories) ni la structure. Voir GESTION-CONTENU.md.",
+
+  "live": {
+    "titre": "Live",
+    "seo": {
+      "titre": "Live sessions, captation multicam & livestream | 1LIFE PRODUCTION",
+      "description": "Studio audiovisuel basé à Paris, spécialisé dans les live sessions, captations multicam et livestreams pour artistes, labels et festivals."
+    },
+    "hero": {
+      "kicker": "Captation multicam · Live session · Livestream",
+      "titre": "Notre place n'a jamais été dans le public.",
+      "sousTitre": "Elle a toujours été entre la scène, les artistes... et tout ce qui se passe juste avant que les lumières s'allument.",
+      "copy": "Chez 1Life Production, nous imaginons, produisons et réalisons des live sessions, captations multicam et livestreams pour les artistes, festivals, labels et productions qui veulent laisser une trace de ce qu'ils créent."
+    },
+    "process": {
+      "titre": "La technique n'est jamais le point de départ.",
+      "etapes": [
+        { "titre": "Comprendre", "texte": "Pourquoi ce projet existe ? Quelle énergie doit rester à l'image ? Avant le matériel, on cherche l'intention." },
+        { "titre": "Préparer", "texte": "Repérage, équipe, axes caméra, son, régie, planning. Tout est pensé pour que le live puisse respirer." },
+        { "titre": "Tourner", "texte": "Le jour J, chaque personne connaît sa place. La technique disparaît pour laisser le moment prendre toute la place." },
+        { "titre": "Monter", "texte": "Le film commence une deuxième fois au montage : rythme, énergie, étalonnage, livraison des formats." }
+      ],
+      "signature": {
+        "titre": "Premiers arrivés, derniers repartis.",
+        "texte": "Ce n'est pas une posture. C'est le métier. Comprendre un lieu vide aide souvent à mieux filmer ce qui va le remplir."
+      }
+    },
+    "faq": {
+      "titre": "Live, captation multicam & livestream.",
+      "items": [
+        { "q": "Quelle est la différence entre une captation multicam et une live session ?", "a": "Une captation multicam filme une performance existante avec plusieurs caméras : concert, DJ set, festival ou événement. Une live session est pensée dès le départ pour la caméra. Le lieu, la lumière, le son, la scénographie et la réalisation sont construits ensemble pour créer un film à part entière, pas seulement un enregistrement." },
+        { "q": "Combien de caméras faut-il pour filmer un concert ?", "a": "Cela dépend du lieu, de la scène et du résultat recherché. Un dispositif simple peut commencer à trois caméras. Pour un rendu plus cinématographique ou une captation de festival, on peut monter à six, huit caméras ou plus. Chaque caméra doit avoir une vraie raison d'être." },
+        { "q": "Peut-on diffuser un concert en direct sur YouTube ou Twitch ?", "a": "Oui. Nous pouvons concevoir un livestream multicam vers YouTube, Twitch ou une plateforme privée. Cela demande une régie, une gestion du son, une connexion stable, des tests et, lorsque le projet le nécessite, des solutions de secours." },
+        { "q": "Travaillez-vous uniquement avec des artistes ?", "a": "Non. La musique est notre terrain naturel, mais nous réalisons aussi des captations pour festivals, marques, institutions, conférences, émissions ou événements culturels lorsque le projet demande une vraie exigence de réalisation." },
+        { "q": "Combien de temps faut-il pour livrer une captation live ?", "a": "Le délai dépend du nombre de caméras, de la durée du programme, du travail sonore, de l'étalonnage et des déclinaisons demandées. Un calendrier réaliste est fixé avant le tournage ; des extraits rapides peuvent être prévus séparément." },
+        { "q": "Peut-on produire des formats courts pour les réseaux à partir du tournage ?", "a": "Oui. La captation peut être pensée dès la préparation pour produire un film complet, des teasers, des reels verticaux et des extraits adaptés aux plateformes, sans dégrader la réalisation principale." },
+        { "q": "Votre studio intervient-il uniquement à Paris ?", "a": "1Life Production est basé à Paris, mais nous nous déplaçons partout en France et à l'international selon les besoins du projet. Le repérage, le transport du matériel et l'équipe sont intégrés dans la préparation." }
+      ]
+    },
+    "cta": {
+      "titre": "Vous préparez un live ?",
+      "texte": "Parlons-en avant que les lumières s'allument.",
+      "bouton": "Demander un devis"
+    }
+  },
+
+  "documentaire": {
+    "titre": "Documentaire",
+    "seo": {
+      "titre": "Documentaire musical & documentaire d'auteur | 1LIFE PRODUCTION",
+      "description": "Production de documentaires musicaux, portraits d'artistes, films de savoir-faire et récits de territoires en France et à l'international."
+    },
+    "hero": {
+      "kicker": "Film documentaire · Portrait · Culture",
+      "titre": "On ne part jamais filmer un sujet.",
+      "sousTitre": "On part rencontrer quelqu'un.",
+      "copy": "Avant une caméra, il y a toujours une rencontre. Un café partagé. Une discussion qui dure plus longtemps que prévu. Une porte qui s'ouvre. Une personne qui commence à raconter son histoire sans vraiment s'en rendre compte. C'est souvent là que le film commence."
+    },
+    "process": {
+      "titre": "La confiance se filme. Elle ne se demande pas.",
+      "etapes": [
+        { "titre": "Rencontrer", "texte": "On commence par écouter. Comprendre les personnes, leur rythme, leur rapport au sujet." },
+        { "titre": "Écrire", "texte": "Le film se construit autour d'une intention : angle, personnages, lieux, temporalité, narration." },
+        { "titre": "Filmer", "texte": "La caméra arrive quand elle peut être juste. Parfois, cela demande plus de temps que prévu." },
+        { "titre": "Monter", "texte": "On cherche le rythme du réel : ce qu'il faut garder, ce qu'il faut taire, ce qu'il faut laisser respirer." }
+      ],
+      "signature": {
+        "titre": "Parfois, on repart sans filmer.",
+        "texte": "Parce que parfois, comprendre une personne est plus important que commencer à filmer."
+      }
+    },
+    "faq": {
+      "titre": "Film documentaire & récit d'auteur.",
+      "items": [
+        { "q": "Qu'est-ce qu'un documentaire d'auteur ?", "a": "Un documentaire d'auteur ne se contente pas de restituer des informations. Il porte un regard. La manière de filmer, de monter, de choisir les silences ou les personnages fait partie du récit. C'est cette approche qui nous intéresse : faire ressentir un monde plutôt que seulement l'expliquer." },
+        { "q": "Quels types de documentaires réalisez-vous ?", "a": "Nous développons principalement des documentaires musicaux, des portraits d'artistes, des films autour de la création, des métiers d'art, des savoir-faire, de la gastronomie et des cultures locales. Chaque projet demande une approche différente." },
+        { "q": "Accompagnez-vous un projet dès l'écriture ?", "a": "Oui. Nous pouvons intervenir dès le développement : recherche documentaire, angle éditorial, écriture, repérages, préparation du tournage, production, post-production et stratégie de diffusion." },
+        { "q": "Peut-on faire un documentaire court pour une marque ou une institution ?", "a": "Oui. Un documentaire court peut raconter un métier, une initiative, un territoire ou une personne. L'enjeu est de ne pas le transformer en vidéo corporate déguisée : il faut laisser une place réelle aux personnes et au temps." },
+        { "q": "Travaillez-vous uniquement en France ?", "a": "Le studio est basé à Paris, mais nous réalisons des documentaires en France comme à l'international. Les projets récents et en développement nous amènent à travailler autour de la musique, des cultures locales, des territoires et des parcours humains." }
+      ]
+    },
+    "cta": {
+      "titre": "Vous avez une histoire en tête ?",
+      "texte": "Ou simplement une rencontre que vous pensez importante. Parlons-en.",
+      "bouton": "Échanger sur votre projet"
+    }
+  },
+
+  "marque": {
+    "titre": "Marque",
+    "seo": {
+      "titre": "Films de marque, vidéo corporate & VFX | 1LIFE PRODUCTION",
+      "description": "Films de marque, vidéos corporate, films produit, podcasts filmés, publicité, VFX, photographie et scénographie 3D depuis Paris."
+    },
+    "hero": {
+      "kicker": "Film de marque · Corporate · Produit · VFX · 3D",
+      "titre": "Les gens n'adhèrent pas à un produit.",
+      "sousTitre": "Ils adhèrent à ce qu'il raconte.",
+      "copy": "Chez 1Life Production, nous réalisons des films de marque, vidéos corporate, films produit, podcasts filmés et campagnes VFX pour celles et ceux qui veulent construire un univers visuel reconnaissable."
+    },
+    "process": {
+      "titre": "Avant de produire, on comprend votre marque.",
+      "etapes": [
+        { "titre": "Comprendre", "texte": "Ce que vous voulez raconter, ce que vous ne voulez pas devenir et ce qui vous rend reconnaissable." },
+        { "titre": "Conceptualiser", "texte": "L'angle, les références, les formats et le dispositif visuel. Chaque choix doit servir l'idée." },
+        { "titre": "Produire", "texte": "L'équipe, le tournage, la lumière, le son et la post-production sont construits autour du projet." },
+        { "titre": "Décliner", "texte": "Film principal, formats verticaux, extraits, photos et contenus adaptés aux usages réels." }
+      ],
+      "signature": {
+        "titre": "On ne cherche pas à rendre une marque plus belle. On cherche à la rendre reconnaissable.",
+        "texte": "Le concept, l'image et les formats doivent raconter le même univers, quel que soit l'écran."
+      }
+    },
+    "faq": {
+      "titre": "Film de marque, publicité & vidéo corporate.",
+      "items": [
+        { "q": "Quelle est la différence entre un film de marque et une vidéo corporate ?", "a": "Un film de marque construit un univers, une émotion et une identité. Une vidéo corporate répond généralement à un besoin plus direct : présenter une entreprise, un message, un dirigeant, un service ou une campagne interne." },
+        { "q": "Pouvez-vous produire plusieurs formats à partir d'un même tournage ?", "a": "Oui. Un tournage peut donner naissance à un film principal, des capsules verticales, des photos et des extraits adaptés aux différentes plateformes." },
+        { "q": "Travaillez-vous directement avec les marques ou uniquement avec des agences ?", "a": "Les deux. Nous pouvons intervenir directement avec une marque ou en collaboration avec une agence, un studio créatif ou une équipe marketing." },
+        { "q": "Votre studio réalise-t-il aussi des vidéos corporate à Paris ?", "a": "Oui. 1Life Production est basé à Paris et réalise des films de marque, vidéos corporate, interviews, portraits et contenus éditoriaux en France comme à l'international." },
+        { "q": "Comment construire un bon film de marque ?", "a": "Un bon film de marque commence par une idée claire et une impression à laisser. Le dispositif visuel vient ensuite servir cette intention." }
+      ]
+    },
+    "cta": {
+      "titre": "Vous voulez raconter votre marque autrement ?",
+      "texte": "Commençons par comprendre ce qu'elle ne doit surtout pas devenir.",
+      "bouton": "Lancer un projet"
+    }
+  },
 
   "evenementiel": {
-    "titre": "Événementiel"
-  },
-  "commercial": {
-    "titre": "Commercial"
+    "titre": "Événementiel",
+    "seo": {
+      "titre": "Aftermovie & reportage événementiel | 1LIFE PRODUCTION",
+      "description": "Aftermovies, reportages photo et vidéo, conférences et contenus événementiels produits à Paris, en France et à l'international."
+    },
+    "hero": {
+      "kicker": "Aftermovie · Reportage photo & vidéo · Événements institutionnels",
+      "titre": "Un événement ne dure jamais une seule journée.",
+      "sousTitre": "Les images, elles, continuent longtemps après.",
+      "copy": "Chez 1Life Production, nous réalisons des aftermovies, des reportages photo et vidéo et des captations d'événements institutionnels pour prolonger ce qui s'est passé, sans réduire l'événement à une simple succession de temps forts."
+    },
+    "process": {
+      "titre": "L'histoire d'un événement ne commence pas quand les portes ouvrent.",
+      "etapes": [
+        { "titre": "Repérer", "texte": "Comprendre le lieu, les temps forts, les contraintes, les accès, le public et les moments à ne pas manquer." },
+        { "titre": "Capter", "texte": "Vidéo, photo, backstage, public, scène et équipes. On filme ce qui est prévu, mais aussi ce qui arrive vraiment." },
+        { "titre": "Monter", "texte": "Retrouver l'énergie réelle de l'événement sans le transformer en simple résumé chronologique." },
+        { "titre": "Diffuser", "texte": "Aftermovie, photos, extraits, formats verticaux et contenus rapides conçus pour les usages réels." }
+      ],
+      "signature": {
+        "titre": "On arrive souvent quand il n'y a personne. On repart quand il n'y a plus personne.",
+        "texte": "Entre les deux, il se passe des centaines de choses. Les meilleurs moments ne sont pas toujours écrits dans le programme."
+      }
+    },
+    "faq": {
+      "titre": "Aftermovie, reportage & contenus événementiels.",
+      "items": [
+        { "q": "Réalisez-vous des aftermovies pour les festivals ?", "a": "Oui. Nous réalisons des aftermovies pour festivals, concerts, soirées, événements culturels, expériences de marque et institutions. L'objectif est de retrouver l'énergie réelle de l'événement, pas seulement d'aligner ses temps forts." },
+        { "q": "Proposez-vous également la photographie événementielle ?", "a": "Oui. Nous pouvons produire un reportage photo en complément de la vidéo. Les images servent à la presse, aux réseaux sociaux, aux partenaires, aux bilans et à la communication des prochaines éditions." },
+        { "q": "Pouvez-vous livrer des contenus pendant l'événement ?", "a": "Oui, selon l'organisation prévue. Nous pouvons produire des contenus pendant l'événement ou en J+1 : reels, stories, capsules verticales, photos sélectionnées ou extraits courts. Cela demande une équipe dédiée et un workflow défini en amont." },
+        { "q": "Quelle différence entre aftermovie et reportage événementiel ?", "a": "Un aftermovie condense l'énergie d'un événement dans un film court et rythmé. Un reportage événementiel documente plus largement les coulisses, le public, les intervenants, les détails, les équipes et les moments moins visibles." },
+        { "q": "Pouvez-vous filmer une conférence ou une table ronde ?", "a": "Oui. Nous pouvons assurer la captation multicam, la prise de son, le direct ou le replay, puis produire des extraits adaptés à la communication interne, aux réseaux et aux partenaires." },
+        { "q": "Pouvez-vous couvrir un événement sur plusieurs jours ?", "a": "Oui. Le dispositif dépend du nombre de lieux, des horaires, des temps forts et du volume de livrables. Un planning de présence et de sauvegarde est défini avant l'événement pour garantir une couverture cohérente." },
+        { "q": "Travaillez-vous uniquement à Paris ?", "a": "Non. Le studio est basé à Paris, mais nous couvrons des événements partout en France et à l'international. Le dispositif dépend de la durée, du lieu, du nombre de scènes et des contraintes techniques." }
+      ]
+    },
+    "cta": {
+      "titre": "Vous préparez un événement ?",
+      "texte": "Parlons-en avant l'ouverture des portes.",
+      "bouton": "Demander un devis"
+    }
   },
 
   "sous-categories": {
-    "captations": {
-      "titre": "Captations",
-      "description": "Nous capturons vos événements avec précision pour en retranscrire toute l'énergie. Conférences, lancements, performances ou soirées : chaque moment est pensé pour être documenté avec justesse et impact.",
-      "tags": ["Multicaméra", "Conférences", "Festivals", "Son pro"]
+    "live-sessions": {
+      "kicker": "01 · Production artistique",
+      "titre": "Live sessions",
+      "description": "Les meilleures sessions ne ressemblent pas à des tournages. Elles ressemblent à un moment suspendu. Un artiste. Un lieu. Quelques personnes. Le silence avant la première note.\n\nChaque live session est pensée comme une création originale. On cherche un lieu avant un décor. Une ambiance avant un plan. Une émotion avant une esthétique.",
+      "tags": ["Production artistique", "Repérage", "Direction artistique", "Scénographie", "Son live", "Captation multicam", "Étalonnage"]
     },
-    "livestreams": {
-      "titre": "Livestreams",
-      "description": "Diffusez vos événements en direct avec une qualité de production professionnelle. Nous assurons une diffusion sur les plateformes adaptées pour toucher votre audience en temps réel.",
-      "tags": []
+    "captation-multicam": {
+      "kicker": "02 · Réalisation live",
+      "titre": "Captation multicam",
+      "description": "Personne ne vient à un concert pour regarder des caméras. Et pourtant, si elles sont au bon endroit, elles deviennent invisibles.\n\nUne captation réussie ne consiste pas seulement à suivre ce qui se passe. Elle consiste à sentir ce qui va arriver. Le regard d'un musicien. Une lumière qui change. Le public qui chante avant même que l'artiste ne tende son micro.",
+      "tags": ["Concerts", "DJ sets", "Festivals", "Réalisation multicam", "Cadre", "Montage", "Son live"]
     },
-    "lives-sessions": {
-      "titre": "Lives sessions",
-      "description": "",
-      "tags": []
-    },
-    "afterfilms": {
-      "titre": "Afterfilms",
-      "description": "Des images pensées pour prolonger l'expérience au-delà de l'événement. Nous réalisons des afterfilms immersifs qui retranscrivent l'ambiance, l'intensité et les temps forts avec un regard cinématographique.",
-      "tags": []
+    "livestream": {
+      "kicker": "03 · Direct",
+      "titre": "Livestream",
+      "description": "Le direct ne pardonne rien. C'est précisément ce qui le rend vivant.\n\nUn livestream ne remplace jamais un concert. Mais il peut transmettre une partie de ce qu'on ressent lorsqu'on y est. Régie, encodage, redondance, plateforme : tout ça doit disparaître. Il ne reste qu'un seul flux. Celui de l'émotion.",
+      "tags": ["Diffusion en direct", "Régie", "OBS", "ATEM", "Redondance", "YouTube", "Twitch"]
     },
 
+    "documentaire-musical": {
+      "kicker": "01 · Récit artistique",
+      "titre": "Documentaire musical",
+      "description": "La musique commence bien avant la première note. Le public voit un concert. Nous, on s'intéresse à tout ce qui le précède.\n\nLes heures passées en studio. Les kilomètres. Les doutes. Les rencontres. Les silences entre deux morceaux. Nos documentaires suivent les artistes là où la musique prend réellement forme : pendant la création, les voyages, les répétitions et tous ces instants que le public ne voit presque jamais.",
+      "tags": ["Documentaire musical", "Portrait d'artiste", "Création", "Culture", "Immersion", "Production documentaire"]
+    },
+    "artisanat-savoir-faire": {
+      "kicker": "02 · Patrimoine vivant",
+      "titre": "Artisanat & savoir-faire",
+      "description": "Certains gestes prennent une vie entière à apprendre. Une feuille d'or. Un outil fabriqué à la main. Un atelier qui n'a presque pas changé depuis cinquante ans.\n\nÀ première vue, rien ne semble bouger. Pourtant, tout se transmet. Nous développons une série documentaire consacrée aux métiers d'art, aux artisans et aux savoir-faire qui continuent de vivre grâce à celles et ceux qui les pratiquent chaque jour.",
+      "tags": ["Artisanat", "Métiers d'art", "Patrimoine vivant", "Transmission", "Documentaire"]
+    },
+    "cuisine-territoires": {
+      "kicker": "03 · Cultures locales",
+      "titre": "Cuisine & territoires",
+      "description": "On découvre souvent un territoire avant même d'en parler la langue. Autour d'une table. Dans une cuisine. Sur un marché.\n\nUne recette raconte rarement uniquement ce qu'il y a dans une assiette. Elle raconte un paysage, une famille, une manière de recevoir, une mémoire. Nous développons une série documentaire à la rencontre de chefs, de producteurs et de passionnés qui racontent leur région à travers ce qu'ils cuisinent.",
+      "tags": ["Cuisine", "Gastronomie", "Terroirs", "Culture", "Transmission"]
+    },
+
+    "film-de-marque": {
+      "kicker": "01 · Identité",
+      "titre": "Film de marque",
+      "description": "Une marque ne se résume jamais à ce qu'elle vend. Elle existe dans une façon de parler, de bouger, de fabriquer et de regarder le monde.\n\nOn construit des films capables de rendre cet univers visible, sans plaquer une esthétique sur un discours qui pourrait appartenir à n'importe qui.",
+      "tags": ["Concept", "Écriture", "Production", "Réalisation", "Photo", "Montage", "Étalonnage"]
+    },
+    "video-corporate": {
+      "kicker": "02 · Prise de parole",
+      "titre": "Vidéo corporate",
+      "description": "Le corporate n'oblige pas à parler comme une entreprise. Derrière un message, il y a toujours une personne, une équipe ou une décision qui mérite d'être rendue claire.\n\nInterviews, portraits, films institutionnels et contenus internes sont produits avec la même attention portée au cadre, à la lumière et au rythme.",
+      "tags": ["Interview", "Portrait", "Film institutionnel", "Écriture", "Multicam", "Habillage", "Sous-titrage"]
+    },
+    "film-produit": {
+      "kicker": "03 · Matière & usage",
+      "titre": "Film produit",
+      "description": "Un produit se comprend parfois mieux dans un mouvement que dans une description. Une matière qui accroche la lumière. Un geste. Une façon de l'utiliser.\n\nOn réalise des films courts et des images fixes qui donnent envie de regarder avant même de chercher à expliquer.",
+      "tags": ["Packshot vidéo", "Macro", "Studio", "Lifestyle", "Slow motion", "Formats verticaux", "Photographie"]
+    },
     "podcasts-emissions": {
-      "titre": "Podcasts & Émissions",
-      "description": "Captation vidéo de vos podcasts et émissions avec une mise en image professionnelle. Son soigné, cadrage dynamique et post-production adaptée pour valoriser vos contenus sur toutes les plateformes.",
-      "tags": []
+      "kicker": "04 · Format éditorial",
+      "titre": "Podcasts & émissions",
+      "description": "Un format récurrent doit pouvoir durer sans devenir répétitif. Le décor, la lumière et le dispositif multicam installent une identité. Les invités et les échanges font le reste.\n\nOn pense la production pour qu'elle soit reconnaissable à l'écran, fluide au tournage et réaliste à reproduire épisode après épisode.",
+      "tags": ["Podcast filmé", "Émission plateau", "Interview multicam", "Décor", "Prise de son", "Habillage", "Déclinaisons sociales"]
     },
-    "produits": {
-      "titre": "Produits",
-      "description": "Nous mettons en valeur vos produits à travers une direction artistique soignée. Chaque détail est pensé pour sublimer la matière, la forme et l'identité de marque avec une image nette et impactante.",
-      "tags": []
+    "publicite-vfx": {
+      "kicker": "05 · Image impossible",
+      "titre": "Publicité & VFX",
+      "description": "Un effet visuel n'a d'intérêt que lorsqu'il prolonge une idée. CGI, compositing et effets spéciaux permettent de fabriquer des images impossibles, mais jamais gratuitement.\n\nOn part du concept, puis on choisit la technique la plus juste pour le rendre crédible, spectaculaire ou simplement inattendu.",
+      "tags": ["Publicité", "CGI", "3D", "Compositing", "Motion design", "VFX", "Post-production"]
     },
-    "publicites-vfx": {
-      "titre": "Publicités & VFX",
-      "description": "Des spots publicitaires percutants pour diffuser votre message sur tous les écrans. Concept, tournage, montage : nous prenons en charge chaque étape pour livrer une publicité mémorable et efficace.",
-      "tags": ["Spots", "VFX / CGI", "Campagnes"]
+    "photographie": {
+      "kicker": "06 · Image fixe",
+      "titre": "Photographie",
+      "description": "Une image fixe doit raconter autant qu'un film. Elle condense un geste, une attitude ou une matière dans un seul cadre.\n\nPortraits, produits, reportages et banques d'images sont pensés pour vivre seuls ou prolonger l'univers visuel d'une production vidéo.",
+      "tags": ["Portrait", "Produit", "Reportage", "Studio", "Backstage", "Retouche", "Banque d'images"]
     },
-    "clips": {
-      "titre": "Clips",
-      "description": "",
-      "tags": []
+    "3d-scenographie": {
+      "kicker": "07 · Espace & volume",
+      "titre": "3D & scénographie",
+      "description": "Avant d'être construit, un espace doit déjà pouvoir être ressenti. La 3D permet de tester une intention, une circulation, une lumière ou un décor avant leur mise en œuvre.\n\nNous concevons des univers visuels pour des shows, installations et expériences de marque, de la première esquisse à la projection scénographique.",
+      "tags": ["Direction artistique", "Concept 3D", "Modélisation", "Scénographie", "Prévisualisation", "Design d'espace", "Show design"]
     },
-    "films": {
-      "titre": "Films",
-      "description": "Des films de marque à la narration cinématographique, conçus pour ancrer votre identité dans l'imaginaire de votre audience. Nous construisons des récits visuels qui donnent du sens à votre univers.",
-      "tags": []
+
+    "aftermovie": {
+      "kicker": "01 · Énergie",
+      "titre": "Aftermovie",
+      "description": "Un bon aftermovie ne résume pas l'événement. Il en restitue la sensation. Le public, les artistes, les détails, les changements de rythme et tout ce qui fait qu'une soirée ne ressemble à aucune autre.\n\nOn construit un film court, dense et immédiatement identifiable, pensé pour continuer à faire vivre l'événement une fois les portes refermées.",
+      "tags": ["Festival", "Soirée", "Lancement", "Concert", "Backstage", "Montage rythmé", "Formats sociaux"]
     },
-    "scenographie-3d": {
-      "titre": "Scénographie & 3D",
-      "description": "",
-      "tags": []
+    "reportage-photo-video": {
+      "kicker": "02 · Mémoire",
+      "titre": "Reportage photo & vidéo",
+      "description": "Tout ce qui compte ne se passe pas forcément sur scène. Les équipes qui installent, les premiers arrivés, les gestes en coulisses, les échanges entre deux prises de parole et le public qui transforme réellement le lieu.\n\nPhoto et vidéo sont pensées ensemble pour construire une matière complète, exploitable par la presse, les partenaires, les réseaux sociaux et les prochaines éditions.",
+      "tags": ["Photo événementielle", "Reportage vidéo", "Coulisses", "Public", "Intervenants", "Contenus J+1", "Banque d'images"]
+    },
+    "conferences-institutionnel": {
+      "kicker": "03 · Transmission",
+      "titre": "Conférences & événements institutionnels",
+      "description": "Une prise de parole doit rester claire, même lorsqu'elle est filmée. Conférences, conseils d'administration, tables rondes et séminaires demandent un dispositif discret, fiable et adapté à la diffusion finale.\n\nOn pense la captation, le son, les plans de coupe et les déclinaisons pour que le contenu puisse être regardé en direct, en replay ou sous forme d'extraits.",
+      "tags": ["Conférence", "Table ronde", "Séminaire", "Captation multicam", "Prise de son", "Replay & extraits"]
     }
   }
 }

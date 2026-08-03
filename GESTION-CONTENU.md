@@ -1,8 +1,29 @@
 # Guide de gestion du contenu
 
-Ce document explique **comment gérer les projets (réalisations) et les membres de l'équipe** sans toucher au reste du code.
+Ce document explique **comment modifier tous les textes et contenus du site** sans toucher au reste du code.
 
 > ⚠️ Le site est **statique** : après chaque modification, il faut **régénérer et redéployer** le site pour que les changements soient visibles en ligne (voir [Mettre en ligne](#mettre-en-ligne-après-modification) en bas).
+
+---
+
+## 0. Carte des fichiers — où modifier quoi ?
+
+**Tous les textes du site** vivent dans le dossier `content/` (+ les projets dans `data/projects.json`) :
+
+| Fichier | Contenu |
+|---------|---------|
+| `content/home.json` | Page d'accueil : baseline + grand titre du hero, texte de présentation du studio, cards expertises (tags, descriptions, bouton), SEO. |
+| `content/categories.json` | Les 4 pages catégories (Live, Documentaire, Marque, Événementiel) : hero, sous-catégories (titres, descriptions, tags), process, FAQ, CTA devis, SEO. |
+| `content/equipe.json` | Page Équipe : titre, paragraphes d'intro, **membres de l'équipe** (nom, rôle, photo), repères chiffrés, FAQ, CTA, SEO. |
+| `content/contact.json` | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |
+| `content/global.json` | Commun à tout le site : email et adresse du footer, URLs des réseaux sociaux, titre du bandeau clients, libellés d'interface (« Voir les projets », « Questions fréquentes »…). |
+| `content/clients.json` | Logos du bandeau marques défilant. |
+| `data/projects.json` | Les projets (réalisations) : titres, catégories, liens Vimeo, vignettes. |
+
+Conventions dans les textes :
+- `\n` = **saut de ligne** (dans les grands titres et l'adresse).
+- `**mot**` = mot en **gras** (dans les paragraphes d'intro accueil/équipe).
+- On ne modifie que les **valeurs** entre guillemets, jamais les **clés** à gauche des `:`.
 
 ---
 
@@ -22,8 +43,8 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
 {
   "id": "saphir-session-10",
   "title": "SAPHIR SESSION #10 - AIR INTER LOWTSO",
-  "section": "evenementiel",
-  "category": "captations",
+  "section": "live",
+  "category": "live-sessions",
   "year": 2026,
   "client": "Saphir Session",
   "vimeo_url": "https://vimeo.com/76979871",
@@ -40,7 +61,7 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
 |-------|:-----------:|-------------|
 | `id` | ✅ | Identifiant **unique**, en minuscules avec des tirets (ex. `mon-projet-2026`). Sert de référence interne. Ne pas mettre d'espaces ni d'accents. |
 | `title` | ✅ | Titre affiché du projet. |
-| `section` | ✅ | `"evenementiel"` **ou** `"commercial"` (uniquement ces deux valeurs). Détermine sur quelle page le projet apparaît. |
+| `section` | ✅ | `"live"`, `"documentaire"`, `"marque"` **ou** `"evenementiel"` (uniquement ces quatre valeurs). Détermine sur quelle page le projet apparaît. |
 | `category` | ✅ | Sous-catégorie. **Doit correspondre exactement** à un slug autorisé pour la section (voir tableau ci-dessous). |
 | `year` | ✅ | Année (nombre, sans guillemets). Ex. `2026`. |
 | `client` | ✅ | Nom du client. |
@@ -54,27 +75,39 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
 
 La `category` doit appartenir à la même `section` :
 
-**Section `evenementiel`** :
-- `captations`
-- `livestreams`
-- `lives-sessions`
-- `afterfilms`
+**Section `live`** :
+- `live-sessions`
+- `captation-multicam`
+- `livestream`
 
-**Section `commercial`** :
+**Section `documentaire`** :
+- `documentaire-musical`
+- `artisanat-savoir-faire`
+- `cuisine-territoires`
+
+**Section `marque`** :
+- `film-de-marque`
+- `video-corporate`
+- `film-produit`
 - `podcasts-emissions`
-- `produits`
-- `publicites-vfx`
-- `clips`
-- `films`
-- `scenographie-3d`
+- `publicite-vfx`
+- `photographie`
+- `3d-scenographie`
+
+**Section `evenementiel`** :
+- `aftermovie`
+- `reportage-photo-video`
+- `conferences-institutionnel`
 
 > La **liste** des catégories (slugs) est définie dans `data/categories.ts`. Si une nouvelle catégorie est nécessaire, c'est ce fichier qu'il faut faire évoluer (demander à un dev). Pour modifier leurs **textes** (titres, descriptions, mots-clés), voir la [section 2](#2-les-textes-des-catégories-titres-descriptions-mots-clés).
 
 ### Où apparaît un projet ?
 
 - **Page d'accueil** (`/`) : uniquement les projets avec `"featured": true`.
-- **Page `/evenementiel`** : tous les projets dont `section` = `evenementiel`, filtrables par `category`.
-- **Page `/commercial`** : tous les projets dont `section` = `commercial`, filtrables par `category`.
+- **Pages catégories** (`/live`, `/documentaire`, `/marque`, `/evenementiel`) : chaque projet apparaît dans le bloc de sa sous-catégorie (`category`).
+  - Le **premier** projet de la liste (dans `projects.json`) pour une sous-catégorie donnée = **projet phare** du bloc (grande vidéo/vignette).
+  - Les **suivants** apparaissent dans le tiroir « Voir les projets » (clic → ouverture en modale).
+  - L'**ordre dans le fichier** détermine donc qui est mis en avant.
 
 ---
 
@@ -146,41 +179,57 @@ content/categories.json
 
 > 💡 On ne modifie que ce qui est **entre les guillemets `"..."`**. On ne touche **jamais** aux clés à gauche des `:` (comme `captations`, `titre`, `description`) : elles servent aux adresses des pages.
 
+### Structure d'une catégorie (Live, Documentaire, Marque, Événementiel)
+
+Chaque catégorie contient tous les textes de sa page :
+
+```json
+"live": {
+  "titre": "Live",
+  "hero": {
+    "kicker": "Captation multicam · Live session · Livestream",
+    "titre": "Notre place n'a jamais été dans le public.",
+    "sousTitre": "Elle a toujours été entre la scène...",
+    "copy": "Chez 1Life Production, nous imaginons..."
+  },
+  "process": {
+    "titre": "La technique n'est jamais le point de départ.",
+    "etapes": [ { "titre": "Comprendre", "texte": "..." } ],
+    "signature": { "titre": "Premiers arrivés, derniers repartis.", "texte": "..." }
+  },
+  "faq": {
+    "titre": "Live, captation multicam & livestream.",
+    "items": [ { "q": "Question ?", "a": "Réponse." } ]
+  },
+  "cta": { "titre": "Vous préparez un live ?", "texte": "...", "bouton": "Demander un devis" }
+}
+```
+
+| Bloc | Description |
+|------|-------------|
+| `titre` | Le nom affiché dans le menu et le footer. |
+| `hero` | Le haut de la page : `kicker` (petite ligne au-dessus), `titre` (accroche), `sousTitre`, `copy` (paragraphe). |
+| `process` | La section « Comment on travaille » : 4 `etapes` + la `signature` (citation). |
+| `faq` | Les questions fréquentes de la page (`items` : liste de `q`/`a`). |
+| `cta` | Le bandeau devis en bas de page (`titre`, `texte`, `bouton`). |
+
 ### Structure d'une sous-catégorie
 
 ```json
-"captations": {
-  "titre": "Captations",
-  "description": "Nous capturons vos événements avec précision...",
-  "tags": ["Multicaméra", "Conférences", "Festivals", "Son pro"]
+"live-sessions": {
+  "kicker": "01 · Production artistique",
+  "titre": "Live sessions",
+  "description": "Premier paragraphe.\n\nDeuxième paragraphe.",
+  "tags": ["Production artistique", "Repérage", "Scénographie"]
 }
 ```
 
 | Champ | Description |
 |-------|-------------|
-| `titre` | Le nom affiché de la (sous-)catégorie. |
-| `description` | Le texte de présentation. Laisser `""` (vide) si pas encore rédigé → un repère `{{...}}` s'affiche en attendant. |
+| `kicker` | La petite ligne numérotée au-dessus du titre (ex. `01 · Énergie`). |
+| `titre` | Le nom affiché de la sous-catégorie. |
+| `description` | Le texte de présentation. `\n\n` = saut de paragraphe. |
 | `tags` | Les petites bulles de mots-clés. Liste entre crochets, chaque mot entre guillemets, séparés par des virgules. `[]` = aucune bulle. |
-
-### Exemple — remplir une description vide
-
-Avant :
-```json
-"clips": {
-  "titre": "Clips",
-  "description": "",
-  "tags": []
-}
-```
-
-Après :
-```json
-"clips": {
-  "titre": "Clips",
-  "description": "Nous réalisons des clips musicaux à l'identité forte, du concept au montage.",
-  "tags": ["Musique", "Réalisation", "Montage"]
-}
-```
 
 > ⚠️ Pour **ajouter une nouvelle catégorie** (et pas seulement modifier son texte), il faut faire évoluer `data/categories.ts` → demander à un dev. Ici, vous modifiez uniquement **les textes** des catégories existantes.
 
@@ -226,24 +275,20 @@ Ouvrez `content/clients.json` et ajoutez une ligne :
 
 ---
 
-## 4. Les membres de l'équipe (page « À propos »)
+## 4. Les membres de l'équipe (page « Équipe »)
 
-L'équipe s'affiche dans l'**hexagone** de la page `/a-propos`. Elle est définie dans :
+L'équipe s'affiche dans la **constellation** de la page `/equipe`. Elle est définie dans :
 
 ```
-pages/a-propos.vue
+content/equipe.json
 ```
 
-Cherche le bloc `const team = [ ... ]` (vers le haut du fichier) :
+Bloc `"equipe"` → `"membres"` :
 
-```js
-const team = [
-  { photo: '/team/1.png', name: '{{TEAM_1_NOM}}', role: '{{TEAM_1_ROLE}}' },
-  { photo: '/team/2.png', name: '{{TEAM_2_NOM}}', role: '{{TEAM_2_ROLE}}' },
-  { photo: '/team/3.png', name: '{{TEAM_3_NOM}}', role: '{{TEAM_3_ROLE}}' },
-  { photo: '/team/4.png', name: '{{TEAM_4_NOM}}', role: '{{TEAM_4_ROLE}}' },
-  { photo: '/team/5.png', name: '{{TEAM_5_NOM}}', role: '{{TEAM_5_ROLE}}' },
-  { photo: '/team/6.png', name: '{{TEAM_6_NOM}}', role: '{{TEAM_6_ROLE}}' },
+```json
+"membres": [
+  { "photo": "", "nom": "QUENTIN", "role": "Directeur de production" },
+  { "photo": "", "nom": "TITOUAN", "role": "Réalisateur · Directeur technique" }
 ]
 ```
 
@@ -251,22 +296,22 @@ Chaque ligne = un membre, avec 3 champs :
 
 | Champ | Description |
 |-------|-------------|
-| `photo` | Chemin de la photo. Le fichier va dans `public/team/` et s'écrit **sans `/public`** (ex. `/team/1.png`). Mettre `''` (vide) pour une bulle sans photo. |
-| `name` | Nom affiché sous la bulle. |
+| `photo` | Chemin de la photo. Le fichier va dans `public/team/` et s'écrit **sans `/public`** (ex. `/team/1.png`). Mettre `""` (vide) → la bulle affiche l'initiale du prénom. |
+| `nom` | Nom affiché sous la bulle. |
 | `role` | Rôle/poste affiché en dessous. |
 
-> ⚠️ **L'hexagone est conçu pour exactement 6 membres** (6 sommets). Garde les **6 lignes**. Tu peux changer les photos / noms / rôles, mais n'ajoute pas une 7e ligne et n'en supprime pas (cela casserait la disposition).
+> 💡 La forme s'adapte automatiquement au **nombre de membres** (polygone régulier) : on peut ajouter ou retirer une ligne sans casser la disposition.
 
 ### ✏️ Renseigner / modifier un membre
 
 1. **Déposer la photo** dans `public/team/` (idéalement **carrée**, ex. 600×600 px ; elle est recadrée en cercle).
 2. Mettre à jour la ligne correspondante :
 
-```js
-{ photo: '/team/1.png', name: 'Jean Dupont', role: 'Réalisateur' },
+```json
+{ "photo": "/team/1.png", "nom": "Jean Dupont", "role": "Réalisateur" },
 ```
 
-L'ordre des lignes (1 → 6) correspond à l'ordre des bulles autour de l'hexagone.
+L'ordre des lignes correspond à l'ordre des bulles autour du polygone. Les autres textes de la page (intro, repères, FAQ, CTA) se modifient dans le même fichier.
 
 ### Remplacer une photo
 
@@ -274,15 +319,15 @@ Soit on remplace directement le fichier dans `public/team/` (en gardant le même
 
 ---
 
-## 5. Bonus — réseaux sociaux & e-mail du footer
+## 5. Réseaux sociaux, e-mail & adresse du footer
 
-Les liens des réseaux sociaux et l'adresse e-mail se trouvent dans :
+Tout se modifie dans :
 
 ```
-components/TheFooter.vue
+content/global.json
 ```
 
-(bloc `const socials = [ ... ]` pour les réseaux, et le lien `mailto:` pour l'e-mail).
+Bloc `"footer"` : `email`, `adresse` (`\n` = saut de ligne) et `reseaux` (les URLs Instagram / YouTube / TikTok / LinkedIn — vider une URL `""` masque sa pastille).
 
 ---
 

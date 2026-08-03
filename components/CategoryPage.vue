@@ -1,0 +1,315 @@
+<script setup lang="ts">
+/* Page catégorie (Live / Documentaire / Marque / Événementiel).
+   Structure commune : hero, sous-catégories alternées gauche/droite avec
+   projet phare + tiroir de projets, process, FAQ, CTA devis. Les textes
+   viennent de data/categories.ts (fusion content/categories.json). */
+import projectsData from '~/data/projects.json'
+import heroImg from '~/assets/images/imgHeader.png'
+import globalContent from '~/content/global.json'
+import { getGroup, devisHref, type Section, type SubCategory } from '~/data/categories'
+
+const ui = globalContent.ui
+
+const props = defineProps<{ section: Section }>()
+
+const route = useRoute()
+const group = getGroup(props.section)!
+
+type Project = (typeof projectsData)[number]
+
+/* Projets d'une sous-catégorie, dans l'ordre du JSON :
+   le premier est le projet phare du chapitre, les suivants vont dans le tiroir. */
+function projectsOf(sub: SubCategory): Project[] {
+  return projectsData.filter(p => p.section === props.section && p.category === sub.slug)
+}
+function featuredOf(sub: SubCategory): Project | undefined {
+  return projectsOf(sub)[0]
+}
+function drawerOf(sub: SubCategory): Project[] {
+  return projectsOf(sub).slice(1)
+}
+
+/* Tiroirs "Voir les projets" */
+const openDrawers = ref<Record<string, boolean>>({})
+function toggleDrawer(slug: string) {
+  openDrawers.value[slug] = !openDrawers.value[slug]
+}
+
+/* Modale projet (tiroir + projets phares sans vidéo intégrée) */
+const modalProject = ref<Project | null>(null)
+function openProject(p: Project) {
+  modalProject.value = p
+  if (import.meta.client) document.body.style.overflow = 'hidden'
+}
+function closeProject() {
+  modalProject.value = null
+  if (import.meta.client) document.body.style.overflow = ''
+}
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') closeProject()
+}
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+
+  /* Ancre au chargement direct (/live#captation-multicam) : le loader fige le
+     scroll (body en position:fixed) pendant son animation et remet la page en
+     haut. On attend donc que son verrou soit posé PUIS libéré avant de
+     scroller vers la sous-catégorie (sinon le scroll serait annulé). */
+  const hash = route.hash
+  if (hash) {
+    const started = Date.now()
+    let lockSeen = false
+    const tryScroll = () => {
+      const locked  = document.body.style.position === 'fixed'
+      const elapsed = Date.now() - started
+      if (locked) lockSeen = true
+      // On scrolle une fois le verrou passé (ou après 2 s s'il n'apparaît pas).
+      if (!locked && (lockSeen || elapsed > 2000)) {
+        document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+        return
+      }
+      if (elapsed < 15000) setTimeout(tryScroll, 150)
+    }
+    tryScroll()
+  }
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
+  if (import.meta.client) document.body.style.overflow = ''
+})
+
+/* FAQ accordéon */
+const openFaq = ref<number | null>(null)
+function toggleFaq(i: number) {
+  openFaq.value = openFaq.value === i ? null : i
+}
+
+/* Type de la sous-catégorie d'un projet (label affiché dans le tiroir/modale) */
+function subLabelOf(p: Project): string {
+  return group.children.find(c => c.slug === p.category)?.label ?? ''
+}
+
+/* JSON-LD FAQPage propre à la page */
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: group.faq.items.map(item => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: { '@type': 'Answer', text: item.a },
+        })),
+      }),
+    },
+  ],
+})
+</script>
+
+<template>
+  <div class="xp-page">
+
+    <!-- Hero -->
+    <section class="evnt-hero" data-nav-theme="dark">
+      <img :src="heroImg" alt="" class="evnt-hero__img" aria-hidden="true" fetchpriority="high" />
+      <div class="evnt-hero__overlay" aria-hidden="true"></div>
+      <div class="xp-hero__bottom">
+        <p class="xp-hero__kicker" data-reveal="fade" style="--reveal-delay:60ms">{{ group.hero.kicker }}</p>
+        <h1 class="xp-hero__title" data-reveal style="--reveal-delay:150ms">{{ group.hero.titre }}</h1>
+        <p class="xp-hero__subtitle" data-reveal style="--reveal-delay:260ms">{{ group.hero.sousTitre }}</p>
+        <p class="xp-hero__copy" data-reveal style="--reveal-delay:360ms">{{ group.hero.copy }}</p>
+      </div>
+    </section>
+
+    <!-- Sous-catégories : alternance gauche / droite -->
+    <div class="xp-chapters grid-bg" data-nav-theme="dark">
+      <section
+        v-for="(sub, i) in group.children"
+        :key="sub.slug"
+        :id="sub.slug"
+        :class="['xp-chapter', i % 2 !== 0 && 'xp-chapter--reversed']"
+      >
+        <div class="xp-chapter__text" :data-reveal="i % 2 !== 0 ? 'right' : 'left'">
+          <p class="xp-chapter__kicker">{{ sub.kicker }}</p>
+          <h2 class="xp-chapter__title">{{ sub.label }}</h2>
+          <span v-if="sub.dev" class="xp-badge">{{ ui.enDeveloppement }}</span>
+          <p class="xp-chapter__desc">{{ sub.desc }}</p>
+          <div v-if="sub.tags.length" class="xp-pills">
+            <span v-for="tag in sub.tags" :key="tag" class="xp-pill">{{ tag }}</span>
+          </div>
+        </div>
+
+        <div class="xp-chapter__media" :data-reveal="i % 2 !== 0 ? 'left' : 'right'" style="--reveal-delay:120ms">
+          <template v-if="featuredOf(sub)">
+            <div class="xp-media">
+              <VimeoEmbed
+                v-if="featuredOf(sub)!.vimeo_url"
+                :url="featuredOf(sub)!.vimeo_url"
+                :title="featuredOf(sub)!.title"
+              />
+              <button
+                v-else
+                type="button"
+                class="xp-media__thumb"
+                :aria-label="`Ouvrir le projet ${featuredOf(sub)!.title}`"
+                @click="openProject(featuredOf(sub)!)"
+              >
+                <img
+                  v-if="featuredOf(sub)!.thumbnail"
+                  :src="featuredOf(sub)!.thumbnail"
+                  :alt="featuredOf(sub)!.title"
+                  class="xp-media__img"
+                />
+                <span v-else class="xp-media__placeholder" aria-hidden="true"></span>
+              </button>
+              <p class="xp-media__caption">{{ featuredOf(sub)!.title }}</p>
+            </div>
+
+            <template v-if="drawerOf(sub).length">
+              <button
+                type="button"
+                class="xp-drawer-toggle"
+                :aria-expanded="!!openDrawers[sub.slug]"
+                :aria-controls="`drawer-${sub.slug}`"
+                @click="toggleDrawer(sub.slug)"
+              >
+                {{ openDrawers[sub.slug] ? ui.reduireProjets : ui.voirProjets }}
+                <span class="xp-drawer-toggle__chev" :class="{ 'is-open': openDrawers[sub.slug] }" aria-hidden="true">↓</span>
+              </button>
+              <div
+                :id="`drawer-${sub.slug}`"
+                class="xp-drawer"
+                :class="{ 'is-open': openDrawers[sub.slug] }"
+              >
+                <button
+                  v-for="p in drawerOf(sub)"
+                  :key="p.id"
+                  type="button"
+                  class="xp-mini"
+                  @click="openProject(p)"
+                >
+                  <span class="xp-mini__visual">
+                    <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="xp-mini__img" />
+                    <span v-else class="xp-mini__placeholder" aria-hidden="true"></span>
+                    <span class="xp-mini__play" aria-hidden="true">▶</span>
+                  </span>
+                  <span class="xp-mini__meta">
+                    <strong class="xp-mini__title">{{ p.title }}</strong>
+                    <span class="xp-mini__type">{{ subLabelOf(p) }}</span>
+                  </span>
+                </button>
+              </div>
+            </template>
+          </template>
+
+          <!-- Sous-catégorie sans projet (ex. en développement) -->
+          <div v-else class="xp-media">
+            <div class="xp-media__placeholder xp-media__placeholder--empty" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Comment on travaille -->
+    <section class="xp-process" data-nav-theme="dark">
+      <p class="xp-eyebrow" data-reveal>{{ ui.commentOnTravaille }}</p>
+      <h2 class="xp-section-title" data-reveal style="--reveal-delay:80ms">{{ group.process.titre }}</h2>
+      <div class="xp-process__grid">
+        <div
+          v-for="(step, i) in group.process.etapes"
+          :key="step.titre"
+          class="xp-process__card"
+          data-reveal
+          :style="`--reveal-delay:${120 + i * 80}ms`"
+        >
+          <span class="xp-process__num">0{{ i + 1 }}</span>
+          <h3 class="xp-process__step">{{ step.titre }}</h3>
+          <p class="xp-process__texte">{{ step.texte }}</p>
+        </div>
+      </div>
+      <div class="xp-signature" data-reveal>
+        <h3 class="xp-signature__titre">« {{ group.process.signature.titre }} »</h3>
+        <p class="xp-signature__texte">{{ group.process.signature.texte }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="xp-faq" data-nav-theme="dark">
+      <p class="xp-eyebrow" data-reveal>{{ ui.questionsFrequentes }}</p>
+      <h2 class="xp-section-title" data-reveal style="--reveal-delay:80ms">{{ group.faq.titre }}</h2>
+      <div class="xp-faq__list">
+        <div
+          v-for="(item, i) in group.faq.items"
+          :key="i"
+          class="xp-faq__item"
+          :class="{ 'is-open': openFaq === i }"
+        >
+          <button
+            type="button"
+            class="xp-faq__q"
+            :aria-expanded="openFaq === i"
+            @click="toggleFaq(i)"
+          >
+            {{ item.q }}
+            <span class="xp-faq__plus" aria-hidden="true">+</span>
+          </button>
+          <p v-show="openFaq === i" class="xp-faq__a">{{ item.a }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA devis -->
+    <section class="xp-cta" data-nav-theme="dark">
+      <div class="xp-cta__inner" data-reveal>
+        <h2 class="xp-cta__titre">{{ group.cta.titre }}</h2>
+        <p class="xp-cta__texte">{{ group.cta.texte }}</p>
+        <NuxtLink :to="devisHref(section)" class="xp-cta__btn">{{ group.cta.bouton }}</NuxtLink>
+      </div>
+    </section>
+
+    <!-- Modale projet -->
+    <Teleport to="body">
+      <div
+        v-if="modalProject"
+        class="xp-modal"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="modalProject.title"
+        @click.self="closeProject"
+      >
+        <div class="xp-modal__card">
+          <button type="button" class="xp-modal__close" aria-label="Fermer" @click="closeProject">×</button>
+          <div class="xp-modal__media">
+            <VimeoEmbed
+              v-if="modalProject.vimeo_url"
+              :url="modalProject.vimeo_url"
+              :title="modalProject.title"
+            />
+            <template v-else>
+              <img
+                v-if="modalProject.thumbnail"
+                :src="modalProject.thumbnail"
+                :alt="modalProject.title"
+                class="xp-modal__img"
+              />
+              <div v-else class="xp-modal__placeholder" aria-hidden="true"></div>
+              <p class="xp-modal__note">{{ ui.videoBientot }}</p>
+            </template>
+          </div>
+          <div class="xp-modal__copy">
+            <div>
+              <h2 class="xp-modal__title">{{ modalProject.title }}</h2>
+              <p class="xp-modal__type">{{ subLabelOf(modalProject) }}<template v-if="modalProject.client"> · {{ modalProject.client }}</template></p>
+            </div>
+            <NuxtLink :to="devisHref(section)" class="xp-modal__btn" @click="closeProject">
+              {{ ui.projetSimilaire }}
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+  </div>
+</template>

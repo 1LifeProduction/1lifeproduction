@@ -1,0 +1,49 @@
+{
+  "_aide": "Textes de la page d'accueil. \\n = saut de ligne dans le grand titre. **mot** = mot en gras dans les paragraphes. Modifie uniquement les valeurs entre guillemets.",
+
+  "seo": {
+    "titre": "1LIFE PRODUCTION — Studio de production audiovisuelle à Paris",
+    "description": "Studio de production audiovisuelle à Paris : live sessions, captations multicam, documentaires, films de marque et contenus événementiels."
+  },
+
+  "hero": {
+    "baseline": "STUDIO DE PRODUCTION AUDIOVISUELLE",
+    "titre": "ON FILME LE LIVE & L'HUMAIN."
+  },
+
+  "intro": {
+    "eyebrow": "1LIFE PRODUCTION",
+    "titre": "Les images passent. Ce qu'elles racontent reste.",
+    "paragraphes": [
+      "On ne filme pas pour remplir un disque dur.",
+      "On filme parce qu'il y a des instants qui ne reviendront pas exactement comme ils sont arrivés. Un premier regard avant d'entrer sur scène. Une main qui répète le même geste depuis trente ans. Une foule qui retient son souffle. Une idée qui prend vie.",
+      "Chez **1Life Production**, on produit des films qui cherchent autre chose que de belles images. On cherche ce qui est vrai.",
+      "Basé à Paris, notre studio imagine et réalise des **captations multicam**, **live sessions**, **documentaires**, **films de marque** et **contenus événementiels** pour les artistes, les entreprises et celles et ceux qui ont quelque chose à transmettre."
+    ]
+  },
+
+  "expertises": {
+    "eyebrow": "Nos expertises",
+    "titre": "Ce qui nous fait vibrer.",
+    "sousEyebrow": "Une même exigence. D'autres terrains d'expression.",
+    "bouton": "Découvrir →",
+    "cards": {
+      "live": {
+        "tag": "Live sessions · Captation multicam · Livestream",
+        "description": "Le live ne se contrôle jamais complètement. C'est précisément ce qui nous attire."
+      },
+      "documentaire": {
+        "tag": "Musique · Création · Cultures",
+        "description": "On ne part jamais filmer un sujet. On part rencontrer quelqu'un."
+      },
+      "marque": {
+        "tag": "Film de marque · Publicité · Corporate",
+        "description": "Une marque ne se résume jamais à un produit. On cherche ce qui rend son univers reconnaissable."
+      },
+      "evenementiel": {
+        "tag": "Aftermovies · Photo · Reels",
+        "description": "Un événement ne dure jamais une seule journée. Les images, elles, continuent longtemps après."
+      }
+    }
+  }
+}

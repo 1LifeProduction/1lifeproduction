@@ -52,7 +52,9 @@
       "Bash(taskkill //F //IM chrome.exe)",
       "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --remote-debugging-port=9334 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2\" \"about:blank\")",
       "Bash(curl -s http://localhost:9334/json/version)",
-      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=375,812 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2b\" --screenshot=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/loader_mobile.png\" --virtual-time-budget=1500 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview2.html\")"
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=375,812 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2b\" --screenshot=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/loader_mobile.png\" --virtual-time-budget=1500 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview2.html\")",
+      "Bash(grep -n \"^/\\\\* ====\" assets/css/main.css)",
+      "Bash(awk 'NR==380||NR==513||NR==575||NR==606||NR==625||NR==804||NR==839||NR==976||NR==1016||NR==1165||NR==1179||NR==1426||NR==1518||NR==1545||NR==1716||NR==1880||NR==1992||NR==2018||NR==2336{print NR\": \"; getline; print; getline; print}' assets/css/main.css)"
     ]
   }
 }

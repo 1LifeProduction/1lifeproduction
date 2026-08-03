@@ -17,13 +17,14 @@ Utilise le MCP Figma pour lire les frames avant de coder chaque page.
 - Les projets sont dans data/projects.json
 - Champs : id, title, section, category, year, client, vimeo_url, thumbnail, description, tags, featured
 
-## Pages
-- / → Home
-- /evenementiel → filtrable par : captations, afterfilms, reportages, livestreams, interviews
-- /commercial → filtrable par : produits, films, publicites, podcasts, portraits
-- /projects/[id] → page projet dynamique
-- /a-propos
-- /contact → Web3Forms, clé dans .env
+## Pages (refonte août 2026 — structure reprise du HTML client, DA conservée)
+- / → Home (hero vidéo, 3 projets featured, description studio, liens expertises, bandeau marques)
+- /live, /documentaire, /marque, /evenementiel → pages catégories (composant partagé components/CategoryPage.vue) :
+  hero + sous-catégories alternées gauche/droite (projet phare + tiroir « Voir les projets » → modale) + process + FAQ (JSON-LD) + CTA devis
+- /equipe (remplace /a-propos) → constellation équipe + repères + FAQ + CTA devis
+- /contact → formulaire devis (nom, société, email, téléphone, type de projet, budget conditionnel, message — PAS de champ Timing), envoi via /api/contact (Resend, clés dans .env)
+- /commercial et /a-propos → stubs de redirection (301 client-side) vers /marque et /equipe
+- Structure catégories/sous-catégories : data/categories.ts (structure) + content/categories.json (textes client)
 
 ## Règles importantes
 - Ne jamais inventer des styles qui ne sont pas dans la maquette

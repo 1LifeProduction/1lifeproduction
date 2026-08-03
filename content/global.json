@@ -1,0 +1,33 @@
+{
+  "_aide": "Textes communs à tout le site : footer, bandeau clients, libellés d'interface. Modifie uniquement les valeurs entre guillemets, jamais les clés.",
+
+  "nav": {
+    "equipe": "Équipe",
+    "contact": "Contact"
+  },
+
+  "clients": {
+    "titre": "ILS NOUS FONT CONFIANCE"
+  },
+
+  "footer": {
+    "email": "1lifeprod@unlockcollectif.com",
+    "adresse": "Rue La Fayette,\n75010 Paris",
+    "reseaux": {
+      "instagram": "https://instagram.com/1lifeproduction",
+      "youtube": "https://www.youtube.com/@1LifeProduction",
+      "tiktok": "https://www.tiktok.com/@1lifeprod",
+      "linkedin": "https://www.linkedin.com/company/1life-production/"
+    }
+  },
+
+  "ui": {
+    "voirProjets": "Voir les projets",
+    "reduireProjets": "Réduire les projets",
+    "commentOnTravaille": "Comment on travaille",
+    "questionsFrequentes": "Questions fréquentes",
+    "enDeveloppement": "En développement",
+    "videoBientot": "Vidéo bientôt disponible",
+    "projetSimilaire": "Parler d'un projet similaire"
+  }
+}

@@ -9,9 +9,9 @@
 
 // Durée MINIMALE d'affichage : l'animation joue au moins une fois en entier.
 // Doit rester >= au plus grand --md (délai d'aimantation) + 0.7s.
-const SEQUENCE_MS = 4300
+const SEQUENCE_MS = 2400
 // Plafond de sécurité : on ne reste jamais bloqué au-delà, même si une ressource traîne.
-const MAX_WAIT_MS = 9000
+const MAX_WAIT_MS = 6000
 
 const exiting = ref(false)
 const hidden  = ref(false)
@@ -160,12 +160,12 @@ onMounted(() => {
    Cercles rangés du plus petit (--1) au plus grand (--6), en ordre autour
    de l'orbite (sens des aiguilles depuis le haut). Aimantés dans le même ordre :
    ils s'empilent au centre en cercles concentriques (du plus petit au plus grand). */
-.ldr__orb--1 { --d: 10px; --x:   0px; --y: -78px; --md: 2.0s; }
-.ldr__orb--2 { --d: 18px; --x:  68px; --y: -39px; --md: 2.28s; }
-.ldr__orb--3 { --d: 26px; --x:  68px; --y:  39px; --md: 2.56s; }
-.ldr__orb--4 { --d: 36px; --x:   0px; --y:  78px; --md: 2.84s; }
-.ldr__orb--5 { --d: 48px; --x: -68px; --y:  39px; --md: 3.12s; }
-.ldr__orb--6 { --d: 60px; --x: -68px; --y: -39px; --md: 3.4s; }
+.ldr__orb--1 { --d: 10px; --x:   0px; --y: -78px; --md: 1.0s; }
+.ldr__orb--2 { --d: 18px; --x:  68px; --y: -39px; --md: 1.14s; }
+.ldr__orb--3 { --d: 26px; --x:  68px; --y:  39px; --md: 1.28s; }
+.ldr__orb--4 { --d: 36px; --x:   0px; --y:  78px; --md: 1.42s; }
+.ldr__orb--5 { --d: 48px; --x: -68px; --y:  39px; --md: 1.56s; }
+.ldr__orb--6 { --d: 60px; --x: -68px; --y: -39px; --md: 1.7s; }
 
 /* ── Accessibilité : prefers-reduced-motion ──────────── */
 @media (prefers-reduced-motion: reduce) {

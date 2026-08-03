@@ -1,0 +1,39 @@
+{
+  "_aide": "Textes de la page Contact. \\n = saut de ligne dans le grand titre. ATTENTION : dans budgets, ne modifie que les 'label' — les 'valeur' servent à la validation du formulaire côté serveur.",
+
+  "seo": {
+    "titre": "Contact & devis | 1LIFE PRODUCTION",
+    "description": "Parlez-nous de votre live, documentaire, film de marque ou événement et demandez un devis à 1Life Production."
+  },
+
+  "hero": {
+    "titre": "GET\nIN TOUCH",
+    "sousTitre": "Un projet, une idée, une intuition. Expliquez-nous ce que vous préparez : live, documentaire, film de marque, événement ou projet encore flou. On reviendra vers vous avec les bonnes questions."
+  },
+
+  "formulaire": {
+    "champs": {
+      "nom":       { "label": "Nom *",              "placeholder": "Votre nom" },
+      "societe":   { "label": "Société",            "placeholder": "Votre société" },
+      "email":     { "label": "Email *",            "placeholder": "votre@email.com" },
+      "telephone": { "label": "Téléphone",          "placeholder": "06 00 00 00 00" },
+      "type":      { "label": "Type de projet *",   "placeholder": "Choisir" },
+      "budget":    { "label": "Budget indicatif *", "placeholder": "Choisir" },
+      "message":   { "label": "Message *",          "placeholder": "Parlez-nous de votre projet..." }
+    },
+    "typeAutre": "Autre",
+    "budgets": [
+      { "valeur": "1-3k",       "label": "1 000 à 3 000 €" },
+      { "valeur": "3-5k",       "label": "3 000 à 5 000 €" },
+      { "valeur": "5-10k",      "label": "5 000 à 10 000 €" },
+      { "valeur": "10k+",       "label": "Plus de 10 000 €" },
+      { "valeur": "determiner", "label": "À déterminer" }
+    ],
+    "bouton": "Envoyer",
+    "boutonEnvoi": "Envoi…",
+    "messages": {
+      "succes": "Message envoyé avec succès. On revient vers vous rapidement.",
+      "erreur": "Une erreur est survenue, réessayez."
+    }
+  }
+}

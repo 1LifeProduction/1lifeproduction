@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import projectsData from '~/data/projects.json'
 import heroImg from '~/assets/images/imgHeader.png'
-import { categoryHref, type Section } from '~/data/categories'
+import home from '~/content/home.json'
+import globalContent from '~/content/global.json'
+import { CATEGORIES, categoryHref, getSubCategory, type Section } from '~/data/categories'
 
 const featured = projectsData.filter(p => p.featured)
+
+/* Lignes du grand titre (séparées par \n dans content/home.json) */
+const heroTitleLines = home.hero.titre.split('\n')
+
+/* Libellé d'une catégorie (source de vérité : content/categories.json) */
+const labelOf = (section: Section) => CATEGORIES.find(g => g.section === section)?.label ?? section
+
+const xpCards = home.expertises.cards
 
 const titleRef    = ref<HTMLElement>()
 const theaterRef  = ref<HTMLElement>()
@@ -29,9 +39,26 @@ const isDesktop = ref(true)
 const showreelSrc = '/showreel.mp4'
 const hasVideo = ref(false)
 
+/* Vidéos d'illustration des cards expertises Live & Documentaire.
+   Déposer les fichiers dans public/videos/ : expertise-live.mp4 et
+   expertise-documentaire.mp4. Tant qu'un fichier est absent, la card
+   affiche un emplacement vide (placeholder). Même sonde HEAD que le
+   showreel pour éviter le bouton play iOS sur une <video> sans source. */
+const XP_VIDEOS = {
+  live:         '/videos/expertise-live.mp4',
+  documentaire: '/videos/expertise-documentaire.mp4',
+} as const
+const hasXpVideo = reactive<Record<keyof typeof XP_VIDEOS, boolean>>({
+  live:         false,
+  documentaire: false,
+})
+
 function fitTitle() {
   const el = titleRef.value
   if (!el) return
+  // Viewport pas encore mesurable (onglet caché/0px) : ne pas figer une
+  // taille nulle — le ResizeObserver rappellera fitTitle au prochain layout.
+  if (!window.innerWidth) return
   el.style.fontSize = '10px'
   el.style.display = 'inline-block'
   const textWidth = el.scrollWidth
@@ -105,6 +132,12 @@ onMounted(() => {
   fetch(showreelSrc, { method: 'HEAD' })
     .then(r => { hasVideo.value = r.ok })
     .catch(() => { hasVideo.value = false })
+  // Sonde les vidéos des cards expertises (Live & Documentaire).
+  for (const key of Object.keys(XP_VIDEOS) as (keyof typeof XP_VIDEOS)[]) {
+    fetch(XP_VIDEOS[key], { method: 'HEAD' })
+      .then(r => { hasXpVideo[key] = r.ok })
+      .catch(() => { hasXpVideo[key] = false })
+  }
 })
 
 onUnmounted(() => {
@@ -116,10 +149,10 @@ onUnmounted(() => {
 })
 
 useHead({
-  title: '1LIFE PRODUCTION',
+  title: home.seo.titre,
   meta: [
-    { name: 'description',        content: 'Collectif créatif parisien spécialisé dans la production audiovisuelle. Photographes, vidéastes, motion designers, dronistes FPV et experts VFX.' },
-    { property: 'og:description', content: 'Collectif créatif parisien spécialisé dans la production audiovisuelle. Photographes, vidéastes, motion designers, dronistes FPV et experts VFX.' },
+    { name: 'description',        content: home.seo.description },
+    { property: 'og:description', content: home.seo.description },
   ],
   script: [
     {
@@ -128,6 +161,7 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Organization',
         name: '1LIFE PRODUCTION',
+        description: 'Studio de production audiovisuelle basé à Paris, spécialisé dans le live, le documentaire, les films de marque et les contenus événementiels.',
         url: 'https://1lifeproduction.com',
         logo: 'https://1lifeproduction.com/favicon.png',
         contactPoint: {
@@ -174,9 +208,13 @@ useHead({
       <div class="home-hero__overlay" aria-hidden="true"></div>
       <div class="home-hero__content">
         <div class="home-hero__sub" data-reveal="fade" style="--reveal-delay:100ms">
-          <p class="home-hero__baseline">PRODUCTION AGENCY</p>
+          <p class="home-hero__baseline">{{ home.hero.baseline }}</p>
         </div>
-        <h1 ref="titleRef" class="home-hero__title" data-reveal style="--reveal-delay:250ms">1LIFE PRODUCTION</h1>
+        <h1 ref="titleRef" class="home-hero__title" data-reveal style="--reveal-delay:250ms">
+          <template v-for="(line, i) in heroTitleLines" :key="i">
+            <br v-if="i > 0">{{ line }}
+          </template>
+        </h1>
       </div>
     </section>
 
@@ -211,7 +249,7 @@ useHead({
           <div class="project-card__overlay">
             <Transition name="theater-text" mode="out-in">
               <div :key="activeIndex" class="theater__text">
-                <span class="project-card__cat">{{ featured[activeIndex].category }}</span>
+                <span class="project-card__cat">{{ getSubCategory(featured[activeIndex].category)?.label ?? featured[activeIndex].category }}</span>
                 <h3 class="project-card__title">{{ featured[activeIndex].title }}</h3>
               </div>
             </Transition>
@@ -230,9 +268,75 @@ useHead({
       </div>
     </section>
 
+    <!-- Description du studio -->
+    <section class="home-intro" aria-label="Le studio" data-nav-theme="dark">
+      <p class="xp-eyebrow" data-reveal>{{ home.intro.eyebrow }}</p>
+      <h2 class="home-intro__title" data-reveal style="--reveal-delay:80ms">{{ home.intro.titre }}</h2>
+      <div class="home-intro__text" data-reveal style="--reveal-delay:160ms">
+        <p v-for="(p, i) in home.intro.paragraphes" :key="i" v-html="boldify(p)"></p>
+      </div>
+    </section>
+
+    <!-- Expertises -->
+    <section class="home-xp" aria-label="Nos expertises" data-nav-theme="dark">
+      <p class="xp-eyebrow" data-reveal>{{ home.expertises.eyebrow }}</p>
+      <h2 class="home-xp__title" data-reveal style="--reveal-delay:80ms">{{ home.expertises.titre }}</h2>
+
+      <div class="home-xp__grid">
+        <NuxtLink to="/live" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:120ms">
+          <span class="home-xp__media">
+            <video
+              v-if="hasXpVideo.live"
+              :src="XP_VIDEOS.live"
+              class="home-xp__video"
+              autoplay muted loop playsinline preload="metadata"
+              aria-hidden="true"
+            ></video>
+            <span v-else class="home-xp__media-placeholder" aria-hidden="true"></span>
+          </span>
+          <span class="home-xp__tag">{{ xpCards.live.tag }}</span>
+          <span class="home-xp__name">{{ labelOf('live') }}</span>
+          <span class="home-xp__desc">{{ xpCards.live.description }}</span>
+          <span class="home-xp__arrow">{{ home.expertises.bouton }}</span>
+        </NuxtLink>
+        <NuxtLink to="/documentaire" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:200ms">
+          <span class="home-xp__media">
+            <video
+              v-if="hasXpVideo.documentaire"
+              :src="XP_VIDEOS.documentaire"
+              class="home-xp__video"
+              autoplay muted loop playsinline preload="metadata"
+              aria-hidden="true"
+            ></video>
+            <span v-else class="home-xp__media-placeholder" aria-hidden="true"></span>
+          </span>
+          <span class="home-xp__tag">{{ xpCards.documentaire.tag }}</span>
+          <span class="home-xp__name">{{ labelOf('documentaire') }}</span>
+          <span class="home-xp__desc">{{ xpCards.documentaire.description }}</span>
+          <span class="home-xp__arrow">{{ home.expertises.bouton }}</span>
+        </NuxtLink>
+      </div>
+
+      <p class="xp-eyebrow home-xp__second-eyebrow" data-reveal>{{ home.expertises.sousEyebrow }}</p>
+      <div class="home-xp__grid">
+        <NuxtLink to="/marque" class="home-xp__card" data-reveal style="--reveal-delay:120ms">
+          <span class="home-xp__tag">{{ xpCards.marque.tag }}</span>
+          <span class="home-xp__name">{{ labelOf('marque') }}</span>
+          <span class="home-xp__desc">{{ xpCards.marque.description }}</span>
+          <span class="home-xp__arrow">{{ home.expertises.bouton }}</span>
+        </NuxtLink>
+        <NuxtLink to="/evenementiel" class="home-xp__card" data-reveal style="--reveal-delay:200ms">
+          <span class="home-xp__tag">{{ xpCards.evenementiel.tag }}</span>
+          <span class="home-xp__name">{{ labelOf('evenementiel') }}</span>
+          <span class="home-xp__desc">{{ xpCards.evenementiel.description }}</span>
+          <span class="home-xp__arrow">{{ home.expertises.bouton }}</span>
+        </NuxtLink>
+      </div>
+    </section>
+
     <section class="clients-section" aria-label="Nos clients">
       <div class="container">
-        <h2 class="clients-section__label" data-reveal data-fit-text>ILS NOUS FONT CONFIANCE</h2>
+        <h2 class="clients-section__label" data-reveal data-fit-text>{{ globalContent.clients.titre }}</h2>
       </div>
     </section>
 
