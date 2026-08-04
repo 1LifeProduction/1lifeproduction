@@ -296,11 +296,13 @@ useHead({
         <NuxtLink to="/live" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:120ms">
           <span class="home-xp__media">
             <!-- poster : miniature affichée pendant le chargement de la boucle.
-                 Déposer public/videos/expertise-live-poster.jpg (absente = ignorée) -->
+                 Déposer public/videos/expertise-live-poster.jpg (absente = ignorée).
+                 :poster dynamique — un poster statique vers un fichier pas encore
+                 livré fait échouer la résolution d'assets de Vite au build. -->
             <video
               v-if="hasXpVideo.live"
               :src="XP_VIDEOS.live"
-              poster="/videos/expertise-live-poster.jpg"
+              :poster="'/videos/expertise-live-poster.jpg'"
               class="home-xp__video"
               autoplay muted loop playsinline preload="metadata"
               aria-hidden="true"
@@ -314,11 +316,12 @@ useHead({
         </NuxtLink>
         <NuxtLink to="/documentaire" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:200ms">
           <span class="home-xp__media">
-            <!-- poster : déposer public/videos/expertise-documentaire-poster.jpg -->
+            <!-- poster : déposer public/videos/expertise-documentaire-poster.jpg
+                 (:poster dynamique, même raison que la card Live) -->
             <video
               v-if="hasXpVideo.documentaire"
               :src="XP_VIDEOS.documentaire"
-              poster="/videos/expertise-documentaire-poster.jpg"
+              :poster="'/videos/expertise-documentaire-poster.jpg'"
               class="home-xp__video"
               autoplay muted loop playsinline preload="metadata"
               aria-hidden="true"
