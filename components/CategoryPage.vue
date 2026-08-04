@@ -10,7 +10,10 @@ import { getGroup, devisHref, type Section, type SubCategory } from '~/data/cate
 
 const ui = globalContent.ui
 
-const props = defineProps<{ section: Section }>()
+/* initialProjectId : ouvre la modale de ce projet dès le rendu (SSR compris).
+   Utilisé par les pages /projets/[slug] — l'URL profonde affiche la page
+   catégorie avec la modale déjà ouverte par-dessus. */
+const props = defineProps<{ section: Section; initialProjectId?: string }>()
 
 const route = useRoute()
 const group = getGroup(props.section)!
@@ -35,21 +38,42 @@ function toggleDrawer(slug: string) {
   openDrawers.value[slug] = !openDrawers.value[slug]
 }
 
-/* Modale projet (tiroir + projets phares sans vidéo intégrée) */
-const modalProject = ref<Project | null>(null)
+/* Modale projet (tiroir + projets phares sans vidéo intégrée).
+   Initialisée AVANT le rendu si initialProjectId est fourni : le HTML généré
+   des pages /projets/[slug] contient la modale ouverte (indexable). */
+const modalProject = ref<Project | null>(
+  props.initialProjectId
+    ? projectsData.find(p => p.id === props.initialProjectId && p.section === props.section) ?? null
+    : null,
+)
+
+/* L'URL suit la modale SANS navigation (replaceState : pas de re-rendu, pas
+   d'entrée d'historique, le bouton Retour garde son comportement normal) :
+   ouvrir → /projets/<id> (lien partageable), fermer → retour à l'URL de la
+   catégorie. */
+function syncUrl(path: string) {
+  if (import.meta.client) history.replaceState(history.state, '', path)
+}
+
 function openProject(p: Project) {
   modalProject.value = p
   if (import.meta.client) document.body.style.overflow = 'hidden'
+  syncUrl(`/projets/${p.id}`)
 }
 function closeProject() {
   modalProject.value = null
   if (import.meta.client) document.body.style.overflow = ''
+  syncUrl(`/${props.section}`)
 }
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') closeProject()
 }
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
+
+  /* Modale déjà ouverte au chargement (arrivée par /projets/[slug]) :
+     poser le verrou de scroll que openProject aurait posé. */
+  if (modalProject.value) document.body.style.overflow = 'hidden'
 
   /* Ancre au chargement direct (/live#captation-multicam) : le loader fige le
      scroll (body en position:fixed) pendant son animation et remet la page en
@@ -161,6 +185,7 @@ useHead({
                   :src="featuredOf(sub)!.thumbnail"
                   :alt="featuredOf(sub)!.title"
                   class="xp-media__img"
+                  loading="lazy"
                 />
                 <span v-else class="xp-media__placeholder" aria-hidden="true"></span>
               </button>
@@ -191,7 +216,10 @@ useHead({
                   @click="openProject(p)"
                 >
                   <span class="xp-mini__visual">
-                    <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="xp-mini__img" />
+                    <!-- lazy : ces vignettes sont dans un tiroir FERMÉ au
+                         chargement — sans lazy, elles se téléchargeaient
+                         toutes dès l'arrivée sur la page -->
+                    <img v-if="p.thumbnail" :src="p.thumbnail" :alt="p.title" class="xp-mini__img" loading="lazy" />
                     <span v-else class="xp-mini__placeholder" aria-hidden="true"></span>
                     <span class="xp-mini__play" aria-hidden="true">▶</span>
                   </span>

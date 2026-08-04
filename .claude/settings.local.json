@@ -54,7 +54,25 @@
       "Bash(curl -s http://localhost:9334/json/version)",
       "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=375,812 --user-data-dir=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/cdp2b\" --screenshot=\"C:/Users/arthu/AppData/Local/Temp/loaderframes/loader_mobile.png\" --virtual-time-budget=1500 \"file:///C:/Users/arthu/AppData/Local/Temp/loaderframes/preview2.html\")",
       "Bash(grep -n \"^/\\\\* ====\" assets/css/main.css)",
-      "Bash(awk 'NR==380||NR==513||NR==575||NR==606||NR==625||NR==804||NR==839||NR==976||NR==1016||NR==1165||NR==1179||NR==1426||NR==1518||NR==1545||NR==1716||NR==1880||NR==1992||NR==2018||NR==2336{print NR\": \"; getline; print; getline; print}' assets/css/main.css)"
+      "Bash(awk 'NR==380||NR==513||NR==575||NR==606||NR==625||NR==804||NR==839||NR==976||NR==1016||NR==1165||NR==1179||NR==1426||NR==1518||NR==1545||NR==1716||NR==1880||NR==1992||NR==2018||NR==2336{print NR\": \"; getline; print; getline; print}' assets/css/main.css)",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "PowerShell(npm install -D sharp @nuxtjs/sitemap)",
+      "PowerShell(node \"C:\\\\Users\\\\arthu\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-arthu-Documents-velar-1lifeproduction\\\\3fffa356-ba2c-43eb-9b78-2d5ec5f5bc27\\\\scratchpad\\\\convert-webp.mjs\")",
+      "PowerShell(Copy-Item \"C:\\\\Users\\\\arthu\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-arthu-Documents-velar-1lifeproduction\\\\3fffa356-ba2c-43eb-9b78-2d5ec5f5bc27\\\\scratchpad\\\\convert-webp.mjs\" \".\\\\convert-webp.tmp.mjs\")",
+      "PowerShell(node .\\\\convert-webp.tmp.mjs)",
+      "PowerShell(Remove-Item .\\\\convert-webp.tmp.mjs -Confirm:$false)",
+      "PowerShell(Remove-Item .\\\\public\\\\sitemap.xml -Confirm:$false)",
+      "PowerShell(python -c \"import fontTools; print\\('fontTools OK'\\)\")",
+      "PowerShell(pip install fonttools brotli 2>$null)",
+      "PowerShell(python -c \"from fontTools.ttLib import TTFont; f = TTFont\\(r'C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction\\\\public\\\\fonts\\\\coolvetica.otf'\\); f.flavor = 'woff2'; f.save\\(r'C:\\\\Users\\\\arthu\\\\Documents\\\\velar\\\\1lifeproduction\\\\public\\\\fonts\\\\coolvetica.woff2'\\); print\\('OK'\\)\")",
+      "PowerShell(Get-ChildItem .\\\\public\\\\fonts | Select-Object Name, @{n='Ko';e={[math]::Round\\($_.Length/1KB\\)}})",
+      "PowerShell(python -c \"import reportlab; print\\('reportlab OK', reportlab.Version\\)\")",
+      "PowerShell(pip install reportlab 2>$null)",
+      "PowerShell(python -c \"import reportlab; print\\('OK', reportlab.Version\\)\")",
+      "PowerShell(python \"C:\\\\Users\\\\arthu\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-arthu-Documents-velar-1lifeproduction\\\\3fffa356-ba2c-43eb-9b78-2d5ec5f5bc27\\\\scratchpad\\\\make-seo-pdf.py\")",
+      "PowerShell(python \"C:\\\\Users\\\\arthu\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-arthu-Documents-velar-1lifeproduction\\\\3fffa356-ba2c-43eb-9b78-2d5ec5f5bc27\\\\scratchpad\\\\make-projets-pdf.py\")",
+      "PowerShell(pip install pypdf 2>$null)"
     ]
   }
 }

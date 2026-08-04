@@ -96,6 +96,7 @@ onUnmounted(() => {
           :alt="c.nom"
           class="brand-marquee__logo"
           aria-hidden="true"
+          loading="lazy"
         />
       </div>
       <div class="brand-marquee__group" aria-hidden="true">
@@ -106,6 +107,7 @@ onUnmounted(() => {
           :alt="c.nom"
           class="brand-marquee__logo"
           aria-hidden="true"
+          loading="lazy"
         />
       </div>
     </div>

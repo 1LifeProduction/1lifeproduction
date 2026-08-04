@@ -5,7 +5,10 @@
    =================================================== */
 @font-face {
   font-family: 'Coolvetica';
-  src: url('/fonts/coolvetica.otf') format('opentype');
+  /* woff2 en premier (−40% de poids) ; l'otf reste en secours pour les très
+     vieux navigateurs. */
+  src: url('/fonts/coolvetica.woff2') format('woff2'),
+       url('/fonts/coolvetica.otf') format('opentype');
   font-weight: 400;
   font-style:  normal;
   font-display: swap;
@@ -27,9 +30,9 @@
 
   --header-h: 64px;
 
-  /* Coolvetica en premier, Inter en fallback le temps que la font charge */
-  --font:    'Coolvetica', 'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  --font-ui: 'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  /* Coolvetica en premier, fallback système (Inter n'est plus chargé :
+     aucune règle ne l'utilisait — voir nuxt.config.ts). */
+  --font: 'Coolvetica', -apple-system, 'Helvetica Neue', Arial, sans-serif;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --t:    0.25s var(--ease);
@@ -71,6 +74,38 @@ body {
    mais html étant le scroller, seul le clip sur .app supprime le scroll horizontal. */
 .app {
   overflow-x: clip;
+}
+
+/* ===================================================
+   SCROLLBAR CUSTOM — piste noire, thumb blanc plein
+   (angles droits, le thumb occupe toute la largeur de la piste)
+   =================================================== */
+/* scrollbar-color UNIQUEMENT pour Firefox (détecté via -moz-appearance) :
+   si on le met pour tous, Chromium/Brave passe en scrollbars "standard"
+   (thumb arrondi + marges) et IGNORE les règles ::-webkit-scrollbar. */
+@supports (-moz-appearance: none) {
+  html {
+    scrollbar-color: #ffffff #000000;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 0;
+  /* pas de border/padding : le thumb prend toute la largeur de la piste */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dddddd;
 }
 
 img, video, iframe { max-width: 100%; display: block; }
@@ -285,9 +320,11 @@ h1, h2, h3, h4, h5, h6 {
 /* ===================================================
    FOOTER
    =================================================== */
-/* Footer plein écran : 100vh, tout le contenu tient dedans
-   (nav en haut, le reste calé en bas, espaces en clamp pour absorber
-   les petites hauteurs de viewport). */
+/* Footer en RATIO fixe 16/7 (proportions du rendu validé par le client :
+   fenêtre ~1920×840). Ni 100vh ni hauteur en px : la hauteur suit la largeur,
+   donc la composition (nav en haut, CTA, icônes, adresse en bas) est mise à
+   l'échelle proportionnellement — rendu identique sur toutes les tailles
+   d'écran et tous les scalings Windows. */
 .footer {
   border-top: 1px solid var(--border);
   overflow: hidden;
@@ -295,7 +332,7 @@ h1, h2, h3, h4, h5, h6 {
   background-repeat: no-repeat;
   background-position: center bottom;
   background-color: var(--bg);
-  height: 100vh;
+  aspect-ratio: 16 / 7;
   display: flex;
   flex-direction: column;
 }
@@ -324,25 +361,26 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Répartition comme la prod : GET IN TOUCH juste sous la nav (haut de la
    zone), pastilles+email au milieu, adresse calée en bas — space-between
-   distribue l'espace restant du footer 100vh. */
+   distribue l'espace restant du footer (ratio fixe → espacements en vw,
+   proportionnels comme le reste). */
 .footer__bottom {
   flex: 1;
   min-height: 0;
-  padding: clamp(1.5rem, 4vh, 3rem) var(--gutter) clamp(1.5rem, 4vh, 3.5rem);
+  padding: 1.7vw var(--gutter) 1.9vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: clamp(1rem, 3vh, 2rem);
+  gap: 1.25vw;
 }
 
 .footer__cta {
   display: flex;
   align-items: center;
   font-family: 'Coolvetica', sans-serif;
-  /* Borné aussi par la hauteur du viewport pour que le footer 100vh
-     ne déborde jamais (petits écrans en hauteur). */
-  font-size: min(clamp(4rem, 11vw, 11rem), 24vh);
+  /* Pur vw, sans bornes rem/vh : le footer est en ratio fixe, le titre doit
+     grossir/rétrécir exactement au même rythme pour garder la composition. */
+  font-size: 11vw;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 0.9;
@@ -836,6 +874,9 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
   display: block;
+  /* Le fit-text JS laisse ~6% de marge (TITLE_FIT) : centré pour la répartir
+     également à gauche et à droite. */
+  text-align: center;
 }
 
 @media (max-width: 767px) {
@@ -1160,198 +1201,122 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Team */
-.about-team {
-  position: relative;
-  height: 300vh;
-  overflow: visible;
-  /* Espace après la constellation, avant la section suivante (footer/clients). */
-  margin-bottom: 8vh;
-}
-
-.about-team__sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;
-  z-index: 2;
-}
-
 .about-page {
   position: relative;
 }
 
-.about-team__title {
-  font-family: 'Coolvetica', sans-serif;
-  font-size: clamp(3rem, 9vw, 9rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.1);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  z-index: 0;
-}
-
-.about-team__constellation {
+/* -------------------------------------------------------
+   ÉQUIPE — liste "générique de film"
+   Une ligne typographique par membre (nom Coolvetica + rôle).
+   Desktop pointeur : photo en polaroid qui suit le curseur au survol,
+   les autres lignes s'estompent. Tactile/mobile : vignette inline.
+   ------------------------------------------------------- */
+.credits {
+  /* Ancre du sticker photo (position:absolute en coordonnées de section) */
   position: relative;
-  width: 760px;
-  height: 780px;
-  z-index: 1;
-  overflow: visible;
-  /* Constellation = élément principal. Au scroll elle remonte au centre et
-     grossit (piloté via style inline sur desktop) ; valeur de départ ici. */
-  transform: translateY(38vh) scale(0.92);
-  transform-origin: center center;
-  will-change: transform;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 5rem var(--gutter) 6rem;
 }
 
-.about-team__lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.credits__list {
+  margin-top: 2.25rem;
 }
 
-.about-team__node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-/* node positions are computed dynamically via inline styles */
-
-.about-team__avatar {
-  width: clamp(88px, 11vw, 140px);
-  height: clamp(88px, 11vw, 140px);
-  border-radius: 50%;
-  background: #0a0a0a;
-  border: 1px solid var(--border-light);
-  overflow: hidden;
-}
-
-.about-team__photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.about-team__profile {
-  position: absolute;
-  top: calc(100% + 0.6rem);
-  left: 50%;
-  transform: translateX(-50%);
+.credits__row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  white-space: nowrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+  transition: opacity var(--t);
 }
 
-.about-team__name {
+.credits__row:first-child { border-top: 1px solid var(--border); }
+
+/* Estompage au survol : CSS PUR (pas de classe Vue — voir equipe.vue).
+   Quand la liste est survolée, toutes les lignes s'estompent sauf celle
+   sous le curseur. Limité aux écrans à pointeur. */
+@media (hover: hover) {
+  .credits__list:hover .credits__row { opacity: 0.3; }
+  .credits__list .credits__row:hover { opacity: 1; }
+}
+
+.credits__name {
   font-family: 'Coolvetica', sans-serif;
-  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4.2vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  color: #fff;
+  color: #ffffff;
 }
 
-.about-team__role {
+.credits__role {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
-  font-size: clamp(0.65rem, 1vw, 0.8rem);
-  letter-spacing: 0.06em;
+  font-size: clamp(0.7rem, 0.95vw, 0.85rem);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  margin-top: 0.15rem;
+  color: var(--text-dim);
+  text-align: right;
 }
 
-/* -------------------------------------------------------
-   Dégradé section équipe (recréé en CSS d'après la maquette)
-   Idée : une source de lumière en bas à droite qui crée
-   un faisceau vertical, + un dôme/sphère éclairé par le bas.
-   ------------------------------------------------------- */
+/* Vignette inline : uniquement les écrans SANS survol (tactile) — cachée par
+   défaut, activée dans le @media (hover:none) plus bas. */
+.credits__thumb { display: none; }
 
-/* Calque ambiance (dégradé + titre) — remonte/disparaît au scroll */
-.about-team__ambiance {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
+/* Polaroid volant : uniquement les écrans avec vrai curseur. Positionné en
+   fixed sur clientX/clientY (injecté par equipe.vue). */
+.credits__float { display: none; }
+
+@media (hover: hover) {
+  .credits__float {
+    display: block;
+    /* Absolu dans .credits (pas fixed) : le sticker défile AVEC le contenu */
+    position: absolute;
+    z-index: 60;
+    width: clamp(140px, 14vw, 200px);
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    pointer-events: none;
+    /* CENTRÉ sur le point d'entrée du curseur (left/top posés par equipe.vue),
+       puis figé là ; --angle = rotation "sticker" aléatoire par ligne. */
+    transform: translate(-50%, -50%) rotate(var(--angle, -4deg));
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+  }
 }
 
-/* Faisceau lumineux : le plus intense en bas à droite, voile sur le bord droit */
-.about-team__glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    /* coeur du faisceau, bas-droite */
-    radial-gradient(48% 62% at 80% 102%,
-      rgba(255,255,255,0.90) 0%,
-      rgba(255,255,255,0.30) 36%,
-      rgba(255,255,255,0.06) 60%,
-      transparent 74%),
-    /* colonne de lumière qui remonte à droite */
-    radial-gradient(32% 85% at 86% 78%,
-      rgba(255,255,255,0.45) 0%,
-      rgba(255,255,255,0.08) 45%,
-      transparent 70%),
-    /* léger voile sur le bord droit */
-    linear-gradient(to right,
-      transparent 48%,
-      rgba(255,255,255,0.04) 72%,
-      rgba(255,255,255,0.18) 100%);
+@media (hover: none) {
+  .credits__thumb {
+    display: block;
+    width: 54px;
+    height: 68px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border-light);
+    align-self: center;
+    flex-shrink: 0;
+  }
 }
 
-/* Dôme lumineux pleine largeur : grand cercle dont la calotte basse
-   occupe toute la largeur de l'écran. Dégradé sombre (haut) → blanc (bas)
-   concentré sur la partie visible. */
-.about-team__sphere {
-  position: absolute;
-  left: 50%;
-  top: -8vh;
-  transform: translateX(-50%);
-  /* Ellipse large : pleine largeur de l'écran, contenue verticalement.
-     Calotte basse lumineuse, sombre vers le haut, le tout fond en bas. */
-  width: 118vw;
-  height: 56vh;
-  border-radius: 50%;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,0)    10%,
-    rgba(255,255,255,0.05) 38%,
-    rgba(255,255,255,0.28) 64%,
-    rgba(255,255,255,0.72) 88%,
-    rgba(255,255,255,0.90) 100%);
-  filter: blur(5px);
-  z-index: 0;
-  pointer-events: none;
+/* Apparition "sticker" : fondu + petit pop de scale avec léger rebond ;
+   disparition en fondu simple. L'angle vient de var(--angle). */
+.credits-photo-enter-active {
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
-/* Label "Notre équipe" — centré horizontalement (sans transform pour ne pas
-   entrer en conflit), posé dans la partie lumineuse du dôme */
-.about-team__heading {
-  position: absolute;
-  top: 9%;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-family: 'Coolvetica', sans-serif;
-  font-size: clamp(2rem, 6vw, 6rem);
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  /* Blanc semi-transparent : watermark discret, lisible sur le fond sombre
-     du haut où le titre apparaît avant de remonter/s'effacer au scroll. */
-  color: rgba(255,255,255,0.55);
-  white-space: nowrap;
-  z-index: 1;
+.credits-photo-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.credits-photo-enter-from {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--angle, -4deg)) scale(0.82);
+}
+.credits-photo-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--angle, -4deg)) scale(0.94);
 }
 
 /* ===================================================
@@ -1904,15 +1869,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: clamp(1rem, 2vw, 1.5rem);
   }
 
-  .about-team__constellation {
-    width: 560px;
-    height: 574px;
-  }
-
-  .about-team__avatar {
-    width: 100px;
-    height: 100px;
-  }
 }
 
 /* ---- Mobile ---- */
@@ -2000,6 +1956,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* --- Footer (refonte mobile) --- */
+  /* Sur mobile on garde le plein écran (comportement d'origine) : le ratio
+     16/7 du desktop donnerait un footer écrasé sur un écran étroit.
+     min-height (et non height) : en paysage téléphone (~375px de haut) le
+     contenu dépasse 100vh et serait coupé par l'overflow:hidden. */
+  .footer {
+    aspect-ratio: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+
   .footer__nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2112,45 +2078,32 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 1.5rem;
   }
 
-  /* Constellation : désactive le sticky, réduit le conteneur */
-  .about-team {
-    height: auto !important;
-    min-height: 0;
+  /* --- Équipe : liste "générique" — compactée mobile --- */
+  .credits {
+    padding: 3.5rem var(--gutter) 4rem;
   }
 
-  .about-team__sticky {
-    position: static;
-    height: auto;
-    padding: 3rem var(--gutter) 4rem;
-    justify-content: center;
+  .credits__row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.9rem;
+    row-gap: 0.2rem;
+    align-items: center;
+    padding: 1rem 0;
   }
 
-  .about-team__constellation {
-    width: 88vw;
-    height: calc(88vw * 780 / 760);
-    overflow: hidden;
-    margin: 7rem auto 0;
-    transform: none;
+  /* La vignette (si photo) occupe les 2 rangées nom/rôle */
+  .credits__thumb { grid-row: 1 / span 2; }
+
+  .credits__name {
+    grid-column: 2;
+    font-size: 1.5rem;
   }
 
-  .about-team__avatar {
-    width: 58px;
-    height: 58px;
-  }
-
-  .about-team__constellation { overflow: visible; }
-
-  .about-team__profile { top: calc(100% + 0.3rem); }
-  .about-team__name { font-size: 0.7rem; }
-  .about-team__role { font-size: 0.58rem; }
-
-  .about-team__heading { top: 8%; font-size: clamp(1.5rem, 8vw, 3rem); }
-
-  /* Dôme : ellipse pleine largeur, contenue en haut (sticky désactivé sur mobile) */
-  .about-team__sphere {
-    top: -6vh;
-    width: 150vw;
-    height: 38vh;
+  .credits__role {
+    grid-column: 2;
+    text-align: left;
+    font-size: 0.68rem;
   }
 
   /* --- Événementiel / Commercial hero --- */
@@ -3034,16 +2987,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
 }
 
-.about-team__initial {
-  font-family: 'Coolvetica', sans-serif;
-  font-size: 1.6rem;
-  color: rgba(255,255,255,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
 
 @media (max-width: 767px) {
   .equipe-stats__grid { grid-template-columns: 1fr; }

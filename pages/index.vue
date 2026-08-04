@@ -27,7 +27,9 @@ const activeHref = computed(() =>
 /* STEP_VH : distance de scroll (par projet) du carrousel "théâtre" piloté au
    scroll sur DESKTOP. Sur mobile le scroll-jack est désactivé (trop fragile)
    au profit d'un défilement automatique — voir applyMode(). */
-const STEP    = 0.5
+/* 0.8 (80vh par slide) : à 0.5 la slide du milieu défilait trop vite — elle
+   n'a ni l'approche de la section (1re slide) ni la queue de 90vh (dernière). */
+const STEP    = 0.8
 const STEP_VH = STEP * 100
 
 const isDesktop = ref(true)
@@ -53,6 +55,10 @@ const hasXpVideo = reactive<Record<keyof typeof XP_VIDEOS, boolean>>({
   documentaire: false,
 })
 
+/* Marge de sécurité du fit-text : à 1.0 le titre touchait les bords et la
+   ponctuation se faisait rogner à droite (arrondis de mesure). */
+const TITLE_FIT = 0.94
+
 function fitTitle() {
   const el = titleRef.value
   if (!el) return
@@ -64,7 +70,7 @@ function fitTitle() {
   const textWidth = el.scrollWidth
   el.style.display = 'block'
   if (!textWidth) return
-  el.style.fontSize = `${(window.innerWidth / textWidth) * 10}px`
+  el.style.fontSize = `${(window.innerWidth / textWidth) * 10 * TITLE_FIT}px`
 }
 
 let ro: ResizeObserver | null = null
@@ -152,6 +158,7 @@ useHead({
   title: home.seo.titre,
   meta: [
     { name: 'description',        content: home.seo.description },
+    { property: 'og:title',       content: home.seo.titre },
     { property: 'og:description', content: home.seo.description },
   ],
   script: [
@@ -239,11 +246,14 @@ useHead({
           class="project-card projects-theater__card"
           :aria-label="`Voir ${featured[activeIndex].title}`"
         >
+          <!-- Seule la 1re slide charge tout de suite (visible en premier) ;
+               les autres attendent — le carrousel est sous la ligne de flottaison. -->
           <img
             v-for="(p, i) in featured"
             :key="p.id"
             :src="p.thumbnail"
             :alt="p.title"
+            :loading="i === 0 ? undefined : 'lazy'"
             :class="['theater__img', { 'is-active': i === activeIndex }]"
           />
           <div class="project-card__overlay">
@@ -285,9 +295,12 @@ useHead({
       <div class="home-xp__grid">
         <NuxtLink to="/live" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:120ms">
           <span class="home-xp__media">
+            <!-- poster : miniature affichée pendant le chargement de la boucle.
+                 Déposer public/videos/expertise-live-poster.jpg (absente = ignorée) -->
             <video
               v-if="hasXpVideo.live"
               :src="XP_VIDEOS.live"
+              poster="/videos/expertise-live-poster.jpg"
               class="home-xp__video"
               autoplay muted loop playsinline preload="metadata"
               aria-hidden="true"
@@ -301,9 +314,11 @@ useHead({
         </NuxtLink>
         <NuxtLink to="/documentaire" class="home-xp__card home-xp__card--big" data-reveal style="--reveal-delay:200ms">
           <span class="home-xp__media">
+            <!-- poster : déposer public/videos/expertise-documentaire-poster.jpg -->
             <video
               v-if="hasXpVideo.documentaire"
               :src="XP_VIDEOS.documentaire"
+              poster="/videos/expertise-documentaire-poster.jpg"
               class="home-xp__video"
               autoplay muted loop playsinline preload="metadata"
               aria-hidden="true"

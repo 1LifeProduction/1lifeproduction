@@ -23,7 +23,7 @@ Utilise le MCP Figma pour lire les frames avant de coder chaque page.
   hero + sous-catégories alternées gauche/droite (projet phare + tiroir « Voir les projets » → modale) + process + FAQ (JSON-LD) + CTA devis
 - /equipe (remplace /a-propos) → constellation équipe + repères + FAQ + CTA devis
 - /contact → formulaire devis (nom, société, email, téléphone, type de projet, budget conditionnel, message — PAS de champ Timing), envoi via /api/contact (Resend, clés dans .env)
-- /commercial et /a-propos → stubs de redirection (301 client-side) vers /marque et /equipe
+- /commercial et /a-propos → redirections 301 via routeRules (nuxt.config.ts) vers /marque et /equipe — pas de pages stubs
 - Structure catégories/sous-catégories : data/categories.ts (structure) + content/categories.json (textes client)
 
 ## Règles importantes

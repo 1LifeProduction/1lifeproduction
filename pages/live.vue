@@ -6,6 +6,7 @@ useHead({
   title: seo.titre,
   meta: [
     { name: 'description',        content: seo.description },
+    { property: 'og:title',       content: seo.titre },
     { property: 'og:description', content: seo.description },
   ],
 })

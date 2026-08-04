@@ -1,34 +1,77 @@
+import projects from './data/projects.json'
+
+/* URLs profondes des projets (/projets/<id>) : pré-rendues au build et
+   ajoutées au sitemap — le générateur ne peut pas les découvrir en crawlant
+   (les modales s'ouvrent via des <button>, pas des liens). */
+const projectRoutes = projects.map(p => `/projets/${p.id}`)
+
 export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
+
+  /* Sitemap généré automatiquement à chaque build (avec lastmod) : remplace
+     l'ancien public/sitemap.xml maintenu à la main. Les stubs de redirection
+     noindex (/a-propos, /commercial) en sont exclus. */
+  modules: ['@nuxtjs/sitemap'],
+  site: {
+    url: 'https://1lifeproduction.com',
+    name: '1LIFE PRODUCTION',
+  },
+  sitemap: {
+    exclude: ['/a-propos', '/commercial', '/404'],
+    urls: projectRoutes,
+  },
+
+  nitro: {
+    prerender: {
+      routes: projectRoutes,
+    },
+  },
+
+  /* Anciennes URLs → redirections 301 déclarées au niveau du routeur serveur
+     (remplace les anciennes pages "stub" qui redirigeaient en JS client).
+     En dev/SSR : vrai 301. En statique : page meta-refresh instantanée,
+     signal de redirection permanente pour Google. Le 301 serveur chez
+     l'hébergeur reste le complément idéal (voir PDF client, point 5). */
+  routeRules: {
+    '/a-propos':   { redirect: { to: '/equipe', statusCode: 301 } },
+    '/commercial': { redirect: { to: '/marque', statusCode: 301 } },
+  },
 
   css: ['~/assets/css/main.css'],
 
   app: {
     head: {
+      /* Le site est en français — indispensable pour l'indexation linguistique
+         et les lecteurs d'écran. */
+      htmlAttrs: { lang: 'fr' },
       title: '1LIFE PRODUCTION',
       meta: [
         { name: 'viewport',    content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
         { name: 'robots',      content: 'index, follow' },
-        // Open Graph
+        /* Open Graph — valeurs PAR DÉFAUT : chaque page surcharge og:title et
+           og:description (dédupliqué par `property`), app.vue pose og:url.
+           Twitter : PAS de twitter:title/description ici — en leur absence,
+           les cartes retombent sur les og:* de la page (les valeurs globales
+           écraseraient les titres par page). */
         { property: 'og:type',        content: 'website' },
         { property: 'og:site_name',   content: '1LIFE PRODUCTION' },
+        { property: 'og:locale',      content: 'fr_FR' },
         { property: 'og:title',       content: '1LIFE PRODUCTION' },
         { property: 'og:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
-        { property: 'og:image',       content: '/og-image.jpg' },
-        // Twitter Card
-        { name: 'twitter:card',        content: 'summary_large_image' },
-        { name: 'twitter:title',       content: '1LIFE PRODUCTION' },
-        { name: 'twitter:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
-        { name: 'twitter:image',       content: '/og-image.jpg' },
+        { property: 'og:image',       content: 'https://1lifeproduction.com/og-image.jpg' },
+        { name: 'twitter:card',       content: 'summary_large_image' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
+          /* Montserrat 300 uniquement : Inter (6 graisses !) n'était utilisé
+             par aucune règle CSS — c'était ~100 Ko de police render-blocking
+             pour rien. Il reste en simple fallback système dans --font. */
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@300&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap',
         },
       ],
     },

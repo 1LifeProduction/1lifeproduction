@@ -23,14 +23,14 @@
   "equipe": {
     "titre": "Notre équipe",
     "membres": [
-      { "photo": "", "nom": "QUENTIN",         "role": "Directeur de production" },
-      { "photo": "", "nom": "TITOUAN",         "role": "Réalisateur · Directeur technique" },
-      { "photo": "", "nom": "RICARDO",         "role": "Directeur artistique · Photographe" },
-      { "photo": "", "nom": "IRÈNE",           "role": "Direction artistique · Scénographie" },
-      { "photo": "", "nom": "ARTHUR",          "role": "Chargé de projet · Cadreur" },
-      { "photo": "", "nom": "THÉO LACASSAGNE", "role": "Monteur · Étalonneur" },
-      { "photo": "", "nom": "BAPTISTE",        "role": "Journaliste Reporter d'Images (JRI)" },
-      { "photo": "", "nom": "VALENTIN",        "role": "Artiste 3D · VFX" }
+      { "photo": "/team/placeholder.svg", "nom": "QUENTIN",         "role": "Directeur de production" },
+      { "photo": "/team/placeholder.svg", "nom": "TITOUAN",         "role": "Réalisateur · Directeur technique" },
+      { "photo": "/team/placeholder.svg", "nom": "RICARDO",         "role": "Directeur artistique · Photographe" },
+      { "photo": "/team/placeholder.svg", "nom": "IRÈNE",           "role": "Direction artistique · Scénographie" },
+      { "photo": "/team/placeholder.svg", "nom": "ARTHUR",          "role": "Chargé de projet · Cadreur" },
+      { "photo": "/team/placeholder.svg", "nom": "THÉO LACASSAGNE", "role": "Monteur · Étalonneur" },
+      { "photo": "/team/placeholder.svg", "nom": "BAPTISTE",        "role": "Journaliste Reporter d'Images (JRI)" },
+      { "photo": "/team/placeholder.svg", "nom": "VALENTIN",        "role": "Artiste 3D · VFX" }
     ]
   },
 

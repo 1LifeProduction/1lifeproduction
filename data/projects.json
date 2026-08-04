@@ -6,7 +6,7 @@
     "category": "live-sessions",
     "year": 2025,
     "client": "Saphir Session",
-    "vimeo_url": "",
+    "vimeo_url": "https://youtu.be/2u_AzjyNgg0?si=ltYUmyQtQLSKae0k",
     "thumbnail": "",
     "description": "",
     "tags": ["session", "live"],
@@ -19,9 +19,9 @@
     "category": "live-sessions",
     "year": 2025,
     "client": "Sköne",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/skone-live-session.jpg",
-    "description": "Live session de Sköne : performance filmée en conditions live, mise en lumière et montage rythmé.",
+    "vimeo_url": "https://youtu.be/iy57MgdQQp4?si=IgY0CRuYn9lCX-UR",
+    "thumbnail": "/thumbnails/skone-live-session.webp",
+    "description": "",
     "tags": ["live session", "musique", "performance"],
     "featured": false
   },
@@ -32,9 +32,9 @@
     "category": "live-sessions",
     "year": 2026,
     "client": "Saphir Session",
-    "vimeo_url": "https://vimeo.com/76979871",
-    "thumbnail": "/thumbnails/lowtso.png",
-    "description": "Captation de la session #10 de Saphir, tournée devant l'avion Air Inter avec l'artiste Lowtso.",
+    "vimeo_url": "https://youtu.be/eV3pZ8-Db-4?si=8vi3MhFQ5BBymB1x",
+    "thumbnail": "/thumbnails/lowtso.webp",
+    "description": "",
     "tags": ["session", "live", "captation"],
     "featured": true
   },
@@ -98,7 +98,7 @@
     "year": 2024,
     "client": "L'INF",
     "vimeo_url": "https://vimeo.com/76979871",
-    "thumbnail": "/thumbnails/linf.jpg",
+    "thumbnail": "/thumbnails/linf.webp",
     "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "tags": ["film", "cinéma", "urban"],
     "featured": true
@@ -111,7 +111,7 @@
     "year": 2024,
     "client": "CKO × Nike",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/cko.png",
+    "thumbnail": "/thumbnails/cko.webp",
     "description": "Diffusion en direct d'un événement CKO avec une réalisation multicaméra et une qualité de production professionnelle.",
     "tags": ["livestream", "direct", "multicaméra"],
     "featured": false
@@ -124,7 +124,7 @@
     "year": 2025,
     "client": "Brutalismus 3000",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/fdlm-brutalismus.png",
+    "thumbnail": "/thumbnails/fdlm-brutalismus.webp",
     "description": "Livestream du set Brutalismus : diffusion en temps réel, ambiance club et rendu haute intensité.",
     "tags": ["livestream", "club", "musique"],
     "featured": false
@@ -137,7 +137,7 @@
     "year": 2024,
     "client": "Gâtinais Libre",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/gatinais-libre.png",
+    "thumbnail": "/thumbnails/gatinais-libre.webp",
     "description": "Diffusion en direct de l'événement Gâtinais Libre pour toucher l'audience au-delà du lieu, en temps réel.",
     "tags": ["livestream", "direct", "événement"],
     "featured": false
@@ -150,7 +150,7 @@
     "year": 2025,
     "client": "Sköne",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/skone.png",
+    "thumbnail": "",
     "description": "",
     "tags": ["documentaire", "musique"],
     "featured": false
@@ -176,7 +176,7 @@
     "year": 2025,
     "client": "Charlatte",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/charlatte.png",
+    "thumbnail": "",
     "description": "Film de marque pour Charlatte : narration cinématographique conçue pour ancrer l'identité dans l'imaginaire.",
     "tags": ["film", "marque", "narration"],
     "featured": false
@@ -280,7 +280,7 @@
     "year": 2026,
     "client": "Loewe",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/loewe.png",
+    "thumbnail": "/thumbnails/loewe.webp",
     "description": "Mise en valeur produit pour Loewe : direction artistique soignée, image nette et matière sublimée.",
     "tags": ["produit", "luxe", "studio"],
     "featured": false
@@ -332,7 +332,7 @@
     "year": 2025,
     "client": "Vertical'Art",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/vertical-art.png",
+    "thumbnail": "/thumbnails/vertical-art.webp",
     "description": "Captation vidéo d'une émission Vertical'Art : mise en image professionnelle, son soigné et cadrage dynamique.",
     "tags": ["podcast", "émission", "plateau"],
     "featured": false
@@ -384,7 +384,7 @@
     "year": 2025,
     "client": "Uniqlo",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/uniqlo.png",
+    "thumbnail": "/thumbnails/uniqlo.webp",
     "description": "Publicité Uniqlo avec intégration VFX : concept, tournage et post-production pour un spot percutant.",
     "tags": ["publicité", "vfx", "campagne"],
     "featured": false
@@ -410,7 +410,7 @@
     "year": 2026,
     "client": "Coachella",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/coachella.png",
+    "thumbnail": "/thumbnails/coachella.webp",
     "description": "Scénographie et 3D pour Coachella : conception d'espaces et rendus immersifs au service de l'expérience.",
     "tags": ["scénographie", "3d", "événement"],
     "featured": false
@@ -423,7 +423,7 @@
     "year": 2026,
     "client": "1LIFE Production",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/scenographie-showreel.png",
+    "thumbnail": "/thumbnails/scenographie-showreel.webp",
     "description": "Showreel de nos travaux de scénographie et 3D : aperçu des concepts, rendus et réalisations immersives.",
     "tags": ["showreel", "3d", "scénographie"],
     "featured": false
@@ -436,7 +436,7 @@
     "year": 2024,
     "client": "CKO × Nike",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/cko.png",
+    "thumbnail": "/thumbnails/cko.webp",
     "description": "",
     "tags": ["aftermovie"],
     "featured": false
@@ -449,7 +449,7 @@
     "year": 2024,
     "client": "Couleur Café",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/couleur-cafe-festival.png",
+    "thumbnail": "/thumbnails/couleur-cafe-festival.webp",
     "description": "Afterfilm du festival Couleur Café : énergie des scènes, public et temps forts condensés dans un montage immersif.",
     "tags": ["afterfilm", "festival", "musique"],
     "featured": false
@@ -462,7 +462,7 @@
     "year": 2024,
     "client": "Impact",
     "vimeo_url": "https://vimeo.com/76979871",
-    "thumbnail": "/thumbnails/skone.png",
+    "thumbnail": "",
     "description": "Afterfilm de la soirée Impact avec Skone. Ambiance scène, foule et lumières rouges.",
     "tags": ["afterfilm", "club", "event"],
     "featured": true
@@ -475,7 +475,7 @@
     "year": 2025,
     "client": "Vladimir Cauchemar",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/vladimir-cauchemar.png",
+    "thumbnail": "/thumbnails/vladimir-cauchemar.webp",
     "description": "Afterfilm autour de Vladimir Cauchemar : direction artistique marquée et montage nerveux au service de l'ambiance.",
     "tags": ["afterfilm", "live", "musique"],
     "featured": false
@@ -501,7 +501,7 @@
     "year": 2025,
     "client": "Institut des Études Avancées",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/institut-etudes-avancees.png",
+    "thumbnail": "/thumbnails/institut-etudes-avancees.webp",
     "description": "Captation d'un cycle de conférences de l'Institut des Études Avancées, pensée pour valoriser les intervenants.",
     "tags": ["conférence", "institutionnel", "captation"],
     "featured": false
@@ -514,7 +514,7 @@
     "year": 2025,
     "client": "Technion France",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/conference-technion.png",
+    "thumbnail": "/thumbnails/conference-technion.webp",
     "description": "Captation multicaméra de la plénière de la conférence Technion France : interventions, table ronde et temps forts.",
     "tags": ["conférence", "multicaméra", "corporate"],
     "featured": false
@@ -527,7 +527,7 @@
     "year": 2024,
     "client": "Confidentiel",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/conseil-administration.png",
+    "thumbnail": "/thumbnails/conseil-administration.webp",
     "description": "Captation d'un conseil d'administration : prise de son professionnelle et cadrage sobre pour une diffusion interne.",
     "tags": ["corporate", "captation", "institutionnel"],
     "featured": false

@@ -18,7 +18,7 @@ Ce document explique **comment modifier tous les textes et contenus du site** sa
 | `content/contact.json` | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |
 | `content/global.json` | Commun à tout le site : email et adresse du footer, URLs des réseaux sociaux, titre du bandeau clients, libellés d'interface (« Voir les projets », « Questions fréquentes »…). |
 | `content/clients.json` | Logos du bandeau marques défilant. |
-| `data/projects.json` | Les projets (réalisations) : titres, catégories, liens Vimeo, vignettes. |
+| `data/projects.json` | Les projets (réalisations) : titres, catégories, liens vidéo (Vimeo ou YouTube), vignettes. |
 
 Conventions dans les textes :
 - `\n` = **saut de ligne** (dans les grands titres et l'adresse).
@@ -48,7 +48,7 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
   "year": 2026,
   "client": "Saphir Session",
   "vimeo_url": "https://vimeo.com/76979871",
-  "thumbnail": "/thumbnails/lowtso.png",
+  "thumbnail": "/thumbnails/lowtso.webp",
   "description": "Captation de la session #10 de Saphir, tournée devant l'avion Air Inter avec l'artiste Lowtso.",
   "tags": ["session", "live", "captation"],
   "featured": true
@@ -65,7 +65,7 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
 | `category` | ✅ | Sous-catégorie. **Doit correspondre exactement** à un slug autorisé pour la section (voir tableau ci-dessous). |
 | `year` | ✅ | Année (nombre, sans guillemets). Ex. `2026`. |
 | `client` | ✅ | Nom du client. |
-| `vimeo_url` | ✅ | Lien Vimeo de la vidéo. |
+| `vimeo_url` | ✅ | Lien de la vidéo : **Vimeo ou YouTube** (`vimeo.com/…`, `youtube.com/watch?v=…`, `youtu.be/…`, Shorts). Peut rester vide `""` : la vignette s'affiche à la place. |
 | `thumbnail` | ✅ | Chemin de la vignette. Le fichier doit être déposé dans `public/thumbnails/` et écrit ici **sans `/public`** (ex. `/thumbnails/mon-image.png`). |
 | `description` | ✅ | Texte de présentation du projet. |
 | `tags` | ✅ | Liste de mots-clés entre crochets (ex. `["live", "captation"]`). Peut être vide : `[]`. |
@@ -113,7 +113,7 @@ La `category` doit appartenir à la même `section` :
 
 ### ➕ Ajouter un projet
 
-1. **Déposer la vignette** dans le dossier `public/thumbnails/` (ex. `public/thumbnails/mon-projet.png`). Format conseillé : image horizontale, nette.
+1. **Déposer la vignette** dans le dossier `public/thumbnails/` (ex. `public/thumbnails/mon-projet.webp`). Format conseillé : image horizontale, nette.
 2. Ouvrir `data/projects.json`.
 3. **Copier un projet existant** (tout le bloc entre `{` et `}`) et le coller à la suite, **séparé par une virgule**.
 4. Remplacer les valeurs (penser à un `id` unique et au bon chemin `thumbnail`).
@@ -133,7 +133,7 @@ Exemple — ajout d'un projet à la fin de la liste :
     "year": 2026,
     "client": "Nom du client",
     "vimeo_url": "https://vimeo.com/123456789",
-    "thumbnail": "/thumbnails/mon-projet.png",
+    "thumbnail": "/thumbnails/mon-projet.webp",
     "description": "Description du projet.",
     "tags": ["produit", "studio"],
     "featured": false

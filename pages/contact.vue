@@ -6,6 +6,7 @@ useHead({
   title: content.seo.titre,
   meta: [
     { name: 'description',        content: content.seo.description },
+    { property: 'og:title',       content: content.seo.titre },
     { property: 'og:description', content: content.seo.description },
   ],
 })
@@ -40,9 +41,6 @@ const validTypes = PROJECT_TYPES.map(t => t.value)
 if (typeof route.query.type === 'string' && validTypes.includes(route.query.type as Section | 'autre' as string)) {
   form.projectType = route.query.type
 }
-
-/* Le budget ne se choisit qu'une fois le type de projet renseigné */
-watch(() => form.projectType, (val) => { if (!val) form.budget = '' })
 
 const status    = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
 const errorMsg  = ref('')
@@ -125,7 +123,7 @@ async function submitForm() {
           <div class="contact-form__row">
             <label class="contact-form__label" for="cf-budget">{{ champs.budget.label }}</label>
             <select id="cf-budget" v-model="form.budget" class="contact-form__select"
-                    :class="{ 'is-filled': !!form.budget }" :disabled="!form.projectType" required>
+                    :class="{ 'is-filled': !!form.budget }" required>
               <option value="" disabled>{{ champs.budget.placeholder }}</option>
               <option v-for="b in BUDGETS" :key="b.value" :value="b.value">{{ b.label }}</option>
             </select>
