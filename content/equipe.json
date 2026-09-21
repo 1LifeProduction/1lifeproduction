@@ -28,7 +28,7 @@
       { "photo": "/team/placeholder.svg", "nom": "RICARDO",         "role": "Directeur artistique · Photographe" },
       { "photo": "/team/placeholder.svg", "nom": "IRÈNE",           "role": "Direction artistique · Scénographie" },
       { "photo": "/team/placeholder.svg", "nom": "ARTHUR",          "role": "Chargé de projet · Cadreur" },
-      { "photo": "/team/placeholder.svg", "nom": "THÉO LACASSAGNE", "role": "Monteur · Étalonneur" },
+      { "photo": "/team/placeholder.svg", "nom": "THÉO", "role": "Monteur · Étalonneur" },
       { "photo": "/team/placeholder.svg", "nom": "BAPTISTE",        "role": "Journaliste Reporter d'Images (JRI)" },
       { "photo": "/team/placeholder.svg", "nom": "VALENTIN",        "role": "Artiste 3D · VFX" }
     ]
