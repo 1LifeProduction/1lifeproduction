@@ -18,6 +18,7 @@ Ce document explique **comment modifier tous les textes et contenus du site** sa
 | `content/contact.json` | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |
 | `content/global.json` | Commun à tout le site : email et adresse du footer, URLs des réseaux sociaux, titre du bandeau clients, libellés d'interface (« Voir les projets », « Questions fréquentes »…). |
 | `content/clients.json` | Logos du bandeau marques défilant. |
+| `content/legal.json` | Pages légales (mentions légales, politique de confidentialité) : titre + sections (`titre`, `paragraphes`). Tant que `sections` est vide, la page affiche « Contenu à venir ». |
 | `data/projects.json` | Les projets (réalisations) : titres, catégories, liens vidéo (Vimeo ou YouTube), vignettes. |
 
 Conventions dans les textes :
@@ -255,9 +256,7 @@ Ouvrez `content/clients.json` et ajoutez une ligne :
 
 ```json
 [
-  { "nom": "Formula 1", "logo": "f1.png" },
   { "nom": "Nike", "logo": "nike.png" },
-  { "nom": "Spotify", "logo": "spotify.png" },
   { "nom": "Chanel", "logo": "chanel.png" },
   { "nom": "Adidas", "logo": "adidas.png" }
 ]

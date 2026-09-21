@@ -17,7 +17,9 @@ export default defineNuxtConfig({
     name: '1LIFE PRODUCTION',
   },
   sitemap: {
-    exclude: ['/a-propos', '/commercial', '/404'],
+    /* Pages légales : exclues tant que le client n'a pas fourni le contenu
+       (content/legal.json) — à retirer de cette liste une fois remplies. */
+    exclude: ['/a-propos', '/commercial', '/404', '/mentions-legales', '/politique-de-confidentialite'],
     urls: projectRoutes,
   },
 
@@ -67,11 +69,13 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
-          /* Montserrat 300 uniquement : Inter (6 graisses !) n'était utilisé
-             par aucune règle CSS — c'était ~100 Ko de police render-blocking
-             pour rien. Il reste en simple fallback système dans --font. */
+          /* Montserrat 300 (texte courant) + 700 (bulles .xp-pill en gras —
+             sans cette graisse le navigateur simulerait un faux gras).
+             Inter (6 graisses !) n'était utilisé par aucune règle CSS —
+             c'était ~100 Ko de police render-blocking pour rien. Il reste en
+             simple fallback système dans --font. */
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap',
         },
       ],
     },

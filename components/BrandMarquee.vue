@@ -45,6 +45,13 @@ function frame(ts: number) {
   raf = requestAnimationFrame(frame)
 }
 
+/* Logo déclaré dans clients.json mais fichier pas encore déposé dans
+   public/clients/ : on masque l'image (pas d'icône cassée dans le bandeau).
+   Le ResizeObserver re-mesure la piste, la boucle reste exacte. */
+function hideBroken(e: Event) {
+  (e.target as HTMLElement).style.display = 'none'
+}
+
 let ro: ResizeObserver | null = null
 let io: IntersectionObserver | null = null
 let mq: MediaQueryList | undefined
@@ -58,6 +65,10 @@ onMounted(() => {
   mq = window.matchMedia('(max-width: 767px)')
   isMobile.value = mq.matches
   mq.addEventListener('change', onMq)
+  // Images déjà en erreur AVANT l'hydratation (l'événement @error est passé).
+  trackRef.value?.querySelectorAll('img').forEach(img => {
+    if (img.complete && !img.naturalWidth) img.style.display = 'none'
+  })
   measure()
   // La largeur change quand logos/police chargent, ou quand reps change → re-mesure.
   ro = new ResizeObserver(measure)
@@ -97,6 +108,7 @@ onUnmounted(() => {
           class="brand-marquee__logo"
           aria-hidden="true"
           loading="lazy"
+          @error="hideBroken"
         />
       </div>
       <div class="brand-marquee__group" aria-hidden="true">
@@ -108,6 +120,7 @@ onUnmounted(() => {
           class="brand-marquee__logo"
           aria-hidden="true"
           loading="lazy"
+          @error="hideBroken"
         />
       </div>
     </div>

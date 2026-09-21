@@ -1,6 +1,12 @@
 [
-  { "nom": "Formula 1", "logo": "f1.png" },
   { "nom": "Nike", "logo": "nike.png" },
-  { "nom": "Spotify", "logo": "spotify.png" },
-  { "nom": "Chanel", "logo": "chanel.png" }
+  { "nom": "Chanel", "logo": "chanel.png" },
+  { "nom": "Hermès", "logo": "hermes.png" },
+  { "nom": "Valentino", "logo": "valentino.png" },
+  { "nom": "TAG Heuer", "logo": "tag-heuer.png" },
+  { "nom": "Uniqlo", "logo": "uniqlo.png" },
+  { "nom": "Veuve Clicquot", "logo": "veuve-clicquot.png" },
+  { "nom": "Louis Vuitton", "logo": "louis-vuitton.png" },
+  { "nom": "Prada", "logo": "prada.png" },
+  { "nom": "Lacoste", "logo": "lacoste.png" }
 ]

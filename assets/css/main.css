@@ -246,6 +246,18 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
 }
 
+/* Desktop : logo | catégories (centrées) | Équipe · Contact (à droite).
+   Le <nav> passe en display:contents pour que ses deux listes deviennent des
+   colonnes directes de .header__inner ; le logo et la liste de droite se
+   partagent l'espace à parts égales (flex 1 1 0) → les catégories sont
+   centrées sur la page, sans chevauchement possible sur écran étroit. */
+@media (min-width: 768px) {
+  .header__nav { display: contents; }
+  .header__logo,
+  .header__nav-list--pages { flex: 1 1 0; }
+  .header__nav-list--pages { justify-content: flex-end; }
+}
+
 .header__nav-item { position: relative; }
 
 .header__nav-link {
@@ -304,6 +316,9 @@ h1, h2, h3, h4, h5, h6 {
   .header__nav.is-open { transform: translateX(0); }
 
   .header__nav-list { flex-direction: column; align-items: stretch; gap: 0; padding: 1rem 0; }
+  /* Les deux groupes s'enchaînent comme une seule liste dans le menu mobile. */
+  .header__nav-list--categories { padding-bottom: 0; }
+  .header__nav-list--pages { padding-top: 0; }
 
   .header__nav-link {
     padding: 1rem var(--gutter);
@@ -464,7 +479,34 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.2rem;
   color: var(--text);
   line-height: 1.5;
+  transition: opacity var(--t);
 }
+
+.footer__location:hover { opacity: 0.75; }
+
+/* Dernière ligne du footer : adresse à gauche, pages légales à droite. */
+.footer__base-row {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer__legal {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer__legal-link {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: color var(--t);
+}
+
+.footer__legal-link:hover { color: var(--text); }
 
 /* ===================================================
    PROJECT CARD
@@ -2012,6 +2054,15 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
   }
 
+  .footer__base-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .footer__legal { flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+  .footer__legal-link { font-size: 0.75rem; }
+
   .footer__social-link {
     width: 36px;
     height: 36px;
@@ -2302,9 +2353,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #fff;
-  border: 1px solid var(--border-light);
-  background: rgba(255,255,255,0.05);
+  color: #000;
+  border: 1px solid #fff;
+  background: #fff;
   border-radius: 999px;
   padding: 0.35rem 0.8rem;
 }
@@ -2318,14 +2369,17 @@ h1, h2, h3, h4, h5, h6 {
 .xp-pill {
   font-family: 'Montserrat', sans-serif;
   font-size: 0.68rem;
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text-muted);
   border: 1px solid var(--border-light);
   border-radius: 999px;
   padding: 0.4rem 0.85rem;
   white-space: nowrap;
+  transition: color var(--t), border-color var(--t);
 }
+
+.xp-pill:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
 
 /* --- Média du chapitre + tiroir projets --- */
 .xp-media { display: flex; flex-direction: column; gap: 0.7rem; }
@@ -2657,8 +2711,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
   transition: background var(--t), color var(--t), border-color var(--t);
 }
-.xp-cta__btn:hover,
 .xp-modal__btn:hover { background: #fff; color: #000; border-color: #fff; }
+
+/* CTA devis : couleurs inversées — blanc au repos, noir au survol. */
+.xp-cta__btn { background: #fff; color: #000; border-color: #fff; }
+.xp-cta__btn:hover { background: #000; color: #fff; border-color: #fff; }
 
 /* --- Modale projet --- */
 .xp-modal {
@@ -2856,6 +2913,7 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.7rem;
   border: 1px solid var(--border-light);
   background: var(--bg-card);
+  border-radius: 8px;
   padding: 1.6rem 1.8rem;
   transition: border-color var(--t), transform var(--t), background var(--t);
 }
@@ -3005,6 +3063,33 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 560px;
 }
 
+/* --- Pages légales (même gabarit que le hero contact) --- */
+.legal-body {
+  padding: 1rem clamp(1rem, 8.06vw, 116px) 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: calc(720px + 2 * clamp(1rem, 8.06vw, 116px));
+}
+
+.legal-body__section { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.legal-body__title {
+  font-family: 'Coolvetica', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.legal-body__text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
 .contact-form--devis { max-width: 720px; }
 
 .contact-form__grid {
@@ -3034,11 +3119,20 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  padding: 0;
-  transition: color var(--t), border-color var(--t), opacity var(--t);
+  /* Retrait des options de la liste déroulante : la liste native (Chromium)
+     copie le padding-left du select (le padding posé sur <option> est
+     ignoré). Le padding est donc PERMANENT sur le select, dont la boîte —
+     et donc la liste ouverte — garde exactement la largeur du champ.
+     Pour que le texte du champ fermé (« Choisir ») ne soit pas décalé lui
+     aussi, le texte natif est rendu transparent et c'est le <span>
+     .contact-form__select-value, calé à gauche, qui l'affiche. (Un
+     text-indent négatif ne marche pas : Chromium rogne le texte.) */
+  padding: 0 0 0 0.75rem;
+  color: transparent;
+  display: block;
+  transition: border-color var(--t), opacity var(--t);
 }
 
-.contact-form__select.is-filled { color: #fff; }
 .contact-form__select:focus { border-bottom-color: #fff; }
 .contact-form__select:disabled { opacity: 0.35; cursor: not-allowed; }
 
@@ -3046,6 +3140,29 @@ h1, h2, h3, h4, h5, h6 {
   background: #111;
   color: #fff;
 }
+
+.contact-form__select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.contact-form__select-value {
+  position: absolute;
+  inset: 0 0 1px 0; /* 1px = border-bottom du select */
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.35);
+  transition: color var(--t), opacity var(--t);
+}
+
+.contact-form__select-value.is-filled { color: #fff; }
+.contact-form__select-wrap:has(select:disabled) .contact-form__select-value { opacity: 0.35; }
 
 @media (max-width: 767px) {
   .contact-form__grid { grid-template-columns: 1fr; }

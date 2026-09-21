@@ -13,6 +13,11 @@
   "footer": {
     "email": "1lifeprod@unlockcollectif.com",
     "adresse": "Rue La Fayette,\n75010 Paris",
+    "adresseMaps": "https://www.google.com/maps/search/?api=1&query=Rue+La+Fayette%2C+75010+Paris",
+    "legal": {
+      "mentionsLegales": "Mentions légales",
+      "confidentialite": "Politique de confidentialité"
+    },
     "reseaux": {
       "instagram": "https://instagram.com/1lifeproduction",
       "youtube": "https://www.youtube.com/@1LifeProduction",

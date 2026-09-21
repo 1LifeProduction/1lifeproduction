@@ -1,0 +1,23 @@
+{
+  "_aide": "Pages légales. Pour chaque page : un titre, puis des sections (titre + paragraphes). Tant que 'sections' est vide, la page affiche le texte 'aVenir' et n'est pas indexée par Google. **gras** possible dans les paragraphes.",
+
+  "aVenir": "Contenu à venir.",
+
+  "mentions-legales": {
+    "titre": "Mentions\nlégales",
+    "seo": {
+      "titre": "Mentions légales — 1LIFE PRODUCTION",
+      "description": "Mentions légales du site 1lifeproduction.com."
+    },
+    "sections": []
+  },
+
+  "politique-de-confidentialite": {
+    "titre": "Politique de\nconfidentialité",
+    "seo": {
+      "titre": "Politique de confidentialité — 1LIFE PRODUCTION",
+      "description": "Politique de confidentialité du site 1lifeproduction.com."
+    },
+    "sections": []
+  }
+}

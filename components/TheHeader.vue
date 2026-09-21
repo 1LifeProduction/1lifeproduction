@@ -35,15 +35,25 @@ const menuOpen = ref(false)
 
 /* Nav construite depuis la source de vérité (data/categories.ts).
    Pas de dropdown : les sous-catégories sont accessibles depuis la page
-   de leur catégorie. */
-const nav = [
-  ...CATEGORIES.map(g => ({
-    label: g.label,
-    href:  `/${g.section}`,
-    key:   g.section,
-  })),
-  { label: globalContent.nav.equipe,  href: '/equipe',  key: 'equipe' },
-  { label: globalContent.nav.contact, href: '/contact', key: 'contact' },
+   de leur catégorie.
+   Deux groupes : les catégories de projet sont centrées dans la navbar,
+   Équipe / Contact restent calés à droite. */
+const navGroups = [
+  {
+    key: 'categories',
+    items: CATEGORIES.map(g => ({
+      label: g.label,
+      href:  `/${g.section}`,
+      key:   g.section,
+    })),
+  },
+  {
+    key: 'pages',
+    items: [
+      { label: globalContent.nav.equipe,  href: '/equipe',  key: 'equipe' },
+      { label: globalContent.nav.contact, href: '/contact', key: 'contact' },
+    ],
+  },
 ]
 
 onMounted(() => {
@@ -89,9 +99,13 @@ watch(() => route.fullPath, () => {
         :class="{ 'is-open': menuOpen }"
         aria-label="Navigation principale"
       >
-        <ul class="header__nav-list">
+        <ul
+          v-for="group in navGroups"
+          :key="group.key"
+          :class="['header__nav-list', `header__nav-list--${group.key}`]"
+        >
           <li
-            v-for="item in nav"
+            v-for="item in group.items"
             :key="item.key"
             class="header__nav-item"
           >

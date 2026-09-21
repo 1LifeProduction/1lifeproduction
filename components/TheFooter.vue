@@ -45,6 +45,13 @@ const footerNav = [
 
 const email        = globalContent.footer.email
 const adresseLines = globalContent.footer.adresse.split('\n')
+const adresseMaps  = globalContent.footer.adresseMaps
+
+/* Pages légales (libellés : content/global.json, contenus : content/legal.json) */
+const legalNav = [
+  { label: globalContent.footer.legal.mentionsLegales, href: '/mentions-legales' },
+  { label: globalContent.footer.legal.confidentialite, href: '/politique-de-confidentialite' },
+]
 </script>
 
 <template>
@@ -84,12 +91,25 @@ const adresseLines = globalContent.footer.adresse.split('\n')
         </a>
       </div>
 
-      <!-- Localisation -->
-      <p class="footer__location">
-        <template v-for="(line, i) in adresseLines" :key="i">
-          <br v-if="i > 0">{{ line }}
-        </template>
-      </p>
+      <!-- Localisation (ouvre l'adresse dans Maps) + pages légales -->
+      <div class="footer__base-row">
+        <a
+          :href="adresseMaps"
+          target="_blank"
+          rel="noopener"
+          class="footer__location"
+          aria-label="Voir l'adresse sur Google Maps"
+        >
+          <template v-for="(line, i) in adresseLines" :key="i">
+            <br v-if="i > 0">{{ line }}
+          </template>
+        </a>
+        <nav class="footer__legal" aria-label="Pages légales">
+          <NuxtLink v-for="item in legalNav" :key="item.href" :to="item.href" class="footer__legal-link">
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
+      </div>
     </div>
 
   </footer>

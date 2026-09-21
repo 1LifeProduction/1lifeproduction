@@ -42,6 +42,15 @@ if (typeof route.query.type === 'string' && validTypes.includes(route.query.type
   form.projectType = route.query.type
 }
 
+/* Texte affiché dans les sélecteurs fermés (le texte natif du <select> est
+   transparent : voir .contact-form__select-wrap dans main.css). */
+const typeLabel = computed(() =>
+  PROJECT_TYPES.find(t => t.value === form.projectType)?.label ?? champs.type.placeholder,
+)
+const budgetLabel = computed(() =>
+  BUDGETS.find(b => b.value === form.budget)?.label ?? champs.budget.placeholder,
+)
+
 const status    = ref<'idle' | 'sending' | 'success' | 'error'>('idle')
 const errorMsg  = ref('')
 
@@ -114,19 +123,27 @@ async function submitForm() {
           </div>
           <div class="contact-form__row">
             <label class="contact-form__label" for="cf-type">{{ champs.type.label }}</label>
-            <select id="cf-type" v-model="form.projectType" class="contact-form__select"
-                    :class="{ 'is-filled': !!form.projectType }" required>
-              <option value="" disabled>{{ champs.type.placeholder }}</option>
-              <option v-for="t in PROJECT_TYPES" :key="t.value" :value="t.value">{{ t.label }}</option>
-            </select>
+            <!-- Le texte visible du champ est le <span> (il ne bouge pas) ; le texte
+                 du <select> est transparent — voir .contact-form__select-wrap. -->
+            <div class="contact-form__select-wrap">
+              <span class="contact-form__select-value" :class="{ 'is-filled': !!form.projectType }" aria-hidden="true">{{ typeLabel }}</span>
+              <select id="cf-type" v-model="form.projectType" class="contact-form__select" required>
+                <!-- hidden : « Choisir » reste la valeur vide (required) mais
+                     n'apparaît pas dans la liste ouverte -->
+                <option value="" disabled hidden>{{ champs.type.placeholder }}</option>
+                <option v-for="t in PROJECT_TYPES" :key="t.value" :value="t.value">{{ t.label }}</option>
+              </select>
+            </div>
           </div>
           <div class="contact-form__row">
             <label class="contact-form__label" for="cf-budget">{{ champs.budget.label }}</label>
-            <select id="cf-budget" v-model="form.budget" class="contact-form__select"
-                    :class="{ 'is-filled': !!form.budget }" required>
-              <option value="" disabled>{{ champs.budget.placeholder }}</option>
-              <option v-for="b in BUDGETS" :key="b.value" :value="b.value">{{ b.label }}</option>
-            </select>
+            <div class="contact-form__select-wrap">
+              <span class="contact-form__select-value" :class="{ 'is-filled': !!form.budget }" aria-hidden="true">{{ budgetLabel }}</span>
+              <select id="cf-budget" v-model="form.budget" class="contact-form__select" required>
+                <option value="" disabled hidden>{{ champs.budget.placeholder }}</option>
+                <option v-for="b in BUDGETS" :key="b.value" :value="b.value">{{ b.label }}</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="contact-form__row contact-form__row--message">
