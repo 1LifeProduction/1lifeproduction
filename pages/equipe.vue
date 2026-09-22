@@ -34,7 +34,19 @@ function polyPoint(p: number) {
 const EDGES = VERTICES.map((v, i) => ({ from: v, to: VERTICES[(i + 1) % N] }))
 
 const teamRef  = ref<HTMLElement>()
+
 const progress = ref(0)
+
+/* Membre "en haut" de la roue : au fil du scroll, les membres tournent le
+   long du polygone ; celui dont la position est la plus proche du sommet
+   haut (norm ≈ 0, cf. polyPoint) est mis en avant : bordure éclairée et
+   son prénom + fonction affichés au centre de la roue. Le nœud i est en
+   norm = frac(i/N + progress) → i ≈ -progress × N (mod N). */
+const topIdx = computed(() => {
+  const i = Math.round(-progress.value * N) % N
+  return (i + N) % N
+})
+const topMember = computed(() => team[topIdx.value])
 
 const nodeStyles = computed(() =>
   team.map((_, i) => {
@@ -49,7 +61,7 @@ const nodeStyles = computed(() =>
    est désactivé (CSS) : seule la rotation des membres suit le scroll. */
 const isDesktop = ref(true)
 
-/* Dôme + titre : remontent ET s'effacent. */
+/* Titre "Notre équipe" : remonte ET s'efface au scroll. */
 const ambianceStyle = computed(() => {
   if (!isDesktop.value) return {}
   const p = progress.value
@@ -57,12 +69,6 @@ const ambianceStyle = computed(() => {
     transform: `translateY(${(-p * 60).toFixed(2)}vh)`,
     opacity: String(Math.max(0, 1 - p * 2.8).toFixed(3)),
   }
-})
-
-/* Faisceau lumineux : reste ancré en bas — il s'efface seulement en opacité. */
-const glowStyle = computed(() => {
-  if (!isDesktop.value) return {}
-  return { opacity: String(Math.max(0, 1 - progress.value * 2.8).toFixed(3)) }
 })
 
 const constellationStyle = computed(() => {
@@ -165,12 +171,14 @@ useHead({
     <section ref="teamRef" class="about-team" aria-label="L'équipe">
       <div class="about-team__sticky">
 
-        <!-- Faisceau lumineux : ancré en bas, s'efface seulement -->
-        <div class="about-team__glow" :style="glowStyle" aria-hidden="true"></div>
+        <!-- Blobs flottants (mêmes que la home), derrière la roue -->
+        <div class="projects-grid__blobs about-team__blobs" aria-hidden="true">
+          <div class="blob blob--1"></div>
+          <div class="blob blob--2"></div>
+        </div>
 
-        <!-- Ambiance (dôme + titre) : remonte et s'efface au scroll -->
+        <!-- Titre : remonte et s'efface au scroll -->
         <div class="about-team__ambiance" :style="ambianceStyle">
-          <div class="about-team__sphere" aria-hidden="true"></div>
           <p class="about-team__heading">{{ content.equipe.titre }}</p>
         </div>
 
@@ -182,25 +190,32 @@ useHead({
               :key="i"
               :x1="edge.from.x" :y1="edge.from.y"
               :x2="edge.to.x"   :y2="edge.to.y"
-              stroke="rgba(255,255,255,0.45)" stroke-width="1"
+              stroke="rgba(255,255,255,0.18)" stroke-width="1"
             />
           </svg>
 
-          <div
+          <button
             v-for="(style, i) in nodeStyles"
             :key="team[i].name"
+            type="button"
             class="about-team__node"
+            :class="{ 'is-active': topIdx === i }"
             :style="style"
+            :aria-label="`${team[i].name} — ${team[i].role}`"
           >
-            <div class="about-team__avatar">
-              <img v-if="team[i].photo" :src="team[i].photo" :alt="team[i].name" class="about-team__photo" loading="lazy" />
+            <span class="about-team__avatar">
+              <img v-if="team[i].photo" :src="team[i].photo" alt="" class="about-team__photo" loading="lazy" />
               <span v-else class="about-team__initial" aria-hidden="true">{{ team[i].name.charAt(0) }}</span>
+            </span>
+          </button>
+
+          <!-- Étiquette au centre de la roue : le membre en haut (change au scroll) -->
+          <Transition name="team-label" mode="out-in">
+            <div :key="topMember.name" class="about-team__label" aria-live="polite">
+              <span class="about-team__name">{{ topMember.name }}</span>
+              <span class="about-team__role">{{ topMember.role }}</span>
             </div>
-            <div class="about-team__profile">
-              <span class="about-team__name">{{ team[i].name }}</span>
-              <span class="about-team__role">{{ team[i].role }}</span>
-            </div>
-          </div>
+          </Transition>
         </div>
       </div>
     </section>

@@ -1,4 +1,12 @@
+import { readdirSync } from 'node:fs'
 import projects from './data/projects.json'
+
+/* Logos réellement présents dans public/clients/ : lus AU BUILD et exposés
+   via appConfig → serveur et client voient exactement la même liste (un
+   import.meta.glob côté composant pouvait diverger entre les deux bundles
+   en dev → erreurs d'hydratation). BrandMarquee ignore les logos de
+   content/clients.json dont le fichier manque. */
+const clientLogos = readdirSync(new URL('./public/clients', import.meta.url))
 
 /* URLs profondes des projets (/projets/<id>) : pré-rendues au build et
    ajoutées au sitemap — le générateur ne peut pas les découvrir en crawlant
@@ -79,6 +87,10 @@ export default defineNuxtConfig({
         },
       ],
     },
+  },
+
+  appConfig: {
+    clientLogos,
   },
 
   runtimeConfig: {

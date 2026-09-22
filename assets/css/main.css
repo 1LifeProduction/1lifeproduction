@@ -67,7 +67,7 @@ body {
 }
 
 /* Conteneur racine du site : clippe tout débordement horizontal résiduel
-   (décors absolus type .about-team__sphere, sous-pixels du header fixe…).
+   (décors absolus type blobs flous, sous-pixels du header fixe…).
    IMPORTANT : overflow-x:clip — PAS hidden — car clip ne crée pas de conteneur
    de défilement → position:sticky (carrousel desktop) reste intact. On ne touche
    toujours PAS à <html> (là, ça casserait le sticky). Body a déjà overflow-x:hidden
@@ -315,19 +315,29 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--bg);
     border-top: 1px solid var(--border);
     overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform var(--t);
     z-index: 99;
+    /* Le panneau lui-même ne glisse PAS (sinon tout le bloc semble arriver
+       de la droite d'un coup) : il apparaît en simple fondu, et ce sont les
+       lignes qui entrent une à une depuis la droite (voir .header__nav-link). */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease), visibility 0s linear 0.2s;
   }
 
-  .header__nav.is-open { transform: translateX(0); }
+  .header__nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.2s var(--ease), visibility 0s;
+  }
 
   .header__nav-list { flex-direction: column; align-items: stretch; gap: 0; padding: 1rem 0; }
   /* Les deux groupes s'enchaînent comme une seule liste dans le menu mobile. */
   .header__nav-list--categories { padding-bottom: 0; }
   .header__nav-list--pages { padding-top: 0; }
 
-  .header__nav-link {
+  .header__nav .header__nav-link {
     padding: 1rem var(--gutter);
     font-size: 1.25rem;
     letter-spacing: 0;
@@ -335,20 +345,20 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     width: 100%;
     height: auto;
-    /* Entrée un par un : masqué et hors champ (à droite) tant que le menu est
-       fermé */
+    /* Entrée ligne par ligne : chaque ligne est masquée et hors champ (à
+       droite) tant que le menu est fermé */
     opacity: 0;
-    transform: translateX(60px);
-    transition: opacity 0.4s var(--ease), transform 0.5s var(--ease), color var(--t);
+    transform: translateX(100%);
+    transition: opacity 0.35s var(--ease), transform 0.45s var(--ease), color var(--t), background var(--t);
   }
 
-  /* Menu ouvert : chaque bloc arrive à son tour, une fois le panneau en
-     place (0.2 s), avec 0.1 s d'écart entre deux blocs (rang --i posé par
-     TheHeader.vue). Fermeture : disparition immédiate, sans délai. */
+  /* Menu ouvert : les lignes arrivent une à une depuis la droite, 0.1 s
+     d'écart entre deux (rang --i posé par TheHeader.vue). Fermeture :
+     disparition immédiate, sans délai. */
   .header__nav.is-open .header__nav-link {
     opacity: 1;
     transform: none;
-    transition-delay: calc(0.2s + var(--i, 0) * 0.1s);
+    transition-delay: calc(0.05s + var(--i, 0) * 0.1s);
   }
 
 }
@@ -1320,23 +1330,34 @@ h1, h2, h3, h4, h5, h6 {
 .about-team__node {
   position: absolute;
   transform: translate(-50%, -50%);
+  padding: 0;
+  cursor: default;
 }
+
+/* Membre en haut de la roue (is-active, calculé au scroll dans equipe.vue) :
+   la bordure de SA photo s'éclaire. Les autres restent tels quels — et
+   opaques : ils masquent les traits du polygone qui passent derrière eux. */
+.about-team__node.is-active .about-team__avatar { border-color: rgba(255,255,255,0.85); }
+.about-team__node.is-active .about-team__photo { transform: scale(1.06); }
 
 /* positions des nœuds : styles inline calculés (equipe.vue) */
 
 .about-team__avatar {
+  display: block;
   width: clamp(88px, 11vw, 140px);
   height: clamp(88px, 11vw, 140px);
   border-radius: 50%;
   background: #0a0a0a;
   border: 1px solid var(--border-light);
   overflow: hidden;
+  transition: border-color var(--t);
 }
 
 .about-team__photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.35s var(--ease);
 }
 
 .about-team__initial {
@@ -1350,21 +1371,31 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
 }
 
-.about-team__profile {
+/* Étiquette centrale (prénom + fonction du membre en haut de la roue) : au
+   centre exact de la roue ; fondu à chaque changement (Transition team-label). */
+.about-team__label {
   position: absolute;
-  top: calc(100% + 0.6rem);
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
 }
+
+.team-label-enter-active { transition: opacity 0.22s var(--ease), transform 0.22s var(--ease); }
+.team-label-leave-active { transition: opacity 0.15s var(--ease); }
+.team-label-enter-from   { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+.team-label-leave-to     { opacity: 0; }
 
 .about-team__name {
   font-family: 'Coolvetica', sans-serif;
-  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: #fff;
@@ -1374,16 +1405,22 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   font-size: clamp(0.65rem, 1vw, 0.8rem);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  margin-top: 0.15rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 0.4rem;
 }
 
-/* Dégradé section équipe : une source de lumière en bas à droite qui crée
-   un faisceau vertical, + un dôme/sphère éclairé par le bas. */
+/* Blobs flottants derrière la roue : mêmes .blob que la home (couleurs,
+   flou, animation). Clippés horizontalement pour ne pas créer de
+   débordement latéral de page ; le vertical peut déborder du stage. */
+.about-team__blobs {
+  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+}
 
-/* Calque ambiance (dégradé + titre) — remonte/disparaît au scroll */
+/* Calque titre — remonte/disparaît au scroll */
 .about-team__ambiance {
   position: absolute;
   inset: 0;
@@ -1392,50 +1429,7 @@ h1, h2, h3, h4, h5, h6 {
   will-change: transform, opacity;
 }
 
-/* Faisceau lumineux : le plus intense en bas à droite, voile sur le bord droit */
-.about-team__glow {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(48% 62% at 80% 102%,
-      rgba(255,255,255,0.90) 0%,
-      rgba(255,255,255,0.30) 36%,
-      rgba(255,255,255,0.06) 60%,
-      transparent 74%),
-    radial-gradient(32% 85% at 86% 78%,
-      rgba(255,255,255,0.45) 0%,
-      rgba(255,255,255,0.08) 45%,
-      transparent 70%),
-    linear-gradient(to right,
-      transparent 48%,
-      rgba(255,255,255,0.04) 72%,
-      rgba(255,255,255,0.18) 100%);
-}
-
-/* Dôme lumineux pleine largeur : grand cercle dont la calotte basse occupe
-   toute la largeur de l'écran, sombre en haut → blanc en bas. */
-.about-team__sphere {
-  position: absolute;
-  left: 50%;
-  top: -8vh;
-  transform: translateX(-50%);
-  width: 118vw;
-  height: 56vh;
-  border-radius: 50%;
-  background: linear-gradient(to bottom,
-    rgba(255,255,255,0)    10%,
-    rgba(255,255,255,0.05) 38%,
-    rgba(255,255,255,0.28) 64%,
-    rgba(255,255,255,0.72) 88%,
-    rgba(255,255,255,0.90) 100%);
-  filter: blur(5px);
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Titre "Notre équipe" — centré, posé dans la partie lumineuse du dôme */
+/* Titre "Notre équipe" — centré en haut du stage */
 .about-team__heading {
   position: absolute;
   top: 9%;
@@ -2252,18 +2246,10 @@ h1, h2, h3, h4, h5, h6 {
     height: 58px;
   }
 
-  .about-team__profile { top: calc(100% + 0.3rem); }
-  .about-team__name { font-size: 0.7rem; }
-  .about-team__role { font-size: 0.58rem; }
+  .about-team__name { font-size: 1.1rem; }
+  .about-team__role { font-size: 0.6rem; white-space: normal; max-width: 40vw; }
 
   .about-team__heading { top: 8%; font-size: clamp(1.5rem, 8vw, 3rem); }
-
-  /* Dôme : ellipse pleine largeur, contenue en haut */
-  .about-team__sphere {
-    top: -6vh;
-    width: 150vw;
-    height: 38vh;
-  }
 
   /* --- Événementiel / Commercial hero --- */
   .evnt-hero__bottom {

@@ -10,14 +10,11 @@
 
 import clientsJson from '~/content/clients.json'
 
-/* Fichiers réellement présents dans public/clients/ (résolu AU BUILD par
-   Vite) : un logo déclaré dans clients.json mais pas encore déposé est
-   simplement ignoré — jamais d'image cassée ni de texte alternatif affiché
-   à sa place dans le bandeau. */
-const present = new Set(
-  Object.keys(import.meta.glob('~/public/clients/*', { eager: true, query: '?url' }))
-    .map(path => path.split('/').pop()!),
-)
+/* Fichiers réellement présents dans public/clients/ (liste lue au build
+   dans nuxt.config.ts → appConfig.clientLogos) : un logo déclaré dans
+   clients.json mais pas encore déposé est simplement ignoré — jamais d'image
+   cassée ni de texte alternatif affiché à sa place dans le bandeau. */
+const present = new Set(useAppConfig().clientLogos as string[])
 const clients = clientsJson.filter(c => present.has(c.logo))
 
 const SPEED = 50 // px/s — vitesse constante quelle que soit la largeur d'écran
