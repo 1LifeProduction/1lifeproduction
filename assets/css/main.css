@@ -335,18 +335,20 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     width: 100%;
     height: auto;
-    /* Entrée un par un : masqué et décalé tant que le menu est fermé */
+    /* Entrée un par un : masqué et hors champ (à droite) tant que le menu est
+       fermé */
     opacity: 0;
-    transform: translateX(28px);
-    transition: opacity 0.3s var(--ease), transform 0.35s var(--ease), color var(--t);
+    transform: translateX(60px);
+    transition: opacity 0.4s var(--ease), transform 0.5s var(--ease), color var(--t);
   }
 
-  /* Menu ouvert : chaque bloc arrive à son tour (délai = rang --i, posé par
+  /* Menu ouvert : chaque bloc arrive à son tour, une fois le panneau en
+     place (0.2 s), avec 0.1 s d'écart entre deux blocs (rang --i posé par
      TheHeader.vue). Fermeture : disparition immédiate, sans délai. */
   .header__nav.is-open .header__nav-link {
     opacity: 1;
     transform: none;
-    transition-delay: calc(0.1s + var(--i, 0) * 0.06s);
+    transition-delay: calc(0.2s + var(--i, 0) * 0.1s);
   }
 
 }
@@ -750,6 +752,9 @@ h1, h2, h3, h4, h5, h6 {
   position: sticky;
   top: 0;
   height: 100vh;
+  /* Mobile : svh = hauteur avec la barre d'adresse déployée → le stage ne
+     change pas de taille (ni de position) quand la barre se replie. */
+  height: 100svh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -818,10 +823,6 @@ h1, h2, h3, h4, h5, h6 {
   background: #ffffff;
   transform: scale(1.4);
 }
-
-/* Carrousel mobile à balayage (index.vue .theater-swipe) : caché sur desktop,
-   où c'est la carte sticky pilotée au scroll de page qui s'affiche. */
-.theater-swipe { display: none; }
 
 @media (max-width: 767px) {
   .projects-grid--3col { grid-template-columns: repeat(2, 1fr); }
@@ -2022,14 +2023,6 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 var(--gutter) 0.35rem;
   }
 
-  /* --- Theater : pas de scroll-jack sur mobile ---
-     La section reprend une hauteur normale, le stage n'est plus sticky et la
-     carte revient dans le flux (position relative) → le défilement des projets
-     est piloté par le timer auto (voir index.vue), le scroll de page est normal. */
-  .projects-theater {
-    height: auto;
-  }
-
   /* Blobs sur mobile : on clippe l'HORIZONTAL (sinon overflow-x de page → dérive
      latérale) mais on laisse le VERTICAL déborder pour que le blob chevauche la
      frontière theater / clients-section.
@@ -2053,47 +2046,19 @@ h1, h2, h3, h4, h5, h6 {
   .blob--1 { width: 300px; height: 300px; }
   .blob--2 { width: 340px; height: 340px; }
 
+  /* --- Theater mobile : même mécanique que desktop (stage sticky, la slide
+     change au scroll de page) ; seule la carte est adaptée au format
+     portrait : pleine largeur moins les gouttières, un peu plus haute que
+     16/9 et coins moins arrondis. */
   .projects-theater__stage {
-    position: relative;
-    height: auto;
-    /* Plus d'air autour du carrousel (surtout au-dessus) pour qu'il ne soit
-       pas collé au titre du hero. */
-    padding: 6.5rem var(--gutter) 4.5rem;
+    padding: 0 var(--gutter);
   }
 
-  /* Mobile : la carte crossfade desktop est cachée ; à la place, une piste
-     horizontale à scroll-snap — une slide plein cadre par projet, le doigt
-     fait défiler, les points suivent (index.vue onSwipeScroll). */
-  .projects-theater__card { display: none; }
-
-  .theater-swipe {
-    display: flex;
-    gap: 0.75rem;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .theater-swipe::-webkit-scrollbar { display: none; }
-
-  .theater-swipe__slide {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    aspect-ratio: 16 / 10;
+  .projects-theater__card {
+    width: calc(100% - 2 * var(--gutter));
+    aspect-ratio: 4 / 3;
+    max-height: 70svh;
     border-radius: 20px;
-    grid-template-rows: 100%;
-  }
-
-  .theater-swipe__img {
-    grid-area: 1 / 1;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
   }
 
   .projects-theater__dots {
