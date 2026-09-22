@@ -41,17 +41,18 @@ const menuOpen = ref(false)
 const navGroups = [
   {
     key: 'categories',
-    items: CATEGORIES.map(g => ({
+    items: CATEGORIES.map((g, i) => ({
       label: g.label,
       href:  `/${g.section}`,
       key:   g.section,
+      index: i,
     })),
   },
   {
     key: 'pages',
     items: [
-      { label: globalContent.nav.equipe,  href: '/equipe',  key: 'equipe' },
-      { label: globalContent.nav.contact, href: '/contact', key: 'contact' },
+      { label: globalContent.nav.equipe,  href: '/equipe',  key: 'equipe',  index: CATEGORIES.length },
+      { label: globalContent.nav.contact, href: '/contact', key: 'contact', index: CATEGORIES.length + 1 },
     ],
   },
 ]
@@ -109,11 +110,14 @@ watch(() => route.fullPath, () => {
             :key="item.key"
             class="header__nav-item"
           >
+            <!-- --i : rang global du lien (menu mobile : les blocs entrent
+                 un par un, délai = --i × pas — voir CSS .header__nav.is-open) -->
             <NuxtLink
               :to="item.href"
               class="header__nav-link"
               :class="{ 'is-active': isActive(item.href) }"
               :aria-current="isActive(item.href) ? 'page' : undefined"
+              :style="{ '--i': item.index }"
             >
               {{ item.label }}
             </NuxtLink>

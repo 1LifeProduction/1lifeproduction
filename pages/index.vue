@@ -26,7 +26,8 @@ const activeHref = computed(() =>
 
 /* STEP_VH : distance de scroll (par projet) du carrousel "théâtre" piloté au
    scroll sur DESKTOP. Sur mobile le scroll-jack est désactivé (trop fragile)
-   au profit d'un défilement automatique — voir applyMode(). */
+   au profit d'un carrousel à balayage horizontal (scroll-snap natif) —
+   voir applyMode() et .theater-swipe. */
 /* 0.8 (80vh par slide) : à 0.5 la slide du milieu défilait trop vite — elle
    n'a ni l'approche de la section (1re slide) ni la queue de 90vh (dernière). */
 const STEP    = 0.8
@@ -95,26 +96,29 @@ function onScroll() {
   scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; updateIndex() })
 }
 
-/* MOBILE — défilement automatique (le scroll-jack est désactivé). */
-let autoTimer = 0
-function startAuto() {
-  stopAuto()
-  autoTimer = window.setInterval(() => {
-    activeIndex.value = (activeIndex.value + 1) % featured.length
-  }, 4000)
+/* MOBILE — carrousel à balayage : le défilement horizontal natif (scroll-snap)
+   pilote l'index actif (points de progression), rien ne bouge tout seul. */
+const swipeRef = ref<HTMLElement>()
+let swipeRaf = 0
+function onSwipeScroll() {
+  if (swipeRaf) return
+  swipeRaf = requestAnimationFrame(() => {
+    swipeRaf = 0
+    const el = swipeRef.value
+    if (!el || !el.clientWidth) return
+    const idx = Math.round(el.scrollLeft / (el.scrollWidth / featured.length))
+    activeIndex.value = Math.min(Math.max(idx, 0), featured.length - 1)
+  })
 }
-function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = 0 } }
 
 /* Bascule du mode selon le breakpoint (768px), comme la page À propos. */
 function applyMode() {
   if (isDesktop.value) {
-    stopAuto()
     window.addEventListener('scroll', onScroll, { passive: true })
     updateIndex()
   } else {
     window.removeEventListener('scroll', onScroll)
-    activeIndex.value = 0
-    startAuto()
+    onSwipeScroll()
   }
 }
 
@@ -149,7 +153,7 @@ onMounted(() => {
 onUnmounted(() => {
   ro?.disconnect()
   if (scrollRaf) cancelAnimationFrame(scrollRaf)
-  stopAuto()
+  if (swipeRaf) cancelAnimationFrame(swipeRaf)
   window.removeEventListener('scroll', onScroll)
   mq?.removeEventListener('change', onMq)
 })
@@ -265,6 +269,27 @@ useHead({
             </Transition>
           </div>
         </NuxtLink>
+
+        <!-- MOBILE : carrousel à balayage (une slide par projet, scroll-snap).
+             Les deux variantes sont dans le DOM, le CSS n'affiche que celle du
+             breakpoint courant (pas de v-if : évite un décalage d'hydratation). -->
+        <div ref="swipeRef" class="theater-swipe" @scroll.passive="onSwipeScroll">
+          <NuxtLink
+            v-for="p in featured"
+            :key="p.id"
+            :to="categoryHref(p.section as Section, p.category)"
+            class="project-card theater-swipe__slide"
+            :aria-label="`Voir ${p.title}`"
+          >
+            <img :src="p.thumbnail" :alt="p.title" class="theater-swipe__img" loading="lazy" />
+            <div class="project-card__overlay">
+              <div class="theater__text">
+                <span class="project-card__cat">{{ getSubCategory(p.category)?.label ?? p.category }}</span>
+                <h3 class="project-card__title">{{ p.title }}</h3>
+              </div>
+            </div>
+          </NuxtLink>
+        </div>
 
         <!-- Indicateur de progression -->
         <div class="projects-theater__dots" aria-hidden="true">

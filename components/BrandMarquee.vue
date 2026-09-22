@@ -8,7 +8,17 @@
    le wrap est invisible → boucle parfaite sans saut, sur tous les appareils.
    (Même principe que GSAP horizontalLoop, sans la dépendance.) */
 
-import clients from '~/content/clients.json'
+import clientsJson from '~/content/clients.json'
+
+/* Fichiers réellement présents dans public/clients/ (résolu AU BUILD par
+   Vite) : un logo déclaré dans clients.json mais pas encore déposé est
+   simplement ignoré — jamais d'image cassée ni de texte alternatif affiché
+   à sa place dans le bandeau. */
+const present = new Set(
+  Object.keys(import.meta.glob('~/public/clients/*', { eager: true, query: '?url' }))
+    .map(path => path.split('/').pop()!),
+)
+const clients = clientsJson.filter(c => present.has(c.logo))
 
 const SPEED = 50 // px/s — vitesse constante quelle que soit la largeur d'écran
 
@@ -45,12 +55,12 @@ function frame(ts: number) {
   raf = requestAnimationFrame(frame)
 }
 
-/* Logo déclaré dans clients.json mais fichier pas encore déposé dans
-   public/clients/ : on masque l'image (pas d'icône cassée dans le bandeau).
-   Le ResizeObserver re-mesure la piste, la boucle reste exacte. */
-function hideBroken(e: Event) {
-  (e.target as HTMLElement).style.display = 'none'
-}
+/* Pause au survol : UNIQUEMENT sur les écrans à vrai pointeur. Sur tactile,
+   un tap déclenche mouseenter sans jamais de mouseleave → le bandeau restait
+   figé définitivement après le premier toucher (bug mobile). */
+let canHover = false
+function onEnter() { if (canHover) paused = true }
+function onLeave() { paused = false }
 
 let ro: ResizeObserver | null = null
 let io: IntersectionObserver | null = null
@@ -65,10 +75,7 @@ onMounted(() => {
   mq = window.matchMedia('(max-width: 767px)')
   isMobile.value = mq.matches
   mq.addEventListener('change', onMq)
-  // Images déjà en erreur AVANT l'hydratation (l'événement @error est passé).
-  trackRef.value?.querySelectorAll('img').forEach(img => {
-    if (img.complete && !img.naturalWidth) img.style.display = 'none'
-  })
+  canHover = window.matchMedia('(hover: hover)').matches
   measure()
   // La largeur change quand logos/police chargent, ou quand reps change → re-mesure.
   ro = new ResizeObserver(measure)
@@ -94,8 +101,8 @@ onUnmounted(() => {
     class="brand-marquee"
     aria-label="Marques"
     data-nav-theme="dark"
-    @mouseenter="paused = true"
-    @mouseleave="paused = false"
+    @mouseenter="onEnter"
+    @mouseleave="onLeave"
   >
     <div ref="trackRef" class="brand-marquee__track">
       <!-- 2 groupes IDENTIQUES : la boucle wrappe exactement d'un groupe -->
@@ -107,8 +114,7 @@ onUnmounted(() => {
           :alt="c.nom"
           class="brand-marquee__logo"
           aria-hidden="true"
-          loading="lazy"
-          @error="hideBroken"
+          @load="measure"
         />
       </div>
       <div class="brand-marquee__group" aria-hidden="true">
@@ -119,8 +125,7 @@ onUnmounted(() => {
           :alt="c.nom"
           class="brand-marquee__logo"
           aria-hidden="true"
-          loading="lazy"
-          @error="hideBroken"
+          @load="measure"
         />
       </div>
     </div>

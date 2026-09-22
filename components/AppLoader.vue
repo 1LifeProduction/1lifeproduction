@@ -8,10 +8,11 @@
  */
 
 // Durée MINIMALE d'affichage : l'animation joue au moins une fois en entier.
-// Doit rester >= au plus grand --md (délai d'aimantation) + 0.7s.
-const SEQUENCE_MS = 2400
+// Doit rester >= au plus grand --md (délai d'aimantation) + 0.42s (aimantation).
+// Raccourci (2400 → 1400 ms) : le loader ne doit pas retenir le visiteur.
+const SEQUENCE_MS = 1400
 // Plafond de sécurité : on ne reste jamais bloqué au-delà, même si une ressource traîne.
-const MAX_WAIT_MS = 6000
+const MAX_WAIT_MS = 4000
 
 const exiting = ref(false)
 const hidden  = ref(false)
@@ -67,7 +68,7 @@ onMounted(() => {
     setTimeout(() => {
       hidden.value = true
       unlock()
-    }, 700) // = durée du fondu
+    }, 450) // = durée du fondu
   }
 
   const onReady = () => {
@@ -115,7 +116,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.7s ease;
+  transition: opacity 0.45s ease;
 }
 .ldr--exit {
   opacity: 0;
@@ -127,7 +128,7 @@ onMounted(() => {
   position: relative;
   width: 0;
   height: 0;
-  animation: ldr-spin 2.4s linear infinite;
+  animation: ldr-spin 1.6s linear infinite;
 }
 @keyframes ldr-spin {
   from { transform: rotate(0deg); }
@@ -160,12 +161,12 @@ onMounted(() => {
    Cercles rangés du plus petit (--1) au plus grand (--6), en ordre autour
    de l'orbite (sens des aiguilles depuis le haut). Aimantés dans le même ordre :
    ils s'empilent au centre en cercles concentriques (du plus petit au plus grand). */
-.ldr__orb--1 { --d: 10px; --x:   0px; --y: -78px; --md: 1.0s; }
-.ldr__orb--2 { --d: 18px; --x:  68px; --y: -39px; --md: 1.14s; }
-.ldr__orb--3 { --d: 26px; --x:  68px; --y:  39px; --md: 1.28s; }
-.ldr__orb--4 { --d: 36px; --x:   0px; --y:  78px; --md: 1.42s; }
-.ldr__orb--5 { --d: 48px; --x: -68px; --y:  39px; --md: 1.56s; }
-.ldr__orb--6 { --d: 60px; --x: -68px; --y: -39px; --md: 1.7s; }
+.ldr__orb--1 { --d: 10px; --x:   0px; --y: -78px; --md: 0.45s; }
+.ldr__orb--2 { --d: 18px; --x:  68px; --y: -39px; --md: 0.55s; }
+.ldr__orb--3 { --d: 26px; --x:  68px; --y:  39px; --md: 0.65s; }
+.ldr__orb--4 { --d: 36px; --x:   0px; --y:  78px; --md: 0.75s; }
+.ldr__orb--5 { --d: 48px; --x: -68px; --y:  39px; --md: 0.85s; }
+.ldr__orb--6 { --d: 60px; --x: -68px; --y: -39px; --md: 0.95s; }
 
 /* ── Accessibilité : prefers-reduced-motion ──────────── */
 @media (prefers-reduced-motion: reduce) {

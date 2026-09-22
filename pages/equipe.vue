@@ -9,38 +9,111 @@ import globalContent from '~/content/global.json'
    photo : fichier dans public/team/ (vide = initiale du prénom). */
 const team = content.equipe.membres.map(m => ({ photo: m.photo, name: m.nom, role: m.role }))
 
-/* Liste "générique de film" : une ligne typographique par membre (nom + rôle).
-   - Desktop (pointeur) : au survol d'une ligne, sa photo suit le curseur en
-     polaroid et les autres lignes s'estompent.
-   - Mobile / tactile : pas de survol → la photo s'affiche en vignette inline
-     dans la ligne (CSS .credits__thumb, @media hover:none).
-   Un membre sans photo dans equipe.json : ligne simple, aucune vignette. */
-const hoverIdx = ref<number | null>(null)
-const floatX   = ref(0)
-const floatY   = ref(0)
+/* Constellation ("roue") : polygone régulier à N sommets (N = taille de
+   l'équipe), centre (380,390), rayon 218, premier sommet en haut. Les membres
+   glissent le long des arêtes au fil du scroll (progress 0 → 1 = un tour). */
+const HEX_W = 760, HEX_H = 780
+const CX = 380, CY = 390, R = 218
+const N = team.length
 
-/* Effet "sticker" : la photo pop CENTRÉE sur le curseur au moment où on entre
-   sur la ligne, puis reste figée là (elle ne suit pas la souris). Un angle
-   aléatoire raisonnable (±3–8°, jamais proche de 0) est retiré à chaque
-   ligne. Changement de ligne → nouveau pop (key sur hoverIdx + mode out-in) ;
-   sortie de la liste → fade out (Transition credits-photo côté CSS). */
-const floatAngle = ref(-4)
-const creditsRef = ref<HTMLElement>()
+const VERTICES = Array.from({ length: N }, (_, i) => {
+  const angle = -Math.PI / 2 + (i * 2 * Math.PI) / N
+  return { x: CX + R * Math.cos(angle), y: CY + R * Math.sin(angle) }
+})
 
-function onRowEnter(i: number, e: MouseEvent) {
-  hoverIdx.value = i
-  /* Coordonnées RELATIVES à la section (sticker en position:absolute dedans) :
-     la photo est collée au contenu et défile avec la page — pas au viewport. */
-  const rect = creditsRef.value?.getBoundingClientRect()
-  floatX.value = e.clientX - (rect?.left ?? 0)
-  floatY.value = e.clientY - (rect?.top ?? 0)
-  const a = 3 + Math.random() * 5
-  floatAngle.value = Math.random() < 0.5 ? -a : a
+function polyPoint(p: number) {
+  const norm  = ((p % 1) + 1) % 1
+  const edgeF = norm * N
+  const ei    = Math.floor(edgeF) % N
+  const t     = edgeF - Math.floor(edgeF)
+  const v0    = VERTICES[ei]
+  const v1    = VERTICES[(ei + 1) % N]
+  return { x: v0.x + t * (v1.x - v0.x), y: v0.y + t * (v1.y - v0.y) }
 }
 
-const hoverPhoto = computed(() =>
-  hoverIdx.value !== null ? team[hoverIdx.value].photo : '',
+const EDGES = VERTICES.map((v, i) => ({ from: v, to: VERTICES[(i + 1) % N] }))
+
+const teamRef  = ref<HTMLElement>()
+const progress = ref(0)
+
+const nodeStyles = computed(() =>
+  team.map((_, i) => {
+    const { x, y } = polyPoint(i / N + progress.value)
+    return { left: `${(x / HEX_W) * 100}%`, top: `${(y / HEX_H) * 100}%` }
+  })
 )
+
+/* Au scroll dans la section (desktop, sticky actif) : le titre + le dégradé
+   remontent et disparaissent pour ne laisser place qu'à la constellation,
+   qui se rapproche du centre et grossit légèrement. Sur mobile, le sticky
+   est désactivé (CSS) : seule la rotation des membres suit le scroll. */
+const isDesktop = ref(true)
+
+/* Dôme + titre : remontent ET s'effacent. */
+const ambianceStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  const p = progress.value
+  return {
+    transform: `translateY(${(-p * 60).toFixed(2)}vh)`,
+    opacity: String(Math.max(0, 1 - p * 2.8).toFixed(3)),
+  }
+})
+
+/* Faisceau lumineux : reste ancré en bas — il s'efface seulement en opacité. */
+const glowStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  return { opacity: String(Math.max(0, 1 - progress.value * 2.8).toFixed(3)) }
+})
+
+const constellationStyle = computed(() => {
+  if (!isDesktop.value) return {}
+  const k = Math.min(progress.value / 0.5, 1)
+  const scale = (0.92 + k * 0.23).toFixed(3) // 0.92 → 1.15
+  const ty = (38 - k * 38).toFixed(2)        // +38vh → 0 (centré)
+  return { transform: `translateY(${ty}vh) scale(${scale})` }
+})
+
+function onScroll() {
+  const el = teamRef.value
+  if (!el) return
+  if (isDesktop.value) {
+    /* Desktop : la section fait 300vh, le stage est sticky → progression sur
+       la hauteur de défilement de la section. */
+    const scrolled    = window.scrollY - el.offsetTop
+    if (scrolled < 0) { progress.value = 0; return }
+    const totalScroll = el.offsetHeight - window.innerHeight
+    if (totalScroll <= 0) return
+    progress.value    = Math.min(scrolled / totalScroll, 1)
+  } else {
+    /* Mobile : pas de sticky — un tour complet pendant que la section
+       traverse l'écran. */
+    const r = el.getBoundingClientRect()
+    const span = window.innerHeight + r.height
+    progress.value = Math.min(Math.max((window.innerHeight - r.top) / span, 0), 1)
+  }
+}
+
+let scrollRaf = 0
+function onScrollRaf() {
+  if (scrollRaf) return
+  scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; onScroll() })
+}
+
+let mq: MediaQueryList | undefined
+function updateMq(e: MediaQueryListEvent | MediaQueryList) { isDesktop.value = e.matches; onScroll() }
+
+onMounted(() => {
+  mq = window.matchMedia('(min-width: 768px)')
+  updateMq(mq)
+  mq.addEventListener('change', updateMq)
+  window.addEventListener('scroll', onScrollRaf, { passive: true })
+  onScroll()
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScrollRaf)
+  if (scrollRaf) cancelAnimationFrame(scrollRaf)
+  mq?.removeEventListener('change', updateMq)
+})
 
 /* Repères chiffrés + FAQ (content/equipe.json) */
 const stats = content.reperes.stats
@@ -88,42 +161,48 @@ useHead({
       </div>
     </section>
 
-    <!-- Team — liste "générique de film" (voir commentaire script) -->
-    <section ref="creditsRef" class="credits" aria-label="L'équipe">
-      <p class="xp-eyebrow" data-reveal>{{ content.equipe.titre }}</p>
-      <!-- L'estompage des autres lignes au survol est en CSS PUR (:hover sur la
-           liste) : pas de classe pilotée par Vue ici, sinon chaque re-rendu
-           écraserait la classe is-visible posée par le plugin reveal (les
-           lignes repasseraient à l'état caché). Le JS ne gère que la photo. -->
-      <ul class="credits__list" @mouseleave="hoverIdx = null">
-        <li
-          v-for="(m, i) in team"
-          :key="m.name"
-          class="credits__row"
-          data-reveal
-          :style="`--reveal-delay:${80 + i * 60}ms`"
-          @mouseenter="onRowEnter(i, $event)"
-        >
-          <img v-if="m.photo" :src="m.photo" :alt="m.name" class="credits__thumb" loading="lazy" />
-          <span class="credits__name">{{ m.name }}</span>
-          <span class="credits__role">{{ m.role }}</span>
-        </li>
-      </ul>
+    <!-- Team — constellation "roue" pilotée au scroll (voir script) -->
+    <section ref="teamRef" class="about-team" aria-label="L'équipe">
+      <div class="about-team__sticky">
 
-      <!-- Sticker photo (desktop pointeur uniquement, voir CSS). key sur
-           hoverIdx : changer de ligne re-déclenche le pop à la nouvelle
-           position ; out-in = l'ancienne s'efface avant que la nouvelle pope. -->
-      <Transition name="credits-photo" mode="out-in">
-        <img
-          v-if="hoverPhoto"
-          :key="hoverIdx ?? -1"
-          :src="hoverPhoto"
-          class="credits__float"
-          :style="{ left: `${floatX}px`, top: `${floatY}px`, '--angle': `${floatAngle.toFixed(1)}deg` }"
-          alt=""
-          aria-hidden="true"
-        />
-      </Transition>
+        <!-- Faisceau lumineux : ancré en bas, s'efface seulement -->
+        <div class="about-team__glow" :style="glowStyle" aria-hidden="true"></div>
+
+        <!-- Ambiance (dôme + titre) : remonte et s'efface au scroll -->
+        <div class="about-team__ambiance" :style="ambianceStyle">
+          <div class="about-team__sphere" aria-hidden="true"></div>
+          <p class="about-team__heading">{{ content.equipe.titre }}</p>
+        </div>
+
+        <div class="about-team__constellation" :style="constellationStyle">
+          <!-- SVG : viewBox = container exact, arêtes du polygone générées -->
+          <svg class="about-team__lines" :viewBox="`0 0 ${HEX_W} ${HEX_H}`" aria-hidden="true">
+            <line
+              v-for="(edge, i) in EDGES"
+              :key="i"
+              :x1="edge.from.x" :y1="edge.from.y"
+              :x2="edge.to.x"   :y2="edge.to.y"
+              stroke="rgba(255,255,255,0.45)" stroke-width="1"
+            />
+          </svg>
+
+          <div
+            v-for="(style, i) in nodeStyles"
+            :key="team[i].name"
+            class="about-team__node"
+            :style="style"
+          >
+            <div class="about-team__avatar">
+              <img v-if="team[i].photo" :src="team[i].photo" :alt="team[i].name" class="about-team__photo" loading="lazy" />
+              <span v-else class="about-team__initial" aria-hidden="true">{{ team[i].name.charAt(0) }}</span>
+            </div>
+            <div class="about-team__profile">
+              <span class="about-team__name">{{ team[i].name }}</span>
+              <span class="about-team__role">{{ team[i].role }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Repères -->

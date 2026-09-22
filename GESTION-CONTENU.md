@@ -247,7 +247,8 @@ content/clients.json
 ### Étape 1 — Déposer l'image du logo
 Placez le fichier dans le dossier **`public/clients/`**.
 
-- Format conseillé : **PNG à fond transparent**.
+- Format conseillé : **PNG ou WebP à fond transparent**.
+- Un logo listé dans `clients.json` dont le fichier n'est **pas encore** dans `public/clients/` est simplement ignoré (rien de cassé dans le bandeau) : il apparaît dès que le fichier est déposé et le site regénéré.
 - ⚠️ Les logos sont affichés **en blanc** (un filtre est appliqué automatiquement) : choisissez des logos lisibles en silhouette unie (un logo monochrome rend mieux).
 - Exemple : `public/clients/adidas.png`
 
