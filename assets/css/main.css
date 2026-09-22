@@ -2218,36 +2218,36 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 1.5rem;
   }
 
-  /* --- Équipe : constellation — sticky désactivé, conteneur réduit --- */
+  /* --- Équipe : constellation — même mécanique sticky que desktop, section
+     un peu plus courte (220vh : un tour complet sur 120vh de scroll). La roue
+     est volontairement plus LARGE que l'écran (110vw) : la boîte 760×780
+     contient beaucoup de vide autour du polygone (rayon = 29 % de la
+     largeur) ; à 110vw les photos restent dans l'écran, même à l'échelle 1,15
+     ayant une roue bien plus grande. Le débordement est clippé par .app. */
   .about-team {
-    height: auto !important;
-    min-height: 0;
+    height: 220vh;
     margin-bottom: 0;
   }
 
   .about-team__sticky {
-    position: static;
-    height: auto;
-    padding: 3rem var(--gutter) 4rem;
-    justify-content: center;
+    height: 100vh;
+    height: 100svh;
   }
 
   .about-team__constellation {
-    width: 88vw;
-    height: calc(88vw * 780 / 760);
+    width: 110vw;
+    height: calc(110vw * 780 / 760);
     overflow: visible;
-    margin: 7rem auto 0;
-    transform: none;
-    will-change: auto;
+    flex-shrink: 0;
   }
 
   .about-team__avatar {
-    width: 58px;
-    height: 58px;
+    width: 72px;
+    height: 72px;
   }
 
-  .about-team__name { font-size: 1.1rem; }
-  .about-team__role { font-size: 0.6rem; white-space: normal; max-width: 40vw; }
+  .about-team__name { font-size: 1.25rem; }
+  .about-team__role { font-size: 0.6rem; white-space: normal; max-width: 44vw; }
 
   .about-team__heading { top: 8%; font-size: clamp(1.5rem, 8vw, 3rem); }
 

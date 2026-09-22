@@ -55,15 +55,12 @@ const nodeStyles = computed(() =>
   })
 )
 
-/* Au scroll dans la section (desktop, sticky actif) : le titre + le dégradé
-   remontent et disparaissent pour ne laisser place qu'à la constellation,
-   qui se rapproche du centre et grossit légèrement. Sur mobile, le sticky
-   est désactivé (CSS) : seule la rotation des membres suit le scroll. */
-const isDesktop = ref(true)
+/* Au scroll dans la section (stage sticky, desktop ET mobile) : le titre
+   remonte et disparaît pour ne laisser place qu'à la constellation, qui se
+   rapproche du centre et grossit légèrement pendant que les membres tournent. */
 
 /* Titre "Notre équipe" : remonte ET s'efface au scroll. */
 const ambianceStyle = computed(() => {
-  if (!isDesktop.value) return {}
   const p = progress.value
   return {
     transform: `translateY(${(-p * 60).toFixed(2)}vh)`,
@@ -72,7 +69,6 @@ const ambianceStyle = computed(() => {
 })
 
 const constellationStyle = computed(() => {
-  if (!isDesktop.value) return {}
   const k = Math.min(progress.value / 0.5, 1)
   const scale = (0.92 + k * 0.23).toFixed(3) // 0.92 → 1.15
   const ty = (38 - k * 38).toFixed(2)        // +38vh → 0 (centré)
@@ -82,21 +78,13 @@ const constellationStyle = computed(() => {
 function onScroll() {
   const el = teamRef.value
   if (!el) return
-  if (isDesktop.value) {
-    /* Desktop : la section fait 300vh, le stage est sticky → progression sur
-       la hauteur de défilement de la section. */
-    const scrolled    = window.scrollY - el.offsetTop
-    if (scrolled < 0) { progress.value = 0; return }
-    const totalScroll = el.offsetHeight - window.innerHeight
-    if (totalScroll <= 0) return
-    progress.value    = Math.min(scrolled / totalScroll, 1)
-  } else {
-    /* Mobile : pas de sticky — un tour complet pendant que la section
-       traverse l'écran. */
-    const r = el.getBoundingClientRect()
-    const span = window.innerHeight + r.height
-    progress.value = Math.min(Math.max((window.innerHeight - r.top) / span, 0), 1)
-  }
+  /* La section fait n × 100vh (300 desktop, 220 mobile), le stage est
+     sticky → progression sur la hauteur de défilement de la section. */
+  const scrolled    = window.scrollY - el.offsetTop
+  if (scrolled < 0) { progress.value = 0; return }
+  const totalScroll = el.offsetHeight - window.innerHeight
+  if (totalScroll <= 0) return
+  progress.value    = Math.min(scrolled / totalScroll, 1)
 }
 
 let scrollRaf = 0
@@ -105,20 +93,15 @@ function onScrollRaf() {
   scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; onScroll() })
 }
 
-let mq: MediaQueryList | undefined
-function updateMq(e: MediaQueryListEvent | MediaQueryList) { isDesktop.value = e.matches; onScroll() }
-
 onMounted(() => {
-  mq = window.matchMedia('(min-width: 768px)')
-  updateMq(mq)
-  mq.addEventListener('change', updateMq)
   window.addEventListener('scroll', onScrollRaf, { passive: true })
+  window.addEventListener('resize', onScrollRaf, { passive: true })
   onScroll()
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScrollRaf)
+  window.removeEventListener('resize', onScrollRaf)
   if (scrollRaf) cancelAnimationFrame(scrollRaf)
-  mq?.removeEventListener('change', updateMq)
 })
 
 /* Repères chiffrés + FAQ (content/equipe.json) */
