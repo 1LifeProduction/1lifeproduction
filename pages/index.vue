@@ -149,7 +149,7 @@ useHead({
         knowsAbout: ['live session', 'captation multicam', 'livestream', 'documentaire', 'film de marque', 'vidéo corporate', 'aftermovie', 'reportage photo et vidéo', 'VFX', '3D et scénographie'],
         contactPoint: {
           '@type': 'ContactPoint',
-          email: '1lifeprod@unlockcollectif.com',
+          email: 'contact@1lifeproduction.fr',
           contactType: 'customer service',
           availableLanguage: 'French',
         },

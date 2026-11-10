@@ -37,7 +37,7 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
 
        RESEND_API_KEY   = la clé de l'étape 3 (mettre "re_test" provisoirement)
        RESEND_FROM      = 1LIFE PRODUCTION <noreply@1lifeproduction.fr>
-       RESEND_TO        = 1lifeprod@unlockcollectif.com
+       RESEND_TO        = contact@1lifeproduction.fr
 
 4. "Deploy". Au bout de ~2 min le site est en ligne sur
    https://1lifeproduction.vercel.app
@@ -63,7 +63,7 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
 5. Retour sur Resend → "Verify". Vert en général sous 30 min (jusqu'à 24 h).
    Tant que ce n'est pas vérifié, les envois sont refusés : c'est normal.
 6. Test : remplir le formulaire sur 1lifeproduction.vercel.app
-   → l'e-mail doit arriver sur 1lifeprod@unlockcollectif.com
+   → l'e-mail doit arriver sur contact@1lifeproduction.fr
    (vérifier les spams la première fois).
 
 
@@ -120,7 +120,7 @@ POINTS À ANTICIPER
   1lifeproduction.FR.
 - L'adresse d'expédition noreply@1lifeproduction.fr n'a pas besoin
   d'exister comme boîte mail (c'est le domaine vérifié qui compte).
-  Les réponses des visiteurs arrivent bien à 1lifeprod@unlockcollectif.com :
+  Les réponses des visiteurs arrivent bien à contact@1lifeproduction.fr :
   le formulaire met l'e-mail du visiteur en "Reply-To".
 - Les mentions légales indiquent Vercel Inc. comme hébergeur : si le site
   est déplacé un jour, mettre à jour content/legal.json.
