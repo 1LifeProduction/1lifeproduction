@@ -15,4 +15,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://1lifeproduction.com/sitemap.xml
+Sitemap: https://1lifeproduction.fr/sitemap.xml

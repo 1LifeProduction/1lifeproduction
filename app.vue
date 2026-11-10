@@ -6,7 +6,7 @@ const pageTheme = useState<'dark' | 'light'>('pageTheme', () => 'dark')
    ignorés → Google ne peut pas indexer ces variantes comme des doublons.
    `key: 'canonical'` permet aux stubs de redirection (/a-propos, /commercial)
    de surcharger vers leur page cible. */
-const SITE_URL = 'https://1lifeproduction.com'
+const SITE_URL = 'https://1lifeproduction.fr'
 const route = useRoute()
 const canonical = computed(() => {
   const path = route.path.replace(/\/+$/, '')

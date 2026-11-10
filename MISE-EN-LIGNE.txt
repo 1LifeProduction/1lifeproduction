@@ -8,7 +8,7 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
 ÉTAPE 1 — COMPTE GITHUB DU CLIENT ET TRANSFERT DU DÉPÔT (15 min)
 ----------------------------------------------------------------
 1. Le client crée un compte GitHub (idéalement avec une adresse générique,
-   ex. tech@1lifeproduction.com) : https://github.com → Sign up.
+   ex. tech@1lifeproduction.fr) : https://github.com → Sign up.
 2. Transfert : sur https://github.com/seg1-exe/1lifeproduction
    → Settings → tout en bas "Danger Zone" → "Transfer ownership"
    → saisir le nom d'utilisateur GitHub du client.
@@ -36,7 +36,7 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
    Environment Variables puis "Redeploy") :
 
        RESEND_API_KEY   = la clé de l'étape 3 (mettre "re_test" provisoirement)
-       RESEND_FROM      = 1LIFE PRODUCTION <noreply@1lifeproduction.com>
+       RESEND_FROM      = 1LIFE PRODUCTION <noreply@1lifeproduction.fr>
        RESEND_TO        = 1lifeprod@unlockcollectif.com
 
 4. "Deploy". Au bout de ~2 min le site est en ligne sur
@@ -51,14 +51,14 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
 2. API Keys → "Create API Key" → nom "site-1life", permission "Sending access"
    → copier la clé (re_…), elle ne sera plus affichée.
    La coller dans Vercel (RESEND_API_KEY) → Redeploy.
-3. Domains → "Add Domain" → 1lifeproduction.com, région "Europe (Ireland)".
+3. Domains → "Add Domain" → 1lifeproduction.fr, région "Europe (Ireland)".
    Resend affiche 3 enregistrements DNS à ajouter chez OVH :
        - TXT sur resend._domainkey   (DKIM)
        - MX  sur send (ou bounces)
        - TXT sur send                (SPF : v=spf1 include:amazonses.com ~all)
-4. Chez OVH : Noms de domaine → 1lifeproduction.com → Zone DNS
+4. Chez OVH : Noms de domaine → 1lifeproduction.fr → Zone DNS
    → "Ajouter une entrée", recopier les 3 à l'identique.
-   ATTENTION : OVH ajoute parfois ".1lifeproduction.com" tout seul au
+   ATTENTION : OVH ajoute parfois ".1lifeproduction.fr" tout seul au
    sous-domaine — ne pas le doubler.
 5. Retour sur Resend → "Verify". Vert en général sous 30 min (jusqu'à 24 h).
    Tant que ce n'est pas vérifié, les envois sont refusés : c'est normal.
@@ -69,17 +69,31 @@ formulaire via /api/contact (Resend). Rien à changer dans le code.
 
 ÉTAPE 4 — BRANCHER LE DOMAINE SUR VERCEL (10 min + attente DNS)
 ----------------------------------------------------------------
+Le domaine 1lifeproduction.fr est chez OVH et sa zone DNS est bien gérée
+par OVH (serveurs ns103/dns103.ovh.net) : c'est là qu'on édite.
+La zone contient aussi les MX d'OVH (mx1/2/3.mail.ovh.net) et un SPF
+"include:mx.ovh.com" : NE PAS Y TOUCHER (boîtes mail du domaine).
+
 1. Vercel → projet → Settings → Domains → Add :
-   1lifeproduction.com, puis www.1lifeproduction.com
+   1lifeproduction.fr, puis www.1lifeproduction.fr
    (Vercel propose de rediriger www vers la racine : accepter).
-2. Vercel affiche les enregistrements à créer. Dans la zone DNS OVH :
-       - SUPPRIMER l'éventuel enregistrement A existant sur la racine
-         (1lifeproduction.com) qui pointe vers OVH ;
-       - ajouter un A     racine → 76.76.21.21
-       - ajouter un CNAME www    → cname.vercel-dns.com.
+   Vercel affiche alors les valeurs exactes à utiliser (A pour la racine,
+   CNAME pour www). Utiliser CELLES-LÀ.
+2. Zone DNS OVH (Noms de domaine → 1lifeproduction.fr → Zone DNS) :
+       - sur la racine "@" (sous-domaine vide) : MODIFIER l'enregistrement A
+         145.239.37.162 (page d'attente OVH) → 216.198.79.1 (valeur Vercel
+         en 2026 ; 76.76.21.21 fonctionne aussi). Un seul A sur la racine.
+       - sur "www" : SUPPRIMER les A / AAAA existants et mettre un CNAME
+         vers la valeur affichée par Vercel (du type xxxx.vercel-dns-0xx.com,
+         ou cname.vercel-dns.com), avec le point final si OVH le demande.
+       - laisser MX, SPF (TXT racine) et les autres entrées en place.
+   Piège : OVH ajoute lui-même ".1lifeproduction.fr" : dans le champ
+   sous-domaine, saisir "www" (pas "www.1lifeproduction.fr") et rien
+   pour la racine.
 3. Attendre que Vercel passe les deux domaines en "Valid Configuration"
-   (quelques minutes à quelques heures). Le certificat HTTPS est automatique.
-4. Vérifier https://1lifeproduction.com : site, formulaire, /sitemap.xml,
+   (TTL actuel 1 h : compter jusqu'à 1 h après la modification).
+   Le certificat HTTPS est automatique.
+4. Vérifier https://1lifeproduction.fr : site, formulaire, /sitemap.xml,
    et les redirections /a-propos → /equipe et /commercial → /marque.
 
 
@@ -101,9 +115,10 @@ ENSUITE, EN CONTINU
 
 POINTS À ANTICIPER
 ------------------
-- Si le client a déjà un site actif sur 1lifeproduction.com, l'étape 4.2
-  le coupe : à faire au moment choisi.
-- L'adresse d'expédition noreply@1lifeproduction.com n'a pas besoin
+- 1lifeproduction.COM n'appartient pas au client (un autre site y répond) :
+  tout le site, le sitemap, les mentions légales et les e-mails sont sur
+  1lifeproduction.FR.
+- L'adresse d'expédition noreply@1lifeproduction.fr n'a pas besoin
   d'exister comme boîte mail (c'est le domaine vérifié qui compte).
   Les réponses des visiteurs arrivent bien à 1lifeprod@unlockcollectif.com :
   le formulaire met l'e-mail du visiteur en "Reply-To".

@@ -135,9 +135,9 @@ useHead({
         '@type': 'Organization',
         name: '1LIFE PRODUCTION',
         description: 'Studio de production audiovisuelle basé à Paris, spécialisé dans le live, le documentaire, les films de marque et les contenus événementiels.',
-        url: 'https://1lifeproduction.com',
-        logo: 'https://1lifeproduction.com/favicon.png',
-        image: 'https://1lifeproduction.com/og-image.jpg',
+        url: 'https://1lifeproduction.fr',
+        logo: 'https://1lifeproduction.fr/favicon.png',
+        image: 'https://1lifeproduction.fr/og-image.jpg',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Rue La Fayette',

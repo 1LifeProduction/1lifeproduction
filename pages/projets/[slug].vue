@@ -19,7 +19,7 @@ if (!project) {
 const section = project.section as Section
 const group = getGroup(section)!
 
-const SITE_URL = 'https://1lifeproduction.com'
+const SITE_URL = 'https://1lifeproduction.fr'
 /* Client ajouté au titre seulement s'il apporte une info (pas "CHARLATTE · Charlatte") */
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 const clientInTitle = project.client && !norm(project.title).includes(norm(project.client))

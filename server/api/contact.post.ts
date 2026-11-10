@@ -32,7 +32,7 @@ const BUDGETS: Record<string, string> = {
 export default defineEventHandler(async (event) => {
   // CSRF: reject requests from foreign origins
   const origin = getHeader(event, 'origin') ?? ''
-  const allowed = ['https://1lifeproduction.com', 'http://localhost:3000', 'http://localhost:3001']
+  const allowed = ['https://1lifeproduction.fr', 'https://www.1lifeproduction.fr', 'https://1lifeproduction.vercel.app', 'http://localhost:3000', 'http://localhost:3001']
   if (origin && !allowed.some(o => origin.startsWith(o))) {
     throw createError({ statusCode: 403, message: 'Forbidden' })
   }

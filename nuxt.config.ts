@@ -21,7 +21,7 @@ export default defineNuxtConfig({
      noindex (/a-propos, /commercial) en sont exclus. */
   modules: ['@nuxtjs/sitemap'],
   site: {
-    url: 'https://1lifeproduction.com',
+    url: 'https://1lifeproduction.fr',
     name: '1LIFE PRODUCTION',
   },
   sitemap: {
@@ -76,7 +76,7 @@ export default defineNuxtConfig({
         { property: 'og:locale',      content: 'fr_FR' },
         { property: 'og:title',       content: '1LIFE PRODUCTION' },
         { property: 'og:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
-        { property: 'og:image',       content: 'https://1lifeproduction.com/og-image.jpg' },
+        { property: 'og:image',       content: 'https://1lifeproduction.fr/og-image.jpg' },
         { name: 'twitter:card',       content: 'summary_large_image' },
         { name: 'theme-color',        content: '#000000' },
       ],
