@@ -1,5 +1,6 @@
 import { Resend } from 'resend'
 import { rateLimit } from '../utils/rateLimit'
+import contactContent from '../../content/contact.json'
 
 interface ContactBody {
   name:        string
@@ -101,6 +102,45 @@ export default defineEventHandler(async (event) => {
 
   if (error) {
     throw createError({ statusCode: 502, message: 'Erreur lors de l\'envoi, réessayez plus tard.' })
+  }
+
+  /* ---- Accusé de réception au visiteur ----
+     Envoyé APRÈS le mail interne (qui est le seul indispensable). S'il
+     échoue (adresse invalide, quota…), on ne fait pas échouer la demande :
+     le studio a bien reçu le message. Textes : content/contact.json →
+     formulaire.confirmation. Reply-To = l'adresse de réception du studio,
+     pour que le visiteur puisse compléter sa demande en répondant. */
+  const c = contactContent.formulaire.confirmation
+  const prenom = name.trim().split(/\s+/)[0]
+  const fill = (s: string) => s.replace(/\{prenom\}/g, escapeHtml(prenom))
+  const paragraphs = (s: string) => fill(s).split('\n\n').map(p => `<p style="margin:0 0 1rem;line-height:1.6">${p.replace(/\n/g, '<br>')}</p>`).join('')
+
+  try {
+    await resend.emails.send({
+      from:    config.resendFrom,
+      to:      [email],
+      ...(config.resendTo ? { replyTo: config.resendTo } : {}),
+      subject: fill(c.sujet),
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#111">
+          <p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:#777;margin:0 0 1.5rem">1LIFE PRODUCTION</p>
+          <h2 style="margin:0 0 1.25rem;font-weight:700">${fill(c.titre)}</h2>
+          ${paragraphs(c.texte)}
+          <table style="width:100%;border-collapse:collapse;margin:0.5rem 0 1.5rem">
+            ${row('Nom', name)}
+            ${company?.trim() ? row('Société', company) : ''}
+            ${phone?.trim() ? row('Téléphone', phone) : ''}
+            ${row('Type de projet', PROJECT_TYPES[projectType])}
+            ${row('Budget', BUDGETS[budget])}
+            ${row('Message', message)}
+          </table>
+          <p style="margin:0 0 1.5rem;line-height:1.6">${fill(c.signature)}</p>
+          <p style="font-size:0.75rem;color:#777;line-height:1.5;margin:0">${fill(c.pied)}</p>
+        </div>
+      `,
+    })
+  } catch (e) {
+    console.error('[contact] accusé de réception non envoyé :', e)
   }
 
   return { success: true }

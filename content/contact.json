@@ -34,6 +34,14 @@
     "messages": {
       "succes": "Message envoyé avec succès. On revient vers vous rapidement.",
       "erreur": "Une erreur est survenue, réessayez."
+    },
+    "confirmation": {
+      "_aide": "E-mail automatique envoyé au visiteur juste après l'envoi du formulaire. {prenom} = le nom saisi dans le formulaire.",
+      "sujet": "Nous avons bien reçu votre demande — 1LIFE PRODUCTION",
+      "titre": "Bien reçu, {prenom}.",
+      "texte": "Merci pour votre message. On le lit avec attention et on revient vers vous rapidement avec les bonnes questions — en général sous 48 h ouvrées.\n\nEn attendant, voici le récapitulatif de votre demande :",
+      "signature": "L'équipe 1LIFE PRODUCTION",
+      "pied": "Vous pouvez répondre directement à cet e-mail pour compléter votre demande."
     }
   }
 }

@@ -15,7 +15,7 @@ Ce document explique **comment modifier tous les textes et contenus du site** sa
 | `content/home.json` | Page d'accueil : baseline + grand titre du hero, texte de présentation du studio, cards expertises (tags, descriptions, bouton), SEO. |
 | `content/categories.json` | Les 4 pages catégories (Live, Documentaire, Marque, Événementiel) : hero, sous-catégories (titres, descriptions, tags), process, FAQ, CTA devis, SEO. |
 | `content/equipe.json` | Page Équipe : titre, paragraphes d'intro, **membres de l'équipe** (nom, rôle, photo), repères chiffrés, FAQ, CTA, SEO. |
-| `content/contact.json` | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |
+| `content/contact.json` (dont `formulaire.confirmation` : l'e-mail automatique reçu par le visiteur) | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |
 | `content/global.json` | Commun à tout le site : email et adresse du footer, URLs des réseaux sociaux, titre du bandeau clients, libellés d'interface (« Voir les projets », « Questions fréquentes »…). |
 | `content/clients.json` | Logos du bandeau marques défilant. |
 | `content/legal.json` | Pages légales (mentions légales, politique de confidentialité) : titre + sections (`titre`, `paragraphes`). Tant que `sections` est vide, la page affiche « Contenu à venir ». |
