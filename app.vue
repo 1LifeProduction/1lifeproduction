@@ -24,6 +24,8 @@ useHead({
 
 <template>
   <div class="app">
+    <!-- Accessibilité : lien d'évitement (visible au focus clavier) -->
+    <a href="#contenu" class="skip-link">Aller au contenu</a>
     <!-- Écran de chargement (recréation CSS du videoLoader) -->
     <AppLoader />
     <!-- Volet cinématique de transition entre les pages -->
@@ -31,7 +33,7 @@ useHead({
     <!-- Grille de fond unique pour tout le site (uniforme, fixe) -->
     <div class="site-grid" aria-hidden="true"></div>
     <TheHeader />
-    <main>
+    <main id="contenu" tabindex="-1">
       <NuxtPage />
     </main>
     <TheFooter />

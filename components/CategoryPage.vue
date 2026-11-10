@@ -81,15 +81,22 @@ function syncUrl(path: string) {
   if (import.meta.client) history.replaceState(history.state, '', path)
 }
 
+const closeBtn = ref<HTMLButtonElement>()
+let lastFocus: HTMLElement | null = null
+
 function openProject(p: Project) {
+  if (import.meta.client) lastFocus = document.activeElement as HTMLElement | null
   modalProject.value = p
   slideIdx.value = 0
+  nextTick(() => closeBtn.value?.focus())
   if (import.meta.client) document.body.style.overflow = 'hidden'
   syncUrl(`/projets/${p.id}`)
 }
 function closeProject() {
   modalProject.value = null
   if (import.meta.client) document.body.style.overflow = ''
+  lastFocus?.focus()
+  lastFocus = null
   syncUrl(`/${props.section}`)
 }
 function onKeydown(e: KeyboardEvent) {
@@ -366,7 +373,7 @@ useHead({
         @click.self="closeProject"
       >
         <div class="xp-modal__card">
-          <button type="button" class="xp-modal__close" aria-label="Fermer" @click="closeProject">×</button>
+          <button ref="closeBtn" type="button" class="xp-modal__close" aria-label="Fermer" @click="closeProject">×</button>
           <div class="xp-modal__media" :class="{ 'xp-modal__media--gallery': slides.length > 1 }">
             <!-- Média courant : vidéo ou photo (galerie si plusieurs) -->
             <template v-if="currentSlide">

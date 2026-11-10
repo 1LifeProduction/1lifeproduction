@@ -155,10 +155,10 @@ async function submitForm() {
           <button class="contact-form__submit" type="submit" :disabled="status === 'sending'">
             {{ status === 'sending' ? content.formulaire.boutonEnvoi : content.formulaire.bouton }}
           </button>
-          <p v-if="status === 'success'" class="contact-form__status contact-form__status--success">
+          <p v-if="status === 'success'" role="status" class="contact-form__status contact-form__status--success">
             {{ content.formulaire.messages.succes }}
           </p>
-          <p v-if="status === 'error'" class="contact-form__status contact-form__status--error">
+          <p v-if="status === 'error'" role="alert" class="contact-form__status contact-form__status--error">
             {{ errorMsg || content.formulaire.messages.erreur }}
           </p>
         </div>

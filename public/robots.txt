@@ -1,4 +1,18 @@
 User-agent: *
 Allow: /
 
+# Assistants et moteurs IA : accès autorisé (visibilité dans les réponses IA)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://1lifeproduction.com/sitemap.xml

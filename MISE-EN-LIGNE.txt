@@ -1,0 +1,111 @@
+MISE EN LIGNE DU SITE 1LIFE PRODUCTION — ÉTAPES
+================================================
+(Vercel + Resend + domaine OVH) — compter ~1 h, hors délais DNS.
+Le dépôt est prêt : build "npm run build", toutes les pages pré-rendues,
+formulaire via /api/contact (Resend). Rien à changer dans le code.
+
+
+ÉTAPE 1 — COMPTE GITHUB DU CLIENT ET TRANSFERT DU DÉPÔT (15 min)
+----------------------------------------------------------------
+1. Le client crée un compte GitHub (idéalement avec une adresse générique,
+   ex. tech@1lifeproduction.com) : https://github.com → Sign up.
+2. Transfert : sur https://github.com/seg1-exe/1lifeproduction
+   → Settings → tout en bas "Danger Zone" → "Transfer ownership"
+   → saisir le nom d'utilisateur GitHub du client.
+   Il reçoit un e-mail à accepter (valable 24 h).
+3. Une fois transféré, le client va dans Settings → Collaborators
+   → "Add people" et ajoute Arthur avec le rôle Admin (pour continuer à pousser).
+4. Sur le poste d'Arthur, mettre à jour l'adresse du dépôt :
+       git remote set-url origin https://github.com/LEUR-COMPTE/1lifeproduction.git
+
+   Alternative si le client ne veut pas de compte GitHub : garder le dépôt
+   sur seg1-exe et ne faire que l'étape 2 avec ce compte. Moins propre,
+   mais fonctionnel.
+
+
+ÉTAPE 2 — COMPTE VERCEL ET PREMIER DÉPLOIEMENT (10 min)
+--------------------------------------------------------
+1. Le client va sur https://vercel.com → Sign Up → "Continue with GitHub"
+   (avec le compte de l'étape 1).
+   Plan Hobby (gratuit) pour commencer ; passer en Pro (20 $/mois) si Vercel
+   le demande (les CGU Hobby excluent l'usage commercial).
+2. "Add New → Project" → importer 1lifeproduction.
+   Vercel détecte Nuxt tout seul : Framework "Nuxt.js", Build Command
+   "npm run build", Output automatique. NE RIEN CHANGER.
+3. Environment Variables (avant Deploy, ou après dans Settings →
+   Environment Variables puis "Redeploy") :
+
+       RESEND_API_KEY   = la clé de l'étape 3 (mettre "re_test" provisoirement)
+       RESEND_FROM      = 1LIFE PRODUCTION <noreply@1lifeproduction.com>
+       RESEND_TO        = 1lifeprod@unlockcollectif.com
+
+4. "Deploy". Au bout de ~2 min le site est en ligne sur
+   https://1lifeproduction.vercel.app
+   Tout fonctionne sauf l'envoi d'e-mail (étape 3).
+
+
+ÉTAPE 3 — RESEND : CLÉ API ET DOMAINE (15 min + attente DNS)
+-------------------------------------------------------------
+1. Créer un compte sur https://resend.com (même adresse générique).
+   Gratuit : 3 000 e-mails / mois, largement suffisant.
+2. API Keys → "Create API Key" → nom "site-1life", permission "Sending access"
+   → copier la clé (re_…), elle ne sera plus affichée.
+   La coller dans Vercel (RESEND_API_KEY) → Redeploy.
+3. Domains → "Add Domain" → 1lifeproduction.com, région "Europe (Ireland)".
+   Resend affiche 3 enregistrements DNS à ajouter chez OVH :
+       - TXT sur resend._domainkey   (DKIM)
+       - MX  sur send (ou bounces)
+       - TXT sur send                (SPF : v=spf1 include:amazonses.com ~all)
+4. Chez OVH : Noms de domaine → 1lifeproduction.com → Zone DNS
+   → "Ajouter une entrée", recopier les 3 à l'identique.
+   ATTENTION : OVH ajoute parfois ".1lifeproduction.com" tout seul au
+   sous-domaine — ne pas le doubler.
+5. Retour sur Resend → "Verify". Vert en général sous 30 min (jusqu'à 24 h).
+   Tant que ce n'est pas vérifié, les envois sont refusés : c'est normal.
+6. Test : remplir le formulaire sur 1lifeproduction.vercel.app
+   → l'e-mail doit arriver sur 1lifeprod@unlockcollectif.com
+   (vérifier les spams la première fois).
+
+
+ÉTAPE 4 — BRANCHER LE DOMAINE SUR VERCEL (10 min + attente DNS)
+----------------------------------------------------------------
+1. Vercel → projet → Settings → Domains → Add :
+   1lifeproduction.com, puis www.1lifeproduction.com
+   (Vercel propose de rediriger www vers la racine : accepter).
+2. Vercel affiche les enregistrements à créer. Dans la zone DNS OVH :
+       - SUPPRIMER l'éventuel enregistrement A existant sur la racine
+         (1lifeproduction.com) qui pointe vers OVH ;
+       - ajouter un A     racine → 76.76.21.21
+       - ajouter un CNAME www    → cname.vercel-dns.com.
+3. Attendre que Vercel passe les deux domaines en "Valid Configuration"
+   (quelques minutes à quelques heures). Le certificat HTTPS est automatique.
+4. Vérifier https://1lifeproduction.com : site, formulaire, /sitemap.xml,
+   et les redirections /a-propos → /equipe et /commercial → /marque.
+
+
+ÉTAPE 5 — SORTIR LE PROJET DU COMPTE D'ARTHUR
+----------------------------------------------
+Une fois le domaine actif sur le projet du client :
+Vercel d'Arthur → ancien projet → Settings → "Delete Project".
+Si l'ancien projet portait le domaine, le retirer d'abord de ses Domains
+(sinon Vercel refuse de l'ajouter au nouveau projet).
+
+
+ENSUITE, EN CONTINU
+-------------------
+- Chaque "git push" sur main redéploie automatiquement en ~2 min.
+- Les clés ne sont JAMAIS dans le code : uniquement dans Vercel.
+  Le fichier .env.example sert de modèle pour travailler en local.
+- Mise à jour du contenu : voir GESTION-CONTENU.md.
+
+
+POINTS À ANTICIPER
+------------------
+- Si le client a déjà un site actif sur 1lifeproduction.com, l'étape 4.2
+  le coupe : à faire au moment choisi.
+- L'adresse d'expédition noreply@1lifeproduction.com n'a pas besoin
+  d'exister comme boîte mail (c'est le domaine vérifié qui compte).
+  Les réponses des visiteurs arrivent bien à 1lifeprod@unlockcollectif.com :
+  le formulaire met l'e-mail du visiteur en "Reply-To".
+- Les mentions légales indiquent Vercel Inc. comme hébergeur : si le site
+  est déplacé un jour, mettre à jour content/legal.json.

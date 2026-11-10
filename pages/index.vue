@@ -137,6 +137,16 @@ useHead({
         description: 'Studio de production audiovisuelle basé à Paris, spécialisé dans le live, le documentaire, les films de marque et les contenus événementiels.',
         url: 'https://1lifeproduction.com',
         logo: 'https://1lifeproduction.com/favicon.png',
+        image: 'https://1lifeproduction.com/og-image.jpg',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Rue La Fayette',
+          postalCode: '75010',
+          addressLocality: 'Paris',
+          addressCountry: 'FR',
+        },
+        areaServed: 'FR',
+        knowsAbout: ['live session', 'captation multicam', 'livestream', 'documentaire', 'film de marque', 'vidéo corporate', 'aftermovie', 'reportage photo et vidéo', 'VFX', '3D et scénographie'],
         contactPoint: {
           '@type': 'ContactPoint',
           email: '1lifeprod@unlockcollectif.com',
@@ -220,7 +230,7 @@ useHead({
             <Transition name="theater-text" mode="out-in">
               <div :key="activeIndex" class="theater__text">
                 <span class="project-card__cat">{{ getSubCategory(featured[activeIndex].category)?.label ?? featured[activeIndex].category }}</span>
-                <h3 class="project-card__title">{{ featured[activeIndex].title }}</h3>
+                <p class="project-card__title">{{ featured[activeIndex].title }}</p>
               </div>
             </Transition>
           </div>

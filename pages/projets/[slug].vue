@@ -20,9 +20,17 @@ const section = project.section as Section
 const group = getGroup(section)!
 
 const SITE_URL = 'https://1lifeproduction.com'
-const pageTitle = `${project.title}${project.client ? ` · ${project.client}` : ''} | 1LIFE PRODUCTION`
-const description = project.description?.trim()
-  || `${project.title} — ${group.label} par 1LIFE PRODUCTION, studio de production audiovisuelle à Paris.`
+/* Client ajouté au titre seulement s'il apporte une info (pas "CHARLATTE · Charlatte") */
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+const clientInTitle = project.client && !norm(project.title).includes(norm(project.client))
+const pageTitle = `${project.title}${clientInTitle ? ` · ${project.client}` : ''} | 1LIFE PRODUCTION`
+/* Description : le champ "description" peut n'être qu'un crédit court
+   ("© …") → on ne l'utilise en meta que s'il fait une vraie phrase. */
+const subLabel = group.children.find(c => c.slug === project.category)?.label ?? group.label
+const customDesc = project.description?.trim() ?? ''
+const description = customDesc.length >= 50
+  ? customDesc
+  : `${project.title}${clientInTitle ? ` pour ${project.client}` : ''} — ${subLabel} (${group.label}) par 1LIFE PRODUCTION, studio de production audiovisuelle à Paris.`
 
 /* URL d'embed pour le JSON-LD — Vimeo ou YouTube (même logique que
    VimeoEmbed.vue) ; null si le lien n'est reconnu par aucune des deux. */

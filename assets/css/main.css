@@ -76,6 +76,24 @@ body {
   overflow-x: clip;
 }
 
+/* Lien d'évitement : hors écran, visible seulement au focus clavier */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10000;
+  padding: 0.6rem 1rem;
+  background: #fff;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.15s ease;
+}
+.skip-link:focus { transform: none; outline: 2px solid #000; outline-offset: 2px; }
+main:focus { outline: none; }
+
 /* ===================================================
    SCROLLBAR CUSTOM — piste noire, thumb blanc plein
    (angles droits, le thumb occupe toute la largeur de la piste)

@@ -78,9 +78,11 @@ export default defineNuxtConfig({
         { property: 'og:description', content: 'Collectif créatif spécialisé dans la production audiovisuelle — photographes, vidéastes, motion designers et experts VFX.' },
         { property: 'og:image',       content: 'https://1lifeproduction.com/og-image.jpg' },
         { name: 'twitter:card',       content: 'summary_large_image' },
+        { name: 'theme-color',        content: '#000000' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
