@@ -18,12 +18,19 @@ const props = defineProps<{ section: Section; initialProjectId?: string }>()
 const route = useRoute()
 const group = getGroup(props.section)!
 
-type Project = (typeof projectsData)[number]
+/* Type explicite (le JSON n'a pas "photos" sur tous les projets) */
+interface Project {
+  id: string; title: string; section: string; category: string
+  client?: string; vimeo_url?: string; thumbnail?: string; description?: string
+  tags?: string[]; featured?: boolean; year?: number
+  photos?: string[]   // série photo : carrousel dans la modale
+}
+const projects = projectsData as Project[]
 
 /* Projets d'une sous-catégorie, dans l'ordre du JSON :
    le premier est le projet phare du chapitre, les suivants vont dans le tiroir. */
 function projectsOf(sub: SubCategory): Project[] {
-  return projectsData.filter(p => p.section === props.section && p.category === sub.slug)
+  return projects.filter(p => p.section === props.section && p.category === sub.slug)
 }
 function featuredOf(sub: SubCategory): Project | undefined {
   return projectsOf(sub)[0]
@@ -43,9 +50,28 @@ function toggleDrawer(slug: string) {
    des pages /projets/[slug] contient la modale ouverte (indexable). */
 const modalProject = ref<Project | null>(
   props.initialProjectId
-    ? projectsData.find(p => p.id === props.initialProjectId && p.section === props.section) ?? null
+    ? projects.find(p => p.id === props.initialProjectId && p.section === props.section) ?? null
     : null,
 )
+
+/* Galerie de la modale : la vidéo (si présente) puis les photos (si
+   présentes). Un seul média → pas de flèches ni de compteur. */
+type Slide = { type: 'video'; url: string } | { type: 'photo'; src: string }
+const slideIdx = ref(0)
+const slides = computed<Slide[]>(() => {
+  const p = modalProject.value
+  if (!p) return []
+  const out: Slide[] = []
+  if (p.vimeo_url) out.push({ type: 'video', url: p.vimeo_url })
+  for (const src of p.photos ?? []) out.push({ type: 'photo', src })
+  return out
+})
+const currentSlide = computed(() => slides.value[slideIdx.value] ?? null)
+function goSlide(delta: number) {
+  const n = slides.value.length
+  if (n < 2) return
+  slideIdx.value = (slideIdx.value + delta + n) % n
+}
 
 /* L'URL suit la modale SANS navigation (replaceState : pas de re-rendu, pas
    d'entrée d'historique, le bouton Retour garde son comportement normal) :
@@ -57,6 +83,7 @@ function syncUrl(path: string) {
 
 function openProject(p: Project) {
   modalProject.value = p
+  slideIdx.value = 0
   if (import.meta.client) document.body.style.overflow = 'hidden'
   syncUrl(`/projets/${p.id}`)
 }
@@ -67,6 +94,9 @@ function closeProject() {
 }
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') closeProject()
+  if (!modalProject.value) return
+  if (e.key === 'ArrowRight') goSlide(1)
+  if (e.key === 'ArrowLeft')  goSlide(-1)
 }
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
@@ -108,6 +138,14 @@ function toggleFaq(i: number) {
   openFaq.value = openFaq.value === i ? null : i
 }
 
+/* Nom de la plateforme vidéo d'un projet (lien "Voir sur …" dans la modale) */
+function platformOf(url?: string): string {
+  if (!url) return ''
+  if (/vimeo.com/.test(url)) return 'Vimeo'
+  if (/youtu.?be/.test(url)) return 'YouTube'
+  return ''
+}
+
 /* Type de la sous-catégorie d'un projet (label affiché dans le tiroir/modale) */
 function subLabelOf(p: Project): string {
   return group.children.find(c => c.slug === p.category)?.label ?? ''
@@ -137,7 +175,17 @@ useHead({
 
     <!-- Hero -->
     <section class="evnt-hero" data-nav-theme="dark">
-      <img :src="heroImg" alt="" class="evnt-hero__img" aria-hidden="true" fetchpriority="high" />
+      <!-- Hero : boucle vidéo muette si fournie (content/categories.json →
+           hero.video, image = poster), sinon image de couverture, sinon visuel
+           par défaut. -->
+      <ProgressiveVideo
+        v-if="group.hero.video"
+        class="evnt-hero__img"
+        :src="group.hero.video"
+        :hq="group.hero.videoHq"
+        :poster="group.hero.image || undefined"
+      />
+      <img v-else :src="group.hero.image || heroImg" alt="" class="evnt-hero__img" aria-hidden="true" fetchpriority="high" />
       <div class="evnt-hero__overlay" aria-hidden="true"></div>
       <div class="xp-hero__bottom">
         <p class="xp-hero__kicker" data-reveal="fade" style="--reveal-delay:60ms">{{ group.hero.kicker }}</p>
@@ -180,8 +228,14 @@ useHead({
                 :aria-label="`Ouvrir le projet ${featuredOf(sub)!.title}`"
                 @click="openProject(featuredOf(sub)!)"
               >
+                <!-- Série photo : diaporama automatique (fondu enchaîné) -->
+                <PhotoSlideshow
+                  v-if="(featuredOf(sub)!.photos?.length ?? 0) > 1"
+                  :photos="featuredOf(sub)!.photos!"
+                  :alt="featuredOf(sub)!.title"
+                />
                 <img
-                  v-if="featuredOf(sub)!.thumbnail"
+                  v-else-if="featuredOf(sub)!.thumbnail"
                   :src="featuredOf(sub)!.thumbnail"
                   :alt="featuredOf(sub)!.title"
                   class="xp-media__img"
@@ -189,7 +243,9 @@ useHead({
                 />
                 <span v-else class="xp-media__placeholder" aria-hidden="true"></span>
               </button>
-              <p class="xp-media__caption">{{ featuredOf(sub)!.title }}</p>
+              <p class="xp-media__caption">
+                {{ featuredOf(sub)!.title }}<template v-if="featuredOf(sub)!.photos?.length"> · {{ featuredOf(sub)!.photos!.length }} photos</template>
+              </p>
             </div>
 
             <template v-if="drawerOf(sub).length">
@@ -232,9 +288,11 @@ useHead({
             </template>
           </template>
 
-          <!-- Sous-catégorie sans projet (ex. en développement) -->
+          <!-- Sous-catégorie sans projet (ex. en développement) : visuel de
+               couverture si fourni (content/categories.json → visuel) -->
           <div v-else class="xp-media">
-            <div class="xp-media__placeholder xp-media__placeholder--empty" aria-hidden="true"></div>
+            <img v-if="sub.visuel" :src="sub.visuel" :alt="sub.label" class="xp-media__img xp-media__img--cover" loading="lazy" />
+            <div v-else class="xp-media__placeholder xp-media__placeholder--empty" aria-hidden="true"></div>
           </div>
         </div>
       </section>
@@ -309,12 +367,23 @@ useHead({
       >
         <div class="xp-modal__card">
           <button type="button" class="xp-modal__close" aria-label="Fermer" @click="closeProject">×</button>
-          <div class="xp-modal__media">
-            <VimeoEmbed
-              v-if="modalProject.vimeo_url"
-              :url="modalProject.vimeo_url"
-              :title="modalProject.title"
-            />
+          <div class="xp-modal__media" :class="{ 'xp-modal__media--gallery': slides.length > 1 }">
+            <!-- Média courant : vidéo ou photo (galerie si plusieurs) -->
+            <template v-if="currentSlide">
+              <VimeoEmbed
+                v-if="currentSlide.type === 'video'"
+                :key="'v'"
+                :url="currentSlide.url"
+                :title="modalProject.title"
+              />
+              <img
+                v-else
+                :key="currentSlide.src"
+                :src="currentSlide.src"
+                :alt="`${modalProject.title} — photo ${slideIdx + 1}`"
+                class="xp-modal__photo"
+              />
+            </template>
             <template v-else>
               <img
                 v-if="modalProject.thumbnail"
@@ -325,11 +394,26 @@ useHead({
               <div v-else class="xp-modal__placeholder" aria-hidden="true"></div>
               <p class="xp-modal__note">{{ ui.videoBientot }}</p>
             </template>
+
+            <!-- Navigation de la galerie -->
+            <template v-if="slides.length > 1">
+              <button type="button" class="xp-gallery__nav xp-gallery__nav--prev" aria-label="Média précédent" @click="goSlide(-1)">‹</button>
+              <button type="button" class="xp-gallery__nav xp-gallery__nav--next" aria-label="Média suivant" @click="goSlide(1)">›</button>
+              <span class="xp-gallery__count" aria-live="polite">{{ slideIdx + 1 }} / {{ slides.length }}</span>
+            </template>
           </div>
           <div class="xp-modal__copy">
             <div>
               <h2 class="xp-modal__title">{{ modalProject.title }}</h2>
               <p class="xp-modal__type">{{ subLabelOf(modalProject) }}<template v-if="modalProject.client"> · {{ modalProject.client }}</template></p>
+              <p v-if="modalProject.description" class="xp-modal__desc">{{ modalProject.description }}</p>
+              <a
+                v-if="platformOf(modalProject.vimeo_url)"
+                :href="modalProject.vimeo_url"
+                target="_blank"
+                rel="noopener"
+                class="xp-modal__ext"
+              >{{ ui.voirSur }} {{ platformOf(modalProject.vimeo_url) }} ↗</a>
             </div>
             <NuxtLink :to="devisHref(section)" class="xp-modal__btn" @click="closeProject">
               {{ ui.projetSimilaire }}

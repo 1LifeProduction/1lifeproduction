@@ -23,14 +23,14 @@
   "equipe": {
     "titre": "Notre équipe",
     "membres": [
-      { "photo": "/team/placeholder.svg", "nom": "QUENTIN",         "role": "Directeur de production" },
-      { "photo": "/team/placeholder.svg", "nom": "TITOUAN",         "role": "Réalisateur · Directeur technique" },
-      { "photo": "/team/placeholder.svg", "nom": "RICARDO",         "role": "Directeur artistique · Photographe" },
-      { "photo": "/team/placeholder.svg", "nom": "IRÈNE",           "role": "Direction artistique · Scénographie" },
-      { "photo": "/team/placeholder.svg", "nom": "ARTHUR",          "role": "Chargé de projet · Cadreur" },
-      { "photo": "/team/placeholder.svg", "nom": "THÉO", "role": "Monteur · Étalonneur" },
-      { "photo": "/team/placeholder.svg", "nom": "BAPTISTE",        "role": "Journaliste Reporter d'Images (JRI)" },
-      { "photo": "/team/placeholder.svg", "nom": "VALENTIN",        "role": "Artiste 3D · VFX" }
+      { "photo": "/team/quentin.webp",  "nom": "QUENTIN",  "role": "Directeur de production" },
+      { "photo": "/team/titouan.webp",  "nom": "TITOUAN",  "role": "Réalisateur · Directeur technique" },
+      { "photo": "/team/ricardo.webp",  "nom": "RICARDO",  "role": "Directeur artistique · Photographe" },
+      { "photo": "/team/irene.webp",    "nom": "IRÈNE",    "role": "Direction artistique · Scénographie" },
+      { "photo": "/team/arthur.webp",   "nom": "ARTHUR",   "role": "Chargé de projet · Cadreur" },
+      { "photo": "/team/theo.webp",     "nom": "THÉO",     "role": "Monteur · Étalonneur" },
+      { "photo": "/team/baptiste.webp", "nom": "BAPTISTE", "role": "Journaliste Reporter d'Images (JRI)" },
+      { "photo": "/team/valentin.webp", "nom": "VALENTIN", "role": "Artiste 3D · VFX" }
     ]
   },
 

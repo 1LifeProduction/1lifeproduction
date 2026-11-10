@@ -1,54 +1,77 @@
 [
   {
-    "id": "faelix-saphir-session",
-    "title": "FAELIX · SAPHIR SESSION",
+    "id": "misha",
+    "title": "MISHA",
     "section": "live",
     "category": "live-sessions",
-    "year": 2025,
-    "client": "Saphir Session",
-    "vimeo_url": "https://youtu.be/2u_AzjyNgg0?si=ltYUmyQtQLSKae0k",
-    "thumbnail": "",
+    "client": "Misha",
+    "vimeo_url": "https://www.youtube.com/watch?v=GhkyE1sFtqE",
+    "thumbnail": "/thumbnails/misha.webp",
     "description": "",
-    "tags": ["session", "live"],
-    "featured": false
+    "tags": [
+      "live session",
+      "musique"
+    ],
+    "featured": true
   },
   {
     "id": "skone-rooftop",
     "title": "SKÖNE · ROOFTOP",
     "section": "live",
     "category": "live-sessions",
-    "year": 2025,
     "client": "Sköne",
-    "vimeo_url": "https://youtu.be/iy57MgdQQp4?si=IgY0CRuYn9lCX-UR",
-    "thumbnail": "/thumbnails/skone-live-session.webp",
+    "vimeo_url": "https://www.youtube.com/watch?v=iy57MgdQQp4",
+    "thumbnail": "/thumbnails/skone-rooftop.webp",
     "description": "",
-    "tags": ["live session", "musique", "performance"],
+    "tags": [
+      "live session",
+      "musique"
+    ],
     "featured": false
   },
   {
-    "id": "saphir-session-10",
-    "title": "SAPHIR SESSION #10 - AIR INTER LOWTSO",
+    "id": "big-d",
+    "title": "BIG D",
     "section": "live",
     "category": "live-sessions",
-    "year": 2026,
-    "client": "Saphir Session",
-    "vimeo_url": "https://youtu.be/eV3pZ8-Db-4?si=8vi3MhFQ5BBymB1x",
-    "thumbnail": "/thumbnails/lowtso.webp",
+    "client": "Big D",
+    "vimeo_url": "https://www.youtube.com/watch?v=4wVDLYfedM4",
+    "thumbnail": "/thumbnails/big-d.webp",
     "description": "",
-    "tags": ["session", "live", "captation"],
-    "featured": true
+    "tags": [
+      "live session",
+      "musique"
+    ],
+    "featured": false
   },
   {
-    "id": "sto-live-session",
-    "title": "STO · LIVE SESSION",
+    "id": "lowtso",
+    "title": "LOWTSO",
     "section": "live",
     "category": "live-sessions",
-    "year": 2026,
-    "client": "STO",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "À venir.",
-    "tags": ["session", "live", "à venir"],
+    "client": "Saphir Session",
+    "vimeo_url": "https://www.youtube.com/watch?v=eV3pZ8-Db-4",
+    "thumbnail": "/thumbnails/lowtso.webp",
+    "description": "",
+    "tags": [
+      "live session",
+      "musique"
+    ],
+    "featured": false
+  },
+  {
+    "id": "charlie-sparks",
+    "title": "CHARLIE SPARKS",
+    "section": "live",
+    "category": "captation-multicam",
+    "client": "Charlie Sparks",
+    "vimeo_url": "https://www.youtube.com/watch?v=bTMvSlizSYQ",
+    "thumbnail": "/thumbnails/charlie-sparks.webp",
+    "description": "",
+    "tags": [
+      "captation",
+      "multicam"
+    ],
     "featured": false
   },
   {
@@ -56,25 +79,30 @@
     "title": "BRUTALISMUS 3000",
     "section": "live",
     "category": "captation-multicam",
-    "year": 2025,
     "client": "Brutalismus 3000",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://vimeo.com/1234444344",
+    "thumbnail": "/thumbnails/brutalismus-3000.webp",
     "description": "",
-    "tags": ["captation", "multicam", "concert"],
-    "featured": false
+    "tags": [
+      "captation",
+      "multicam",
+      "concert"
+    ],
+    "featured": true
   },
   {
     "id": "majes-impact",
     "title": "MAJES IMPACT",
     "section": "live",
     "category": "captation-multicam",
-    "year": 2025,
     "client": "Majes",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://www.youtube.com/watch?v=u0XdZ_eLChQ",
+    "thumbnail": "/thumbnails/majes-impact.webp",
     "description": "",
-    "tags": ["captation", "multicam"],
+    "tags": [
+      "captation",
+      "multicam"
+    ],
     "featured": false
   },
   {
@@ -82,38 +110,14 @@
     "title": "CAIVA",
     "section": "live",
     "category": "captation-multicam",
-    "year": 2025,
     "client": "Caiva",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://www.youtube.com/watch?v=P4ZvNi2A3UU",
+    "thumbnail": "/thumbnails/caiva.webp",
     "description": "",
-    "tags": ["captation", "multicam", "dj set"],
-    "featured": false
-  },
-  {
-    "id": "linf-project",
-    "title": "L'INF",
-    "section": "live",
-    "category": "captation-multicam",
-    "year": 2024,
-    "client": "L'INF",
-    "vimeo_url": "https://vimeo.com/76979871",
-    "thumbnail": "/thumbnails/linf.webp",
-    "description": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "tags": ["film", "cinéma", "urban"],
-    "featured": true
-  },
-  {
-    "id": "cko-nike-livestream",
-    "title": "CKO × NIKE",
-    "section": "live",
-    "category": "livestream",
-    "year": 2024,
-    "client": "CKO × Nike",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/cko.webp",
-    "description": "Diffusion en direct d'un événement CKO avec une réalisation multicaméra et une qualité de production professionnelle.",
-    "tags": ["livestream", "direct", "multicaméra"],
+    "tags": [
+      "captation",
+      "multicam"
+    ],
     "featured": false
   },
   {
@@ -121,12 +125,29 @@
     "title": "BRUTALISMUS 3000",
     "section": "live",
     "category": "livestream",
-    "year": 2025,
     "client": "Brutalismus 3000",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/fdlm-brutalismus.webp",
-    "description": "Livestream du set Brutalismus : diffusion en temps réel, ambiance club et rendu haute intensité.",
-    "tags": ["livestream", "club", "musique"],
+    "vimeo_url": "https://vimeo.com/1234444344",
+    "thumbnail": "/thumbnails/brutalismus-3000-livestream.webp",
+    "description": "",
+    "tags": [
+      "livestream",
+      "direct"
+    ],
+    "featured": false
+  },
+  {
+    "id": "cko",
+    "title": "CKO",
+    "section": "live",
+    "category": "livestream",
+    "client": "CKO",
+    "vimeo_url": "https://www.youtube.com/watch?v=nQ71p2jlgQY",
+    "thumbnail": "/thumbnails/cko.webp",
+    "description": "",
+    "tags": [
+      "livestream",
+      "direct"
+    ],
     "featured": false
   },
   {
@@ -134,51 +155,44 @@
     "title": "GÂTINAIS LIBRE",
     "section": "live",
     "category": "livestream",
-    "year": 2024,
     "client": "Gâtinais Libre",
-    "vimeo_url": "",
+    "vimeo_url": "https://www.youtube.com/watch?v=eb1bdJFd2QU",
     "thumbnail": "/thumbnails/gatinais-libre.webp",
-    "description": "Diffusion en direct de l'événement Gâtinais Libre pour toucher l'audience au-delà du lieu, en temps réel.",
-    "tags": ["livestream", "direct", "événement"],
+    "description": "",
+    "tags": [
+      "livestream",
+      "direct"
+    ],
     "featured": false
   },
   {
-    "id": "skone-teaser-documentaire",
-    "title": "SKÖNE · TEASER DOCUMENTAIRE",
+    "id": "itinerances-sonores-episode-1",
+    "title": "ITINÉRANCES SONORES · ÉPISODE 1",
     "section": "documentaire",
     "category": "documentaire-musical",
-    "year": 2025,
     "client": "Sköne",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://www.youtube.com/watch?v=eRsFHKjsq-8",
+    "thumbnail": "/thumbnails/itinerances-sonores-episode-1.webp",
     "description": "",
-    "tags": ["documentaire", "musique"],
-    "featured": false
-  },
-  {
-    "id": "atelier-tourtoulou",
-    "title": "ATELIER TOURTOULOU",
-    "section": "documentaire",
-    "category": "artisanat-savoir-faire",
-    "year": 2025,
-    "client": "Atelier Tourtoulou",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["documentaire", "artisanat"],
-    "featured": false
+    "tags": [
+      "documentaire",
+      "musique",
+      "série"
+    ],
+    "featured": true
   },
   {
     "id": "charlatte",
     "title": "CHARLATTE",
     "section": "marque",
     "category": "film-de-marque",
-    "year": 2025,
     "client": "Charlatte",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "Film de marque pour Charlatte : narration cinématographique conçue pour ancrer l'identité dans l'imaginaire.",
-    "tags": ["film", "marque", "narration"],
+    "vimeo_url": "https://youtu.be/h7b3A-PZ8iU",
+    "thumbnail": "/thumbnails/charlatte.webp",
+    "description": "",
+    "tags": [
+      "film de marque"
+    ],
     "featured": false
   },
   {
@@ -186,12 +200,28 @@
     "title": "DPS MARKET",
     "section": "marque",
     "category": "film-de-marque",
-    "year": 2025,
     "client": "DPS Market",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtu.be/1UsG37Fz2Ow",
+    "thumbnail": "/thumbnails/dps-market.webp",
     "description": "",
-    "tags": ["film de marque"],
+    "tags": [
+      "film de marque"
+    ],
+    "featured": false
+  },
+  {
+    "id": "onyx-clip",
+    "title": "ONYX · CLIP",
+    "section": "marque",
+    "category": "film-de-marque",
+    "client": "Onyx",
+    "vimeo_url": "https://youtube.com/shorts/gGXwraX1uhs",
+    "thumbnail": "/thumbnails/onyx-clip.webp",
+    "description": "",
+    "tags": [
+      "clip",
+      "film de marque"
+    ],
     "featured": false
   },
   {
@@ -199,12 +229,13 @@
     "title": "LA DISTILLERIE DU VIADUC",
     "section": "marque",
     "category": "video-corporate",
-    "year": 2025,
-    "client": "La Distillerie du Viaduc",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "client": "Distillerie du Viaduc",
+    "vimeo_url": "https://youtu.be/bxGYilU794s",
+    "thumbnail": "/thumbnails/distillerie-du-viaduc.webp",
     "description": "",
-    "tags": ["corporate"],
+    "tags": [
+      "corporate"
+    ],
     "featured": false
   },
   {
@@ -212,25 +243,27 @@
     "title": "TROMBONE COFFEE SHOP",
     "section": "marque",
     "category": "video-corporate",
-    "year": 2025,
     "client": "Trombone Coffee Shop",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtu.be/JLbOVPbL0Ac",
+    "thumbnail": "/thumbnails/trombone-coffee-shop.webp",
     "description": "",
-    "tags": ["corporate"],
+    "tags": [
+      "corporate"
+    ],
     "featured": false
   },
   {
-    "id": "longboard",
-    "title": "LONGBOARD",
+    "id": "sport-extreme",
+    "title": "SPORT EXTRÊME",
     "section": "marque",
     "category": "film-produit",
-    "year": 2025,
     "client": "",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtu.be/oJtfEgmocag",
+    "thumbnail": "/thumbnails/sport-extreme.webp",
     "description": "",
-    "tags": ["produit"],
+    "tags": [
+      "film produit"
+    ],
     "featured": false
   },
   {
@@ -238,12 +271,13 @@
     "title": "ADIDAS × PRADA",
     "section": "marque",
     "category": "film-produit",
-    "year": 2025,
     "client": "Adidas × Prada",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtube.com/shorts/q28teHtA8XU",
+    "thumbnail": "/thumbnails/adidas-prada.webp",
     "description": "",
-    "tags": ["produit"],
+    "tags": [
+      "film produit"
+    ],
     "featured": false
   },
   {
@@ -251,51 +285,27 @@
     "title": "BRUTALISM",
     "section": "marque",
     "category": "film-produit",
-    "year": 2025,
-    "client": "",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "client": "Brutalism",
+    "vimeo_url": "https://youtube.com/shorts/6_ClJwIVPxU",
+    "thumbnail": "/thumbnails/brutalism.webp",
     "description": "",
-    "tags": ["produit"],
+    "tags": [
+      "film produit"
+    ],
     "featured": false
   },
   {
-    "id": "icona-club",
-    "title": "ICONA CLUB",
+    "id": "puma",
+    "title": "PUMA",
     "section": "marque",
     "category": "film-produit",
-    "year": 2025,
-    "client": "Icona Club",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "client": "Puma",
+    "vimeo_url": "https://youtube.com/shorts/ARoGkZpWalw",
+    "thumbnail": "/thumbnails/puma.webp",
     "description": "",
-    "tags": ["produit"],
-    "featured": false
-  },
-  {
-    "id": "loewe",
-    "title": "LOEWE",
-    "section": "marque",
-    "category": "film-produit",
-    "year": 2026,
-    "client": "Loewe",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/loewe.webp",
-    "description": "Mise en valeur produit pour Loewe : direction artistique soignée, image nette et matière sublimée.",
-    "tags": ["produit", "luxe", "studio"],
-    "featured": false
-  },
-  {
-    "id": "lacoste-podcast",
-    "title": "LACOSTE",
-    "section": "marque",
-    "category": "podcasts-emissions",
-    "year": 2025,
-    "client": "Lacoste",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["podcast", "émission"],
+    "tags": [
+      "film produit"
+    ],
     "featured": false
   },
   {
@@ -303,64 +313,34 @@
     "title": "EXPANSION",
     "section": "marque",
     "category": "podcasts-emissions",
-    "year": 2025,
     "client": "Expansion",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://www.youtube.com/playlist?list=PLsXI2ZNg8LHMW3KxOiGhgWxbTI0NZgxZo",
+    "thumbnail": "/thumbnails/expansion.webp",
     "description": "",
-    "tags": ["podcast", "émission"],
-    "featured": false
-  },
-  {
-    "id": "ffe-tourisme-equestre",
-    "title": "FFE · TOURISME ÉQUESTRE",
-    "section": "marque",
-    "category": "podcasts-emissions",
-    "year": 2025,
-    "client": "Fédération Française d'Équitation",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["podcast", "émission"],
-    "featured": false
-  },
-  {
-    "id": "vertical-art",
-    "title": "VERTICAL'ART",
-    "section": "marque",
-    "category": "podcasts-emissions",
-    "year": 2025,
-    "client": "Vertical'Art",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/vertical-art.webp",
-    "description": "Captation vidéo d'une émission Vertical'Art : mise en image professionnelle, son soigné et cadrage dynamique.",
-    "tags": ["podcast", "émission", "plateau"],
-    "featured": false
+    "tags": [
+      "podcast",
+      "émission"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/expansion/1.webp",
+      "/photos/expansion/2.webp",
+      "/photos/expansion/3.webp"
+    ]
   },
   {
     "id": "valentino",
     "title": "VALENTINO",
     "section": "marque",
     "category": "publicite-vfx",
-    "year": 2025,
     "client": "Valentino",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtube.com/shorts/xuF7b3JWCdc",
+    "thumbnail": "/thumbnails/valentino.webp",
     "description": "",
-    "tags": ["publicité", "vfx"],
-    "featured": false
-  },
-  {
-    "id": "cyril-lignac",
-    "title": "CYRIL LIGNAC",
-    "section": "marque",
-    "category": "publicite-vfx",
-    "year": 2025,
-    "client": "Cyril Lignac",
-    "vimeo_url": "",
-    "thumbnail": "",
-    "description": "",
-    "tags": ["publicité", "vfx"],
+    "tags": [
+      "publicité",
+      "VFX"
+    ],
     "featured": false
   },
   {
@@ -368,38 +348,129 @@
     "title": "JEAN PAUL GAULTIER",
     "section": "marque",
     "category": "publicite-vfx",
-    "year": 2025,
     "client": "Jean Paul Gaultier",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "vimeo_url": "https://youtube.com/shorts/4a2xjkm6w5A",
+    "thumbnail": "/thumbnails/jean-paul-gaultier.webp",
     "description": "",
-    "tags": ["publicité", "vfx"],
+    "tags": [
+      "publicité",
+      "VFX"
+    ],
     "featured": false
   },
   {
-    "id": "uniqlo",
-    "title": "UNIQLO",
+    "id": "jacquemus",
+    "title": "JACQUEMUS",
     "section": "marque",
     "category": "publicite-vfx",
-    "year": 2025,
-    "client": "Uniqlo",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/uniqlo.webp",
-    "description": "Publicité Uniqlo avec intégration VFX : concept, tournage et post-production pour un spot percutant.",
-    "tags": ["publicité", "vfx", "campagne"],
+    "client": "Jacquemus",
+    "vimeo_url": "https://youtu.be/Xmde9MP3z5o",
+    "thumbnail": "/thumbnails/jacquemus.webp",
+    "description": "",
+    "tags": [
+      "publicité",
+      "VFX"
+    ],
     "featured": false
   },
   {
-    "id": "vagabond-studio",
-    "title": "VAGABOND STUDIO",
+    "id": "prada",
+    "title": "PRADA",
+    "section": "marque",
+    "category": "publicite-vfx",
+    "client": "Prada",
+    "vimeo_url": "https://youtube.com/shorts/cdmEvPVblvk",
+    "thumbnail": "/thumbnails/prada.webp",
+    "description": "",
+    "tags": [
+      "publicité",
+      "VFX"
+    ],
+    "featured": false
+  },
+  {
+    "id": "vagabond-focus-pieces-defile",
+    "title": "VAGABOND · FOCUS PIÈCES DÉFILÉ",
     "section": "marque",
     "category": "photographie",
-    "year": 2025,
-    "client": "Vagabond Studio",
+    "client": "Vagabond",
     "vimeo_url": "",
-    "thumbnail": "",
+    "thumbnail": "/thumbnails/vagabond-focus-pieces-defile.webp",
     "description": "",
-    "tags": ["photographie"],
+    "tags": [
+      "photographie",
+      "mode"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/vagabond-focus-pieces-defile/1.webp",
+      "/photos/vagabond-focus-pieces-defile/2.webp",
+      "/photos/vagabond-focus-pieces-defile/3.webp",
+      "/photos/vagabond-focus-pieces-defile/4.webp",
+      "/photos/vagabond-focus-pieces-defile/5.webp",
+      "/photos/vagabond-focus-pieces-defile/6.webp"
+    ]
+  },
+  {
+    "id": "vagabond-spring-collection",
+    "title": "VAGABOND · SPRING COLLECTION",
+    "section": "marque",
+    "category": "photographie",
+    "client": "Vagabond",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/vagabond-spring-collection.webp",
+    "description": "",
+    "tags": [
+      "photographie",
+      "mode"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/vagabond-spring-collection/1.webp",
+      "/photos/vagabond-spring-collection/2.webp",
+      "/photos/vagabond-spring-collection/3.webp",
+      "/photos/vagabond-spring-collection/4.webp",
+      "/photos/vagabond-spring-collection/5.webp",
+      "/photos/vagabond-spring-collection/6.webp",
+      "/photos/vagabond-spring-collection/7.webp",
+      "/photos/vagabond-spring-collection/8.webp"
+    ]
+  },
+  {
+    "id": "jadice-x-spye",
+    "title": "JADICE × SPYE",
+    "section": "marque",
+    "category": "photographie",
+    "client": "Jadice × Spye",
+    "vimeo_url": "",
+    "thumbnail": "/thumbnails/jadice-x-spye.webp",
+    "description": "",
+    "tags": [
+      "photographie"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/jadice-x-spye/1.webp",
+      "/photos/jadice-x-spye/2.webp",
+      "/photos/jadice-x-spye/3.webp",
+      "/photos/jadice-x-spye/4.webp",
+      "/photos/jadice-x-spye/5.webp",
+      "/photos/jadice-x-spye/6.webp"
+    ]
+  },
+  {
+    "id": "showreel-3d",
+    "title": "SHOWREEL 3D & SCÉNOGRAPHIE",
+    "section": "marque",
+    "category": "3d-scenographie",
+    "client": "1LIFE PRODUCTION",
+    "vimeo_url": "https://youtu.be/XnclkEYywS4",
+    "thumbnail": "/thumbnails/showreel-3d.webp",
+    "description": "© Georges Armando",
+    "tags": [
+      "3D",
+      "scénographie"
+    ],
     "featured": false
   },
   {
@@ -407,129 +478,195 @@
     "title": "COACHELLA",
     "section": "marque",
     "category": "3d-scenographie",
-    "year": 2026,
     "client": "Coachella",
-    "vimeo_url": "",
+    "vimeo_url": "https://youtube.com/shorts/TRb5DOTWiVw",
     "thumbnail": "/thumbnails/coachella.webp",
-    "description": "Scénographie et 3D pour Coachella : conception d'espaces et rendus immersifs au service de l'expérience.",
-    "tags": ["scénographie", "3d", "événement"],
+    "description": "© Georges Armando",
+    "tags": [
+      "3D",
+      "scénographie"
+    ],
     "featured": false
   },
   {
-    "id": "show-sceno",
-    "title": "SHOW SCÉNO",
+    "id": "maala-outro",
+    "title": "MAALA · OUTRO",
     "section": "marque",
     "category": "3d-scenographie",
-    "year": 2026,
-    "client": "1LIFE Production",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/scenographie-showreel.webp",
-    "description": "Showreel de nos travaux de scénographie et 3D : aperçu des concepts, rendus et réalisations immersives.",
-    "tags": ["showreel", "3d", "scénographie"],
+    "client": "Maala",
+    "vimeo_url": "https://youtu.be/8T1UN7yeKEQ",
+    "thumbnail": "/thumbnails/maala-outro.webp",
+    "description": "© Georges Armando",
+    "tags": [
+      "3D",
+      "scénographie"
+    ],
     "featured": false
   },
   {
-    "id": "cko-nike-aftermovie",
+    "id": "paris-no-limit",
+    "title": "PARIS NO LIMIT",
+    "section": "marque",
+    "category": "3d-scenographie",
+    "client": "Paris No Limit",
+    "vimeo_url": "https://youtu.be/eSO-enKlOy4",
+    "thumbnail": "/thumbnails/paris-no-limit.webp",
+    "description": "© Georges Armando",
+    "tags": [
+      "3D",
+      "scénographie"
+    ],
+    "featured": false
+  },
+  {
+    "id": "cko-nike",
     "title": "CKO × NIKE",
     "section": "evenementiel",
     "category": "aftermovie",
-    "year": 2024,
     "client": "CKO × Nike",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/cko.webp",
+    "vimeo_url": "https://www.youtube.com/watch?v=8WYdD2i1Ylc",
+    "thumbnail": "/thumbnails/cko-nike.webp",
     "description": "",
-    "tags": ["aftermovie"],
+    "tags": [
+      "aftermovie"
+    ],
     "featured": false
   },
   {
-    "id": "couleur-cafe-festival",
-    "title": "COULEUR CAFÉ FESTIVAL",
+    "id": "couleur-cafe",
+    "title": "COULEUR CAFÉ",
     "section": "evenementiel",
     "category": "aftermovie",
-    "year": 2024,
     "client": "Couleur Café",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/couleur-cafe-festival.webp",
-    "description": "Afterfilm du festival Couleur Café : énergie des scènes, public et temps forts condensés dans un montage immersif.",
-    "tags": ["afterfilm", "festival", "musique"],
+    "vimeo_url": "https://youtube.com/shorts/niWI1btOs4A",
+    "thumbnail": "/thumbnails/couleur-cafe.webp",
+    "description": "",
+    "tags": [
+      "aftermovie",
+      "festival"
+    ],
     "featured": false
   },
   {
-    "id": "impact-skone",
-    "title": "IMPACT — SKONE",
+    "id": "artzeg",
+    "title": "ARTZEG",
     "section": "evenementiel",
     "category": "aftermovie",
-    "year": 2024,
-    "client": "Impact",
-    "vimeo_url": "https://vimeo.com/76979871",
-    "thumbnail": "",
-    "description": "Afterfilm de la soirée Impact avec Skone. Ambiance scène, foule et lumières rouges.",
-    "tags": ["afterfilm", "club", "event"],
-    "featured": true
-  },
-  {
-    "id": "vladimir-cauchemar",
-    "title": "VLADIMIR CAUCHEMAR",
-    "section": "evenementiel",
-    "category": "aftermovie",
-    "year": 2025,
-    "client": "Vladimir Cauchemar",
-    "vimeo_url": "",
-    "thumbnail": "/thumbnails/vladimir-cauchemar.webp",
-    "description": "Afterfilm autour de Vladimir Cauchemar : direction artistique marquée et montage nerveux au service de l'ambiance.",
-    "tags": ["afterfilm", "live", "musique"],
+    "client": "Artzeg",
+    "vimeo_url": "https://youtube.com/shorts/HwGaJUv2V-o",
+    "thumbnail": "/thumbnails/artzeg.webp",
+    "description": "",
+    "tags": [
+      "aftermovie"
+    ],
     "featured": false
   },
   {
-    "id": "vivatech-stand-amazon",
-    "title": "VIVATECH · STAND AMAZON",
+    "id": "vivatech",
+    "title": "VIVATECH",
     "section": "evenementiel",
     "category": "reportage-photo-video",
-    "year": 2025,
-    "client": "Amazon",
-    "vimeo_url": "",
-    "thumbnail": "",
+    "client": "VivaTech",
+    "vimeo_url": "https://youtu.be/dtJUas1MrV4",
+    "thumbnail": "/thumbnails/vivatech.webp",
     "description": "",
-    "tags": ["reportage", "photo", "vidéo"],
-    "featured": false
+    "tags": [
+      "reportage",
+      "photo",
+      "vidéo"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/vivatech/1.webp",
+      "/photos/vivatech/2.webp",
+      "/photos/vivatech/3.webp",
+      "/photos/vivatech/4.webp",
+      "/photos/vivatech/5.webp",
+      "/photos/vivatech/6.webp",
+      "/photos/vivatech/7.webp",
+      "/photos/vivatech/8.webp",
+      "/photos/vivatech/9.webp"
+    ]
   },
   {
-    "id": "institut-etudes-avancees",
-    "title": "INSTITUT DES ÉTUDES AVANCÉES",
+    "id": "reportage-musique",
+    "title": "MUSIQUE",
     "section": "evenementiel",
-    "category": "conferences-institutionnel",
-    "year": 2025,
-    "client": "Institut des Études Avancées",
+    "category": "reportage-photo-video",
+    "client": "",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/institut-etudes-avancees.webp",
-    "description": "Captation d'un cycle de conférences de l'Institut des Études Avancées, pensée pour valoriser les intervenants.",
-    "tags": ["conférence", "institutionnel", "captation"],
-    "featured": false
+    "thumbnail": "/thumbnails/reportage-musique.webp",
+    "description": "",
+    "tags": [
+      "reportage",
+      "photo",
+      "concert"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/reportage-musique/1.webp",
+      "/photos/reportage-musique/2.webp",
+      "/photos/reportage-musique/3.webp",
+      "/photos/reportage-musique/4.webp",
+      "/photos/reportage-musique/5.webp",
+      "/photos/reportage-musique/6.webp",
+      "/photos/reportage-musique/7.webp",
+      "/photos/reportage-musique/8.webp",
+      "/photos/reportage-musique/9.webp",
+      "/photos/reportage-musique/10.webp",
+      "/photos/reportage-musique/11.webp",
+      "/photos/reportage-musique/12.webp"
+    ]
   },
   {
-    "id": "technion-pleniere",
-    "title": "TECHNION · PLÉNIÈRE",
+    "id": "artistes-argentique",
+    "title": "ARTISTES · ARGENTIQUE",
     "section": "evenementiel",
-    "category": "conferences-institutionnel",
-    "year": 2025,
-    "client": "Technion France",
+    "category": "reportage-photo-video",
+    "client": "",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/conference-technion.webp",
-    "description": "Captation multicaméra de la plénière de la conférence Technion France : interventions, table ronde et temps forts.",
-    "tags": ["conférence", "multicaméra", "corporate"],
-    "featured": false
+    "thumbnail": "/thumbnails/artistes-argentique.webp",
+    "description": "",
+    "tags": [
+      "reportage",
+      "photo",
+      "argentique"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/artistes-argentique/1.webp",
+      "/photos/artistes-argentique/2.webp",
+      "/photos/artistes-argentique/3.webp",
+      "/photos/artistes-argentique/4.webp",
+      "/photos/artistes-argentique/5.webp",
+      "/photos/artistes-argentique/6.webp",
+      "/photos/artistes-argentique/7.webp",
+      "/photos/artistes-argentique/8.webp",
+      "/photos/artistes-argentique/9.webp",
+      "/photos/artistes-argentique/10.webp",
+      "/photos/artistes-argentique/11.webp"
+    ]
   },
   {
-    "id": "conseil-administration",
-    "title": "CONSEIL D'ADMINISTRATION",
+    "id": "conferences-evenements-institutionnels",
+    "title": "CONFÉRENCES & ÉVÉNEMENTS INSTITUTIONNELS",
     "section": "evenementiel",
     "category": "conferences-institutionnel",
-    "year": 2024,
-    "client": "Confidentiel",
+    "client": "",
     "vimeo_url": "",
-    "thumbnail": "/thumbnails/conseil-administration.webp",
-    "description": "Captation d'un conseil d'administration : prise de son professionnelle et cadrage sobre pour une diffusion interne.",
-    "tags": ["corporate", "captation", "institutionnel"],
-    "featured": false
+    "thumbnail": "/thumbnails/conferences-evenements-institutionnels.webp",
+    "description": "",
+    "tags": [
+      "conférence",
+      "institutionnel",
+      "photo"
+    ],
+    "featured": false,
+    "photos": [
+      "/photos/conferences-evenements-institutionnels/1.webp",
+      "/photos/conferences-evenements-institutionnels/2.webp",
+      "/photos/conferences-evenements-institutionnels/3.webp",
+      "/photos/conferences-evenements-institutionnels/4.webp"
+    ]
   }
 ]

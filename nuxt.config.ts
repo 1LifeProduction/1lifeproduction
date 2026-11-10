@@ -25,15 +25,20 @@ export default defineNuxtConfig({
     name: '1LIFE PRODUCTION',
   },
   sitemap: {
-    /* Pages légales : exclues tant que le client n'a pas fourni le contenu
-       (content/legal.json) — à retirer de cette liste une fois remplies. */
-    exclude: ['/a-propos', '/commercial', '/404', '/mentions-legales', '/politique-de-confidentialite'],
+    exclude: ['/a-propos', '/commercial', '/404'],
     urls: projectRoutes,
   },
 
+  /* Build = "nuxt build" (Vercel) : TOUTES les pages sont pré-rendues en HTML
+     statique au build (routeRules '/**' + crawl) — même résultat qu'un
+     generate pour le visiteur et le SEO — et seule la route serveur
+     /api/contact (formulaire → Resend) tourne en fonction serverless.
+     Un "nuxt generate" (script npm run generate) reste possible pour un
+     hébergement 100 % statique, mais sans formulaire. */
   nitro: {
     prerender: {
-      routes: projectRoutes,
+      crawlLinks: true,
+      routes: ['/', ...projectRoutes],
     },
   },
 
@@ -43,6 +48,8 @@ export default defineNuxtConfig({
      signal de redirection permanente pour Google. Le 301 serveur chez
      l'hébergeur reste le complément idéal (voir PDF client, point 5). */
   routeRules: {
+    '/**':         { prerender: true },
+    '/api/**':     { prerender: false },
     '/a-propos':   { redirect: { to: '/equipe', statusCode: 301 } },
     '/commercial': { redirect: { to: '/marque', statusCode: 301 } },
   },

@@ -20,6 +20,7 @@ export interface SubCategory {
   desc:   string    // copy éditoriale (paragraphes séparés par \n\n)
   tags:   string[]  // bulles ; [] si à fournir
   dev?:   boolean   // true = "En développement" (pas encore de projets)
+  visuel?: string   // image du chapitre quand il n'a pas (encore) de projet (/covers/…)
 }
 
 export interface ProcessStep { titre: string; texte: string }
@@ -29,7 +30,7 @@ export interface CategoryGroup {
   section:   Section
   label:     string
   seo:       { titre: string; description: string }
-  hero:      { kicker: string; titre: string; sousTitre: string; copy: string }
+  hero:      { kicker: string; titre: string; sousTitre: string; copy: string; image?: string; video?: string; videoHq?: string } // image : /covers/… (sinon visuel par défaut) ; video : boucle MP4 muette légère (/videos/…), videoHq : version 1080p chargée en fond, image = poster
   process:   { titre: string; etapes: ProcessStep[]; signature: { titre: string; texte: string } }
   faq:       { titre: string; items: FaqItem[] }
   cta:       { titre: string; texte: string; bouton: string }
@@ -51,7 +52,7 @@ const STRUCTURE: { section: Section; children: { slug: string; dev?: boolean }[]
     section: 'documentaire',
     children: [
       { slug: 'documentaire-musical' },
-      { slug: 'artisanat-savoir-faire' },
+      { slug: 'artisanat-savoir-faire', dev: true },
       { slug: 'cuisine-territoires', dev: true },
     ],
   },
@@ -77,7 +78,7 @@ const STRUCTURE: { section: Section; children: { slug: string; dev?: boolean }[]
   },
 ]
 
-type SubContent = { kicker?: string; titre?: string; description?: string; tags?: string[] }
+type SubContent = { kicker?: string; titre?: string; description?: string; tags?: string[]; visuel?: string }
 const subContent = (content as any)['sous-categories'] ?? {}
 
 const EMPTY_SEO       = { titre: '1LIFE PRODUCTION', description: '' }
@@ -106,6 +107,7 @@ export const CATEGORIES: CategoryGroup[] = STRUCTURE.map(group => {
         desc:   t.description ?? '',
         tags:   Array.isArray(t.tags) ? t.tags : [],
         dev:    child.dev,
+        visuel: t.visuel,
       }
     }),
   }

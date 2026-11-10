@@ -19,6 +19,7 @@ Ce document explique **comment modifier tous les textes et contenus du site** sa
 | `content/global.json` | Commun à tout le site : email et adresse du footer, URLs des réseaux sociaux, titre du bandeau clients, libellés d'interface (« Voir les projets », « Questions fréquentes »…). |
 | `content/clients.json` | Logos du bandeau marques défilant. |
 | `content/legal.json` | Pages légales (mentions légales, politique de confidentialité) : titre + sections (`titre`, `paragraphes`). Tant que `sections` est vide, la page affiche « Contenu à venir ». |
+| `public/showreel*.mp4`, `public/videos/`, `public/covers/` | Vidéos d'habillage et couvertures (voir section 6). |
 | `data/projects.json` | Les projets (réalisations) : titres, catégories, liens vidéo (Vimeo ou YouTube), vignettes. |
 
 Conventions dans les textes :
@@ -64,9 +65,10 @@ C'est une **liste** ( `[ ... ]` ) d'objets, chaque objet `{ ... }` = un projet.
 | `title` | ✅ | Titre affiché du projet. |
 | `section` | ✅ | `"live"`, `"documentaire"`, `"marque"` **ou** `"evenementiel"` (uniquement ces quatre valeurs). Détermine sur quelle page le projet apparaît. |
 | `category` | ✅ | Sous-catégorie. **Doit correspondre exactement** à un slug autorisé pour la section (voir tableau ci-dessous). |
-| `year` | ✅ | Année (nombre, sans guillemets). Ex. `2026`. |
+| `year` | — | Année (nombre, sans guillemets), facultative. Ex. `2026`. |
 | `client` | ✅ | Nom du client. |
-| `vimeo_url` | ✅ | Lien de la vidéo : **Vimeo ou YouTube** (`vimeo.com/…`, `youtube.com/watch?v=…`, `youtu.be/…`, Shorts). Peut rester vide `""` : la vignette s'affiche à la place. |
+| `vimeo_url` | ✅ | Lien de la vidéo : **Vimeo ou YouTube** (`vimeo.com/…`, `youtube.com/watch?v=…`, `youtu.be/…`, Shorts, ou une **playlist** `youtube.com/playlist?list=…`). Peut rester vide `""` : la vignette (ou les photos) s'affiche à la place. |
+| `photos` | — | Facultatif. Liste de photos pour un **projet photo** (ou vidéo + photos) : `["/photos/mon-projet/1.webp", "/photos/mon-projet/2.webp"]`. Fichiers à déposer dans `public/photos/mon-projet/`. La modale affiche alors un carrousel (flèches, clavier). |
 | `thumbnail` | ✅ | Chemin de la vignette. Le fichier doit être déposé dans `public/thumbnails/` et écrit ici **sans `/public`** (ex. `/thumbnails/mon-image.png`). |
 | `description` | ✅ | Texte de présentation du projet. |
 | `tags` | ✅ | Liste de mots-clés entre crochets (ex. `["live", "captation"]`). Peut être vide : `[]`. |
@@ -330,6 +332,22 @@ content/global.json
 Bloc `"footer"` : `email`, `adresse` (`\n` = saut de ligne) et `reseaux` (les URLs Instagram / YouTube / TikTok / LinkedIn — vider une URL `""` masque sa pastille).
 
 ---
+
+## 6. Vidéos d'habillage (showreels, teaser) et couvertures
+
+Les vidéos d'habillage **ne sont pas** des liens YouTube : ce sont des fichiers MP4 **muets** déposés dans `public/`, lus en boucle.
+
+| Emplacement | Fichier léger (démarre tout de suite) | Fichier haute qualité (chargé en fond) |
+|-------------|------------------------------------------|------------------------------------------|
+| Hero de la page d'accueil | `public/showreel.mp4` | `public/showreel-hq.mp4` |
+| Hero de la page Live + carte Live (accueil) | `public/videos/expertise-live.mp4` | `public/videos/expertise-live-hq.mp4` |
+| Hero de la page Documentaire + carte Documentaire (accueil) | `public/videos/expertise-documentaire.mp4` | `public/videos/expertise-documentaire-hq.mp4` |
+
+Fonctionnement : la version **légère** (720p, ~10 Mo) s'affiche immédiatement ; sur ordinateur, la version **-hq** (1080p) se télécharge en arrière-plan et remplace la légère en fondu dès qu'elle est prête. Sur mobile, seule la légère est chargée. Si le fichier -hq manque, la légère reste : rien ne casse.
+
+Pour **remplacer** une vidéo : exporter un MP4 (H.264, sans son) aux mêmes noms de fichier. Recommandé : légère en 1280×720 (~2 Mbit/s), HQ en 1920×1080 (~5 Mbit/s). Les images d'attente (posters) des cartes sont `public/videos/expertise-*-poster.jpg`.
+
+Les **couvertures** (image de hero des pages Marque et Événementiel, visuels des chapitres sans projet) sont dans `public/covers/` et référencées dans `content/categories.json` (`hero.image`, `hero.video`, `hero.videoHq`, et `visuel` dans une sous-catégorie).
 
 ## Mettre en ligne après modification
 

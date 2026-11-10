@@ -33,6 +33,8 @@ function toEmbedUrl(url: string): string | null {
     /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/,
   )
   if (youtube) return `https://www.youtube-nocookie.com/embed/${youtube[1]}`
+  const playlist = url.match(/[?&]list=([A-Za-z0-9_-]+)/)
+  if (playlist) return `https://www.youtube-nocookie.com/embed/videoseries?list=${playlist[1]}`
   return null
 }
 const embedUrl = project.vimeo_url ? toEmbedUrl(project.vimeo_url) : null
@@ -48,7 +50,7 @@ const videoLd = (project.vimeo_url || project.thumbnail)
         description,
         ...(project.thumbnail ? { thumbnailUrl: `${SITE_URL}${project.thumbnail}` } : {}),
         ...(embedUrl ? { embedUrl } : {}),
-        uploadDate: `${project.year}-01-01`,
+        ...('year' in project && project.year ? { uploadDate: `${project.year}-01-01` } : {}),
         publisher: { '@type': 'Organization', name: '1LIFE PRODUCTION', url: SITE_URL },
       }),
     }]

@@ -8,6 +8,9 @@
       "description": "Studio audiovisuel basé à Paris, spécialisé dans les live sessions, captations multicam et livestreams pour artistes, labels et festivals."
     },
     "hero": {
+      "video": "/videos/expertise-live.mp4",
+      "videoHq": "/videos/expertise-live-hq.mp4",
+      "image": "/videos/expertise-live-poster.jpg",
       "kicker": "Captation multicam · Live session · Livestream",
       "titre": "Notre place n'a jamais été dans le public.",
       "sousTitre": "Elle a toujours été entre la scène, les artistes... et tout ce qui se passe juste avant que les lumières s'allument.",
@@ -52,6 +55,9 @@
       "description": "Production de documentaires musicaux, portraits d'artistes, films de savoir-faire et récits de territoires en France et à l'international."
     },
     "hero": {
+      "video": "/videos/expertise-documentaire.mp4",
+      "videoHq": "/videos/expertise-documentaire-hq.mp4",
+      "image": "/videos/expertise-documentaire-poster.jpg",
       "kicker": "Film documentaire · Portrait · Culture",
       "titre": "On ne part jamais filmer un sujet.",
       "sousTitre": "On part rencontrer quelqu'un.",
@@ -94,6 +100,7 @@
       "description": "Films de marque, vidéos corporate, films produit, podcasts filmés, publicité, VFX, photographie et scénographie 3D depuis Paris."
     },
     "hero": {
+      "image": "/covers/marque.webp",
       "kicker": "Film de marque · Corporate · Produit · VFX · 3D",
       "titre": "Les gens n'adhèrent pas à un produit.",
       "sousTitre": "Ils adhèrent à ce qu'il raconte.",
@@ -136,6 +143,7 @@
       "description": "Aftermovies, reportages photo et vidéo, conférences et contenus événementiels produits à Paris, en France et à l'international."
     },
     "hero": {
+      "image": "/covers/evenementiel.webp",
       "kicker": "Aftermovie · Reportage photo & vidéo · Événements institutionnels",
       "titre": "Un événement ne dure jamais une seule journée.",
       "sousTitre": "Les images, elles, continuent longtemps après.",
@@ -203,13 +211,15 @@
       "kicker": "02 · Patrimoine vivant",
       "titre": "Artisanat & savoir-faire",
       "description": "Certains gestes prennent une vie entière à apprendre. Une feuille d'or. Un outil fabriqué à la main. Un atelier qui n'a presque pas changé depuis cinquante ans.\n\nÀ première vue, rien ne semble bouger. Pourtant, tout se transmet. Nous développons une série documentaire consacrée aux métiers d'art, aux artisans et aux savoir-faire qui continuent de vivre grâce à celles et ceux qui les pratiquent chaque jour.",
-      "tags": ["Artisanat", "Métiers d'art", "Patrimoine vivant", "Transmission", "Documentaire"]
+      "tags": ["Artisanat", "Métiers d'art", "Patrimoine vivant", "Transmission", "Documentaire"],
+      "visuel": "/covers/artisanat-savoir-faire.webp"
     },
     "cuisine-territoires": {
       "kicker": "03 · Cultures locales",
       "titre": "Cuisine & territoires",
       "description": "On découvre souvent un territoire avant même d'en parler la langue. Autour d'une table. Dans une cuisine. Sur un marché.\n\nUne recette raconte rarement uniquement ce qu'il y a dans une assiette. Elle raconte un paysage, une famille, une manière de recevoir, une mémoire. Nous développons une série documentaire à la rencontre de chefs, de producteurs et de passionnés qui racontent leur région à travers ce qu'ils cuisinent.",
-      "tags": ["Cuisine", "Gastronomie", "Terroirs", "Culture", "Transmission"]
+      "tags": ["Cuisine", "Gastronomie", "Terroirs", "Culture", "Transmission"],
+      "visuel": "/covers/cuisine-territoires.webp"
     },
 
     "film-de-marque": {

@@ -1,5 +1,5 @@
 {
-  "_aide": "Pages légales. Pour chaque page : un titre, puis des sections (titre + paragraphes). Tant que 'sections' est vide, la page affiche le texte 'aVenir' et n'est pas indexée par Google. **gras** possible dans les paragraphes.",
+  "_aide": "Pages légales. Pour chaque page : un titre, puis des sections (titre + paragraphes). Tant que 'sections' est vide, la page affiche le texte 'aVenir' et n'est pas indexée par Google. **gras** possible dans les paragraphes. Textes fournis par le client (Asset 1life website.docx, nov. 2026).",
 
   "aVenir": "Contenu à venir.",
 
@@ -7,17 +7,131 @@
     "titre": "Mentions\nlégales",
     "seo": {
       "titre": "Mentions légales — 1LIFE PRODUCTION",
-      "description": "Mentions légales du site 1lifeproduction.com."
+      "description": "Mentions légales du site 1lifeproduction.com : éditeur, hébergement, propriété intellectuelle, responsabilité."
     },
-    "sections": []
+    "sections": [
+      {
+        "titre": "Éditeur du site",
+        "paragraphes": [
+          "Le site 1lifeproduction.com est édité par :",
+          "**1Life Production**, SAS au capital de 1 000,00 €",
+          "Siège social : 13 rue Jean de la Bruyère, 78000 Versailles",
+          "Immatriculée au Registre du commerce et des sociétés de Versailles sous le numéro 993 382 837",
+          "Numéro de TVA intracommunautaire : FR63993382837",
+          "Contact : 1lifeprod@unlockcollectif.com",
+          "Directeur de la publication : Quentin Lamoine, président"
+        ]
+      },
+      {
+        "titre": "Hébergement",
+        "paragraphes": [
+          "Le site est hébergé par :",
+          "**Vercel Inc.**",
+          "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
+          "Site web : https://vercel.com"
+        ]
+      },
+      {
+        "titre": "Propriété intellectuelle",
+        "paragraphes": [
+          "Les contenus du site (textes, images, éléments graphiques, logos, vidéos, créations visuelles et structure) sont la propriété de 1LIFE PRODUCTION ou de ses partenaires, sauf mention contraire. Ils sont protégés par les règles applicables en matière de propriété intellectuelle.",
+          "Toute reproduction, représentation, modification ou exploitation, totale ou partielle, sans autorisation écrite préalable des titulaires des droits concernés est interdite."
+        ]
+      },
+      {
+        "titre": "Responsabilité",
+        "paragraphes": [
+          "1LIFE PRODUCTION s'efforce de fournir sur le site des informations exactes et à jour. Toutefois, l'éditeur ne garantit pas que ces informations soient exemptes d'erreurs ou d'omissions.",
+          "L'éditeur ne saurait être tenu responsable des dommages résultant de l'accès au site ou de son utilisation, dans les limites prévues par la loi. Les liens vers des sites tiers sont fournis à titre informatif ; l'éditeur n'est pas responsable du contenu de ces sites."
+        ]
+      },
+      {
+        "titre": "Données personnelles",
+        "paragraphes": [
+          "Le traitement des données personnelles effectué dans le cadre de l'utilisation du site est décrit dans la politique de confidentialité, accessible depuis le pied de page du site."
+        ]
+      },
+      {
+        "titre": "Droit applicable",
+        "paragraphes": [
+          "Les présentes mentions légales sont régies par le droit français. Tout litige relatif au site relève des juridictions compétentes, sous réserve des règles impératives applicables.",
+          "Dernière mise à jour : 10 novembre 2026"
+        ]
+      }
+    ]
   },
 
   "politique-de-confidentialite": {
     "titre": "Politique de\nconfidentialité",
     "seo": {
       "titre": "Politique de confidentialité — 1LIFE PRODUCTION",
-      "description": "Politique de confidentialité du site 1lifeproduction.com."
+      "description": "Politique de confidentialité du site 1lifeproduction.com : données collectées, finalités, durées de conservation, droits RGPD."
     },
-    "sections": []
+    "sections": [
+      {
+        "titre": "Préambule",
+        "paragraphes": [
+          "La présente politique décrit la manière dont 1LIFE PRODUCTION traite les données personnelles des personnes qui visitent le site 1lifeproduction.com, conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés."
+        ]
+      },
+      {
+        "titre": "1. Responsable du traitement",
+        "paragraphes": [
+          "1LIFE PRODUCTION, SAS au capital de 1 000,00 €, immatriculée au Registre du commerce et des sociétés de Versailles sous le numéro 993 382 837, dont le siège social est situé 13 rue Jean de la Bruyère, 78000 Versailles.",
+          "Contact : 1lifeprod@unlockcollectif.com"
+        ]
+      },
+      {
+        "titre": "2. Données collectées et finalités",
+        "paragraphes": [
+          "Le site peut traiter les données suivantes :",
+          "**Nom, société, adresse e-mail, téléphone et contenu du message** transmis via le formulaire de contact ou par e-mail — Finalité : répondre à votre demande et, le cas échéant, échanger avant la conclusion d'un contrat — Base légale : intérêt légitime / mesures précontractuelles — Durée de conservation : 3 ans après le dernier contact.",
+          "**Données techniques** (par exemple : adresse IP, date et pages consultées) — Finalité : assurer la sécurité et le bon fonctionnement du site — Base légale : intérêt légitime — Durée de conservation : 12 mois maximum.",
+          "Les données traitées dépendent des fonctionnalités effectivement proposées sur le site. 1LIFE PRODUCTION ne met pas en œuvre de décision entièrement automatisée ni de profilage."
+        ]
+      },
+      {
+        "titre": "3. Destinataires des données",
+        "paragraphes": [
+          "Les données sont accessibles à 1LIFE PRODUCTION et, lorsque cela est nécessaire, à ses prestataires intervenant pour le fonctionnement du site, notamment Vercel Inc. (hébergement) et Resend (acheminement des e-mails du formulaire de contact), en leur qualité de sous-traitants.",
+          "Les données ne sont pas vendues ni cédées à des tiers."
+        ]
+      },
+      {
+        "titre": "4. Transferts hors de l'Union européenne",
+        "paragraphes": [
+          "Le site étant hébergé par Vercel Inc., société américaine, certaines données peuvent être traitées aux États-Unis. Ces transferts sont encadrés par les clauses contractuelles types de la Commission européenne intégrées au contrat de sous-traitance de Vercel, conformément à l'article 46 du RGPD."
+        ]
+      },
+      {
+        "titre": "5. Cookies et autres traceurs",
+        "paragraphes": [
+          "Le site n'utilise pas de cookies de mesure d'audience, publicitaires ou de suivi. Seuls des cookies strictement nécessaires à son fonctionnement peuvent être déposés.",
+          "Ceux-ci sont exemptés de l'obligation d'obtenir le consentement, conformément aux lignes directrices de la CNIL (Commission nationale de l'informatique et des libertés).",
+          "Les vidéos intégrées (YouTube, Vimeo) sont chargées en mode « confidentialité renforcée » : aucun cookie de suivi n'est déposé tant que vous ne lancez pas la lecture."
+        ]
+      },
+      {
+        "titre": "6. Vos droits",
+        "paragraphes": [
+          "Dans les conditions prévues par la réglementation applicable, vous pouvez demander l'accès à vos données, leur rectification ou leur effacement, la limitation de leur traitement, vous opposer à certains traitements et, lorsque ce droit s'applique, demander la portabilité de vos données. Vous pouvez également définir des directives relatives au sort de vos données après votre décès.",
+          "Pour exercer vos droits, contactez 1lifeprod@unlockcollectif.com. Une preuve d'identité pourra être demandée en cas de doute raisonnable sur votre identité. Une réponse est apportée dans le délai prévu par la réglementation, en principe dans un délai d'un mois.",
+          "Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la Commission nationale de l'informatique et des libertés (CNIL) : www.cnil.fr/fr/adresser-une-plainte."
+        ]
+      },
+      {
+        "titre": "7. Sécurité",
+        "paragraphes": [
+          "1LIFE PRODUCTION met en œuvre des mesures techniques et organisationnelles adaptées afin de protéger les données personnelles, notamment un hébergement sécurisé, un accès restreint et le chiffrement des échanges (HTTPS)."
+        ]
+      },
+      {
+        "titre": "8. Modifications de la politique",
+        "paragraphes": [
+          "La présente politique peut être mise à jour. La version applicable est celle publiée sur cette page.",
+          "Dernière mise à jour : 10 novembre 2026"
+        ]
+      }
+    ]
   }
 }

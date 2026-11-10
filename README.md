@@ -102,8 +102,10 @@ Cela génère le site statique dans le dossier `.output/public/`.
 ├── components/
 │   ├── TheHeader.vue          → Navigation principale (dropdown + mobile)
 │   ├── TheFooter.vue          → Footer avec "Get In Touch"
-│   ├── ProjectCard.vue        → Card projet (thumbnail + overlay)
-│   ├── CategoryFilter.vue     → Barre de filtres réutilisable
+│   ├── CategoryPage.vue       → Page catégorie (hero, chapitres, modale galerie, FAQ, CTA)
+│   ├── ProgressiveVideo.vue   → Vidéo d'habillage légère → HQ en fond
+│   ├── PhotoSlideshow.vue     → Diaporama auto d'une série photo
+│   ├── BrandMarquee.vue       → Bandeau logos clients
 │   └── VimeoEmbed.vue         → Lecteur Vimeo responsive 16:9
 ├── data/
 │   └── projects.json          → Source de vérité pour tous les projets

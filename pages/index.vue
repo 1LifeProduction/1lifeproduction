@@ -36,7 +36,8 @@ const STEP_VH = STEP * 100
    <video> (sinon iOS pose un bouton play par-dessus le poster) — on montre le
    poster en <img>. On sonde le fichier (HEAD) et on bascule en vidéo seulement
    s'il existe vraiment. */
-const showreelSrc = '/showreel.mp4'
+const showreelSrc   = '/showreel.mp4'      // version légère (720p) : démarre tout de suite
+const showreelHqSrc = '/showreel-hq.mp4'   // version 1080p : chargée en fond, remplace la légère (ProgressiveVideo)
 const hasVideo = ref(false)
 
 /* Vidéos d'illustration des cards expertises Live & Documentaire.
@@ -163,19 +164,13 @@ useHead({
         Pour changer le contenu : remplacer public/showreel.mp4
         (ou modifier le chemin du <source> ci-dessous).
       -->
-      <video
+      <ProgressiveVideo
         v-if="hasVideo"
         class="home-hero__img home-hero__video"
+        :src="showreelSrc"
+        :hq="showreelHqSrc"
         :poster="heroImg"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        aria-hidden="true"
-      >
-        <source :src="showreelSrc" type="video/mp4" />
-      </video>
+      />
       <img v-else class="home-hero__img" :src="heroImg" alt="" aria-hidden="true" />
       <div class="home-hero__overlay" aria-hidden="true"></div>
       <div class="home-hero__content">

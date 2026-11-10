@@ -18,3 +18,9 @@ Thumbs.db
 
 design/
 
+# Sources médias du client (plusieurs Go) : jamais dans le dépôt — les
+# versions web optimisées sont dans public/ (photos/, covers/, videos/…)
+CONTENU HEBERGEMENT WEBSITE/
+*.mov
+.tmp-*.mjs
+
