@@ -223,43 +223,43 @@
     },
 
     "film-de-marque": {
-      "kicker": "01 · Identité",
+      "kicker": "07 · Identité",
       "titre": "Film de marque",
       "description": "Une marque ne se résume jamais à ce qu'elle vend. Elle existe dans une façon de parler, de bouger, de fabriquer et de regarder le monde.\n\nOn construit des films capables de rendre cet univers visible, sans plaquer une esthétique sur un discours qui pourrait appartenir à n'importe qui.",
       "tags": ["Concept", "Écriture", "Production", "Réalisation", "Photo", "Montage", "Étalonnage"]
     },
     "video-corporate": {
-      "kicker": "02 · Prise de parole",
+      "kicker": "06 · Prise de parole",
       "titre": "Vidéo corporate",
       "description": "Le corporate n'oblige pas à parler comme une entreprise. Derrière un message, il y a toujours une personne, une équipe ou une décision qui mérite d'être rendue claire.\n\nInterviews, portraits, films institutionnels et contenus internes sont produits avec la même attention portée au cadre, à la lumière et au rythme.",
       "tags": ["Interview", "Portrait", "Film institutionnel", "Écriture", "Multicam", "Habillage", "Sous-titrage"]
     },
     "film-produit": {
-      "kicker": "03 · Matière & usage",
+      "kicker": "01 · Matière & usage",
       "titre": "Film produit",
       "description": "Un produit se comprend parfois mieux dans un mouvement que dans une description. Une matière qui accroche la lumière. Un geste. Une façon de l'utiliser.\n\nOn réalise des films courts et des images fixes qui donnent envie de regarder avant même de chercher à expliquer.",
       "tags": ["Packshot vidéo", "Macro", "Studio", "Lifestyle", "Slow motion", "Formats verticaux", "Photographie"]
     },
     "podcasts-emissions": {
-      "kicker": "04 · Format éditorial",
+      "kicker": "03 · Format éditorial",
       "titre": "Podcasts & émissions",
       "description": "Un format récurrent doit pouvoir durer sans devenir répétitif. Le décor, la lumière et le dispositif multicam installent une identité. Les invités et les échanges font le reste.\n\nOn pense la production pour qu'elle soit reconnaissable à l'écran, fluide au tournage et réaliste à reproduire épisode après épisode.",
       "tags": ["Podcast filmé", "Émission plateau", "Interview multicam", "Décor", "Prise de son", "Habillage", "Déclinaisons sociales"]
     },
     "publicite-vfx": {
-      "kicker": "05 · Image impossible",
+      "kicker": "02 · Image impossible",
       "titre": "Publicité & VFX",
       "description": "Un effet visuel n'a d'intérêt que lorsqu'il prolonge une idée. CGI, compositing et effets spéciaux permettent de fabriquer des images impossibles, mais jamais gratuitement.\n\nOn part du concept, puis on choisit la technique la plus juste pour le rendre crédible, spectaculaire ou simplement inattendu.",
       "tags": ["Publicité", "CGI", "3D", "Compositing", "Motion design", "VFX", "Post-production"]
     },
     "photographie": {
-      "kicker": "06 · Image fixe",
+      "kicker": "05 · Image fixe",
       "titre": "Photographie",
       "description": "Une image fixe doit raconter autant qu'un film. Elle condense un geste, une attitude ou une matière dans un seul cadre.\n\nPortraits, produits, reportages et banques d'images sont pensés pour vivre seuls ou prolonger l'univers visuel d'une production vidéo.",
       "tags": ["Portrait", "Produit", "Reportage", "Studio", "Backstage", "Retouche", "Banque d'images"]
     },
     "3d-scenographie": {
-      "kicker": "07 · Espace & volume",
+      "kicker": "04 · Espace & volume",
       "titre": "3D & scénographie",
       "description": "Avant d'être construit, un espace doit déjà pouvoir être ressenti. La 3D permet de tester une intention, une circulation, une lumière ou un décor avant leur mise en œuvre.\n\nNous concevons des univers visuels pour des shows, installations et expériences de marque, de la première esquisse à la projection scénographique.",
       "tags": ["Direction artistique", "Concept 3D", "Modélisation", "Scénographie", "Prévisualisation", "Design d'espace", "Show design"]

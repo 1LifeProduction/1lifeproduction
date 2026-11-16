@@ -59,13 +59,13 @@ const STRUCTURE: { section: Section; children: { slug: string; dev?: boolean }[]
   {
     section: 'marque',
     children: [
-      { slug: 'film-de-marque' },
-      { slug: 'video-corporate' },
       { slug: 'film-produit' },
-      { slug: 'podcasts-emissions' },
       { slug: 'publicite-vfx' },
-      { slug: 'photographie' },
+      { slug: 'podcasts-emissions' },
       { slug: '3d-scenographie' },
+      { slug: 'photographie' },
+      { slug: 'video-corporate' },
+      { slug: 'film-de-marque' },
     ],
   },
   {
