@@ -977,6 +977,18 @@ h1, h2, h3, h4, h5, h6 {
   .home-hero__title { font-size: 6.8vw; }
 }
 
+/* Sous-titre sous le grand titre (content/home.json → hero.sousTitre) :
+   même registre que le texte d'intro des pages catégories (.xp-hero__copy). */
+.home-hero__lede {
+  padding: 1rem var(--gutter) 2rem;
+  max-width: calc(38.75rem + 2 * var(--gutter));
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  line-height: 1.6;
+  color: rgba(255,255,255,0.75);
+}
+
 .home-section {
   padding: 6rem 0;
   border-bottom: 1px solid var(--border);

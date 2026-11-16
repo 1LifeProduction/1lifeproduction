@@ -192,6 +192,9 @@ useHead({
             <br v-if="i > 0">{{ line }}
           </template>
         </h1>
+        <p v-if="home.hero.sousTitre" class="home-hero__lede" data-reveal="fade" style="--reveal-delay:400ms">
+          {{ home.hero.sousTitre }}
+        </p>
       </div>
     </section>
 

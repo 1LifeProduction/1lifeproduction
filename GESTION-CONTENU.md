@@ -12,7 +12,7 @@ Ce document explique **comment modifier tous les textes et contenus du site** sa
 
 | Fichier | Contenu |
 |---------|---------|
-| `content/home.json` | Page d'accueil : baseline + grand titre du hero, texte de présentation du studio, cards expertises (tags, descriptions, bouton), SEO. |
+| `content/home.json` | Page d'accueil : baseline + grand titre + sous-titre (sousTitre) du hero, texte de présentation du studio, cards expertises (tags, descriptions, bouton), SEO. |
 | `content/categories.json` | Les 4 pages catégories (Live, Documentaire, Marque, Événementiel) : hero, sous-catégories (titres, descriptions, tags), process, FAQ, CTA devis, SEO. |
 | `content/equipe.json` | Page Équipe : titre, paragraphes d'intro, **membres de l'équipe** (nom, rôle, photo), repères chiffrés, FAQ, CTA, SEO. |
 | `content/contact.json` (dont `formulaire.confirmation` : l'e-mail automatique reçu par le visiteur) | Page Contact : titre, sous-titre, libellés et placeholders du formulaire, budgets, messages de confirmation/erreur, SEO. |

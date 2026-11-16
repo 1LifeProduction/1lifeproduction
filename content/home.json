@@ -1,27 +1,23 @@
 {
   "_aide": "Textes de la page d'accueil. \\n = saut de ligne dans le grand titre. **mot** = mot en gras dans les paragraphes. Modifie uniquement les valeurs entre guillemets.",
-
   "seo": {
-    "titre": "1LIFE PRODUCTION — Studio de production audiovisuelle à Paris",
-    "description": "Studio de production audiovisuelle à Paris : live sessions, captations multicam, documentaires, films de marque et contenus événementiels."
+    "titre": "1LIFE PRODUCTION — Studio créatif & de production à Paris",
+    "description": "Studio créatif et de production à Paris : stratégie, direction créative, production audiovisuelle et contenus. Live sessions, documentaires, films de marque."
   },
-
   "hero": {
-    "baseline": "STUDIO DE PRODUCTION AUDIOVISUELLE",
-    "titre": "ON FILME LE LIVE & L'HUMAIN."
+    "baseline": "STUDIO CRÉATIF & DE PRODUCTION",
+    "titre": "ON FILME LE LIVE & L’HUMAIN.",
+    "sousTitre": "De l’idée à la diffusion : stratégie, direction créative, production audiovisuelle et contenus."
   },
-
   "intro": {
     "eyebrow": "1LIFE PRODUCTION",
     "titre": "Les images passent. Ce qu'elles racontent reste.",
     "paragraphes": [
-      "On ne filme pas pour remplir un disque dur.",
-      "On filme parce qu'il y a des instants qui ne reviendront pas exactement comme ils sont arrivés. Un premier regard avant d'entrer sur scène. Une main qui répète le même geste depuis trente ans. Une foule qui retient son souffle. Une idée qui prend vie.",
-      "Chez **1Life Production**, on produit des films qui cherchent autre chose que de belles images. On cherche ce qui est vrai.",
-      "Basé à Paris, notre studio imagine et réalise des **captations multicam**, **live sessions**, **documentaires**, **films de marque** et **contenus événementiels** pour les artistes, les entreprises et celles et ceux qui ont quelque chose à transmettre."
+      "Basé à Paris, notre studio accompagne **artistes**, **marques** et **projets culturels** de l’idée à la diffusion.",
+      "On imagine, développe et produit des **live sessions**, **documentaires**, **films de marque**, **contenus événementiels** et **campagnes de contenus**, en mêlant stratégie, direction créative et production audiovisuelle.",
+      "Pour celles et ceux qui ont quelque chose à transmettre, et qui cherchent plus qu’une belle image."
     ]
   },
-
   "expertises": {
     "eyebrow": "Nos expertises",
     "titre": "Ce qui nous fait vibrer.",
